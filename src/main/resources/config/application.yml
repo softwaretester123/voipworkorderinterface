@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+pubsub:
+  project:
+    id: ${BILLING_PUBSUB_PROJECT_ID}
+  topic:
+    id: ${BILLING_PUBSUB_TOPIC_ID}
+  subscription:
+    id: ${BILLING_PUBSUB_SUBSCRIPTION_ID}
+  publisher:
+    logMessage:
+      enabled: ${BILLING_PUBSUB_LOGMESSAGE_ENABLED}
