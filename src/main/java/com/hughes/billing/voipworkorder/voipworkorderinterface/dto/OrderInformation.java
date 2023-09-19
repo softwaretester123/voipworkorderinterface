@@ -3,25 +3,24 @@ package com.hughes.billing.voipworkorder.voipworkorderinterface.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OrderInformation {
-    private final String SAN;
+    private final String san;
 
     public OrderInformation() {
-        this.SAN = null;
+        this.san = null;
     }
-
-    public OrderInformation(String SAN) {
-        this.SAN = SAN;
+    public OrderInformation(String san) {
+        this.san = san;
     }
 
     @JsonProperty("SAN")
     public String getSAN() {
-        return SAN;
+        return san;
     }
 
     @Override
     public String toString() {
         return "OrderInformation{" +
-                "SAN='" + SAN + '\'' +
+                "san='" + san + '\'' +
                 '}';
     }
 }

@@ -7,17 +7,20 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
 public class VoipWorkOrderController {
     private static final Logger LOG = LoggerFactory.getLogger(VoipWorkOrderController.class);
 
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody VoipWorkOrder data) {
+    public VoipWorkOrder create(@RequestBody VoipWorkOrder data) {
         LOG.info("Create request landed successfully");
         System.out.println(data);
+        return data;
     }
 
     @PostMapping(value = "/cancel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,8 +39,8 @@ public class VoipWorkOrderController {
         List<InstallPhone> installPhoneList = new ArrayList<>();
         installPhoneList.add(new InstallPhone("3214895630", "Landline"));
 
-        List<Orders> ordersList = new ArrayList<>();
-        ordersList.add(new Orders(
+        List<Order> ordersList = new ArrayList<>();
+        ordersList.add(new Order(
                 new OrderInformation("DSS200197435"),
                 new InstallAddress(
                         "12 Walker Ave",

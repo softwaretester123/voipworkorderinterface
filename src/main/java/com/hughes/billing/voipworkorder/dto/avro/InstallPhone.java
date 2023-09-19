@@ -13,7 +13,6 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-
 public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 3109678067031513866L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallPhone\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro\",\"fields\":[{\"name\":\"Number\",\"type\":[\"null\",\"string\"]},{\"name\":\"Type\",\"type\":[\"null\",\"string\"]}]}");
@@ -410,7 +409,6 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
       }
     }
   }
-
 }
 
 

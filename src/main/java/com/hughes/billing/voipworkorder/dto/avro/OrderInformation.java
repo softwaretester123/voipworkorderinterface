@@ -13,7 +13,6 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-
 public class OrderInformation extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -6927442010981818491L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderInformation\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro\",\"fields\":[{\"name\":\"SAN\",\"type\":[\"null\",\"string\"]}]}");
@@ -314,7 +313,6 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
       }
     }
   }
-
 }
 
 

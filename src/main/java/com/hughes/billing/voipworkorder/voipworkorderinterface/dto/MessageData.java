@@ -7,14 +7,14 @@ import java.util.List;
 
 public class MessageData {
     private final List<MessageParameters> messageParameters;
-    private final List<Orders> orders;
+    private final List<Order> orders;
 
     public MessageData() {
         this.messageParameters = new ArrayList<>();
         this.orders = null;
     }
 
-    public MessageData(List<MessageParameters> messageParameters, List<Orders> orders) {
+    public MessageData(List<MessageParameters> messageParameters, List<Order> orders) {
         this.messageParameters = messageParameters;
         this.orders = orders;
     }
@@ -25,7 +25,7 @@ public class MessageData {
     }
 
     @JsonProperty("Orders")
-    public List<Orders> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
@@ -33,7 +33,7 @@ public class MessageData {
     public String toString() {
         return "\n  MessageData{" +
                 "\n   messageParameters=" + messageParameters +
-                ", orders=" + orders +
+                ",\n  orders=" + orders +
                 "\n   }";
     }
 }

@@ -13,7 +13,6 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-
 public class MessageHeader extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -2481723328412605853L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"MessageHeader\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro\",\"fields\":[{\"name\":\"MessageName\",\"type\":[\"null\",\"string\"]},{\"name\":\"Origin\",\"type\":[\"null\",\"string\"]},{\"name\":\"TransactionDateTime\",\"type\":[\"null\",\"string\"]},{\"name\":\"TransactionSequenceId\",\"type\":[\"null\",\"string\"]}]}");
@@ -602,7 +601,6 @@ public class MessageHeader extends org.apache.avro.specific.SpecificRecordBase i
       }
     }
   }
-
 }
 
 

@@ -13,7 +13,6 @@ import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
 @org.apache.avro.specific.AvroGenerated
-
 public class Order extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 5891053507918755519L;
   public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Order\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro\",\"fields\":[{\"name\":\"InstallAddress\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"InstallAddress\",\"fields\":[{\"name\":\"Address1\",\"type\":[\"null\",\"string\"]},{\"name\":\"Address2\",\"type\":\"null\"},{\"name\":\"City\",\"type\":[\"null\",\"string\"]},{\"name\":\"Country\",\"type\":[\"null\",\"string\"]},{\"name\":\"State\",\"type\":[\"null\",\"string\"]},{\"name\":\"Zip\",\"type\":[\"null\",\"string\"]}]}]},{\"name\":\"InstallPhone\",\"type\":[\"null\",{\"type\":\"array\",\"items\":[\"null\",{\"type\":\"record\",\"name\":\"InstallPhone\",\"fields\":[{\"name\":\"Number\",\"type\":[\"null\",\"string\"]},{\"name\":\"Type\",\"type\":[\"null\",\"string\"]}]}]}]},{\"name\":\"OrderInformation\",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"OrderInformation\",\"fields\":[{\"name\":\"SAN\",\"type\":[\"null\",\"string\"]}]}]}]}");
@@ -675,7 +674,6 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       }
     }
   }
-
 }
 
 
