@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
-			<version>1.9.1</version>
+			<version>1.8.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -42,6 +42,30 @@
 			<artifactId>pubsub-lib</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>2.2.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+			<version>2.2.1.RELEASE</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>ojdbc</groupId>-->
+<!--			<artifactId>ojdbc6</artifactId>-->
+<!--			<version>11.2.0</version>-->
+<!--			<scope>system</scope>-->
+<!--			<systemPath>${basedir}/external_packages/ojdbc6.jar</systemPath>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.oracle.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<version>12.2.0.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/external_packages/ojdbc8.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -49,19 +73,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.avro</groupId>
 				<artifactId>avro-maven-plugin</artifactId>
-				<version>1.9.0</version>
+				<version>1.8.2</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -69,9 +85,8 @@
 							<goal>schema</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${project.basedir}/src/main/config/avro/</sourceDirectory>
+							<sourceDirectory>src/main/resources/config/avro/</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
-							<fieldVisibility>PRIVATE</fieldVisibility>
 							<includes>
 								<include>**/*.avsc</include>
 							</includes>

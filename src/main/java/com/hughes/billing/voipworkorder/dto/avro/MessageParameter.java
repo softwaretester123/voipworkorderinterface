@@ -5,13 +5,12 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class MessageParameter extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -5632536800785032439L;
@@ -27,16 +26,7 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
       new BinaryMessageDecoder<MessageParameter>(MODEL$, SCHEMA$);
 
   /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<MessageParameter> getEncoder() {
-    return ENCODER;
-  }
-
-  /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<MessageParameter> getDecoder() {
     return DECODER;
@@ -45,34 +35,24 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<MessageParameter> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<MessageParameter>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this MessageParameter to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this MessageParameter to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a MessageParameter from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a MessageParameter instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a MessageParameter from a ByteBuffer. */
   public static MessageParameter fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-   private java.lang.CharSequence name;
-   private java.lang.CharSequence value;
+  @Deprecated public java.lang.CharSequence name;
+  @Deprecated public java.lang.CharSequence value;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -91,7 +71,6 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
     this.value = value;
   }
 
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -120,7 +99,6 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
     return name;
   }
 
-
   /**
    * Sets the value of the 'name' field.
    * @param value the value to set.
@@ -136,7 +114,6 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
   public java.lang.CharSequence getValue() {
     return value;
   }
-
 
   /**
    * Sets the value of the 'value' field.
@@ -160,11 +137,7 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
    * @return A new MessageParameter RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder(other);
-    }
+    return new com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder(other);
   }
 
   /**
@@ -173,11 +146,7 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
    * @return A new MessageParameter RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.MessageParameter other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder(other);
-    }
+    return new com.hughes.billing.voipworkorder.dto.avro.MessageParameter.Builder(other);
   }
 
   /**
@@ -202,11 +171,11 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
       super(other);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.value)) {
         this.value = data().deepCopy(fields()[1].schema(), other.value);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
     }
 
@@ -215,7 +184,7 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.MessageParameter other) {
-      super(SCHEMA$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
         fieldSetFlags()[0] = true;
@@ -233,7 +202,6 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
     public java.lang.CharSequence getName() {
       return name;
     }
-
 
     /**
       * Sets the value of the 'name' field.
@@ -274,7 +242,6 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
       return value;
     }
 
-
     /**
       * Sets the value of the 'value' field.
       * @param value The value of 'value'.
@@ -314,8 +281,6 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
         record.name = fieldSetFlags()[0] ? this.name : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.value = fieldSetFlags()[1] ? this.value : (java.lang.CharSequence) defaultValue(fields()[1]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -340,83 +305,4 @@ public class MessageParameter extends org.apache.avro.specific.SpecificRecordBas
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.name == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.name);
-    }
-
-    if (this.value == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.value);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.name = null;
-      } else {
-        this.name = in.readString(this.name instanceof Utf8 ? (Utf8)this.name : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.value = null;
-      } else {
-        this.value = in.readString(this.value instanceof Utf8 ? (Utf8)this.value : null);
-      }
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.name = null;
-          } else {
-            this.name = in.readString(this.name instanceof Utf8 ? (Utf8)this.name : null);
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.value = null;
-          } else {
-            this.value = in.readString(this.value instanceof Utf8 ? (Utf8)this.value : null);
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-
