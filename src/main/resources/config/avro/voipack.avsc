@@ -1,0 +1,90 @@
+{
+  "name": "VoIPWorkOrderAckMsg",
+  "namespace": "com.hughes.billing.voipworkorder.dto.avro.ack",
+  "type": "record",
+  "version": 1,
+  "fields": [
+    {
+      "name": "MessageHeader",
+      "type": {
+        "name": "MessageHeader",
+        "type": "record",
+        "fields": [
+          {
+            "name": "TransactionSequenceId",
+            "type": "string"
+          },
+          {
+            "name": "TransactionDateTime",
+            "type": "string"
+          },
+          {
+            "name": "MessageName",
+            "type": "string"
+          },
+          {
+            "name": "Origin",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "CorrelationId",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MessageData",
+      "type": ["null", {
+        "type": "record",
+        "name": "MessageData",
+        "fields": [{
+          "name": "MessageParameters",
+          "type": ["null", {
+            "type": "array",
+            "items": ["null", {
+              "type": "record",
+              "name": "MessageParameter",
+              "fields": [{
+                "name": "name",
+                "type": ["null", "string"]
+              }, {
+                "name": "value",
+                "type": ["null", "string"]
+              }]
+            }]
+          }],
+          "default": null
+        }, {
+          "name": "Orders",
+          "type": ["null", {
+            "type": "array",
+            "items": ["null", {
+              "type": "record",
+              "name": "Order",
+              "fields": [
+                {
+                  "name": "OrderInformation",
+                  "type": ["null", {
+                    "type": "record",
+                    "name": "OrderInformation",
+                    "fields": [{
+                      "name": "SAN",
+                      "type": ["null", "string"]
+                    }]
+                  }],
+                  "default": null
+                }]
+            }]
+          }],
+          "default": null
+        }]
+      }],
+      "default": null
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 package com.hughes.billing.voipworkorder.utils;
 
-import com.hughes.billing.voipworkorder.dto.avro.*;
+import com.hughes.billing.voipworkorder.dto.avro.req.*;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

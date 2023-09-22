@@ -1,5 +1,8 @@
 package com.hughes.billing.voipworkorder.exception;
 
+import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
+import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
+import com.hughes.billing.voipworkorder.utils.VoipAckResponseGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,23 +16,19 @@ import java.text.ParseException;
 public class CustomExceptionHandler {
 
     @ExceptionHandler(MissingParameterException.class)
-    public ResponseEntity<Object> handleMandatoryParameterMissing(MissingParameterException e) {
+    public ResponseEntity<VoIPWorkOrderAckMsg> handleMandatoryParameterMissing(MissingParameterException e, VoIPWorkOrder request) {
         log.info("handleMandatoryParameterMissing : STARTS");
-        BillingUserException bue = new BillingUserException(e.getMessage());
+        VoIPWorkOrderAckMsg errorResponse = VoipAckResponseGenerator.prepareErrorResponse(request, e.getMessage());
         log.info("handleMandatoryParameterMissing : ENDS");
-        return new ResponseEntity<>(bue, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ParseException.class)
-    public ResponseEntity<Object> handleParseException(ParseException e) {
+    public ResponseEntity<VoIPWorkOrderAckMsg> handleParseException(ParseException e, VoIPWorkOrder request) {
         log.info("handleParseException : STARTS");
-        BillingUserException bue = new BillingUserException(e.getMessage());
+        VoIPWorkOrderAckMsg errorResponse = VoipAckResponseGenerator.prepareErrorResponse(request, e.getMessage());
         log.info("handleParseException : ENDS");
-        return new ResponseEntity<>(bue, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BillingUserException.class)
-    public ResponseEntity<Object> handleBillingUserException(BillingUserException bue) {
-        return new ResponseEntity<>(bue, HttpStatus.BAD_REQUEST);
-    }
 }

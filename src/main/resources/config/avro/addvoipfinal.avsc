@@ -1,6 +1,6 @@
 {
     "name": "VoIPWorkOrder",
-    "namespace": "com.hughes.billing.voipworkorder.dto.avro",
+    "namespace": "com.hughes.billing.voipworkorder.dto.avro.req",
     "type": "record",
     "version": 1,
     "fields": [

@@ -46,9 +46,13 @@ commit;
 
 select * from HNS_BILLING_VOIP_WO_MSG_REQ_T;
 
+select * from HNS_BILLING_VOIP_WO_MSG_RES_T;
+
 delete from HNS_BILLING_VOIP_WO_MSG_REQ_T where id > 0;
 
 drop table HNS_BILLING_VOIP_WO_MSG_REQ_T;
+
+drop table HNS_BILLING_VOIP_WO_MSG_RES_T;
 
 describe HNS_BILLING_VOIP_WO_MSG_REQ_T;
 

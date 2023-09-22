@@ -1,6 +1,6 @@
 package com.hughes.billing.voipworkorder.utils;
 
-import com.hughes.billing.voipworkorder.dto.avro.VoIPWorkOrder;
+import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.exception.MissingParameterException;
 import lombok.extern.slf4j.Slf4j;
 

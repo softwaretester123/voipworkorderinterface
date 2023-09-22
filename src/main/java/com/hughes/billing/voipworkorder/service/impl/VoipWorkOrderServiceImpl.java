@@ -1,14 +1,20 @@
 package com.hughes.billing.voipworkorder.service.impl;
 
-import com.hughes.billing.voipworkorder.dto.avro.VoIPWorkOrder;
+import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
+import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgReq;
+import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgRes;
 import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgReqRepo;
+import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgResRepo;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.Utility;
+import com.hughes.billing.voipworkorder.utils.VoipAckResponseGenerator;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -20,7 +26,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Optional;
 
 
 @Service
@@ -29,6 +34,9 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
     @Autowired
     VoipWorkOrderMsgReqRepo voipWorkOrderMsgReqRepo;
+
+    @Autowired
+    VoipWorkOrderMsgResRepo voipWorkOrderMsgResRepo;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -50,7 +58,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * @param request the VoIP work order request
      */
     @Override
-    public void processRequest(VoIPWorkOrder request) {
+    public ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request) {
         //TODO Change the method of retrieving WorkOrderType
         //TODO Change constant names
         log.info("VoipWorkOrderServiceImpl :: processRequest : STARTS");
@@ -59,25 +67,47 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         String workOrderType = Utility.getWorkOrderTypeFromRequest(request);
         log.info("VoipWorkOrderServiceImpl :: processRequest : WorkOrderType = " + workOrderType);
 
+        String result = null;
+        String responseMessage = null;
         // Determine the action based on the work order type
         if (workOrderType.equals(VoipWorkOrderConstants.ADD_VOIP_CONSTANT)) {
             log.info("VoipWorkOrderServiceImpl :: processRequest : calling createVoipWorkOrder()");
 
             // Create the VoIP work order
-            Optional<String> result = createVoipWorkOrder(request);
+            result = createVoipWorkOrder(request);
+            responseMessage = VoipWorkOrderConstants.VOIP_WO_CREATE_SUCCESS_MESSAGE;
             log.info("VoipWorkOrderServiceImpl :: processRequest : called createVoipWorkOrder() result = " + result);
         } else if (workOrderType.equals(VoipWorkOrderConstants.CANCEL_VOIP_CONSTANT)) {
             log.info("VoipWorkOrderServiceImpl :: processRequest : calling cancelVoipWorkOrder()");
 
             // Cancel the VoIP work order
             cancelVoipWorkOrder(request);
+            responseMessage = VoipWorkOrderConstants.VOIP_WO_CANCEL_SUCCESS_MESSAGE;
         }
 
+        VoIPWorkOrderAckMsg voIPWorkOrderAckMsg = null;
+
+        if (result != null) {
+            log.info("VoipWorkOrderServiceImpl :: processRequest : result = " + result);
+            if (result.equals("0")) {
+                voIPWorkOrderAckMsg = VoipAckResponseGenerator
+                        .prepareResponse(request, Boolean.TRUE.toString(), responseMessage);
+            } else {
+//                voIPWorkOrderAckMsg = VoipAckResponseGenerator.prepareErrorResponse();
+            }
+        }
+
+        //TODO prepare response
+//
+        //TODO send response
+        //TODO save response to db
+
         log.info("VoipWorkOrderServiceImpl :: processRequest : ENDS");
+        return new ResponseEntity<>(voIPWorkOrderAckMsg, HttpStatus.OK);
     }
 
     @Override
-    public void dumpRequest(VoIPWorkOrder request) throws ParseException {
+    public Long dumpRequest(VoIPWorkOrder request) throws ParseException {
         log.info("VoipWorkOrderServiceImpl:: dumpRequest : STARTS");
         VoipWorkOrderMsgReq voipWorkOrderMsgReq = new VoipWorkOrderMsgReq();
         // Add TransactionSequenceId
@@ -90,9 +120,9 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
         voipWorkOrderMsgReq.setCreatedTimeStamp(new Date().getTime());
 
-        voipWorkOrderMsgReq.setMessageName("VoIPWorkOrder");
+        voipWorkOrderMsgReq.setMessageName(VoipWorkOrderConstants.REQ_MESSAGE_NAME);
 
-        voipWorkOrderMsgReq.setMessageSource("DSS");
+        voipWorkOrderMsgReq.setMessageSource(VoipWorkOrderConstants.DSS);
 
         voipWorkOrderMsgReq.setSan(request.getMessageData().getOrders().get(0).getOrderInformation().getSAN().toString());
 
@@ -102,14 +132,44 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
         voipWorkOrderMsgReq.setConsumedPayload(request.toString());
 
+        log.info("VoipWorkOrderServiceImpl:: dumpRequest : Saving to DB");
+
         voipWorkOrderMsgReqRepo.save(voipWorkOrderMsgReq);
         voipWorkOrderMsgReqRepo.flush();
 
         log.info("VoipWorkOrderServiceImpl:: dumpRequest : ENDS");
+        return voipWorkOrderMsgReq.getId();
     }
 
-    private Optional<String> createVoipWorkOrder(VoIPWorkOrder request) {
-        log.info("createVoipWorkOrder : STARTS");
+    @Override
+    public void dumpResponse(VoIPWorkOrderAckMsg response, Long req_id) {
+        log.info("VoipWorkOrderServiceImpl:: dumpResponse : STARTS");
+        VoipWorkOrderMsgRes voipWorkOrderMsgRes = new VoipWorkOrderMsgRes();
+
+        voipWorkOrderMsgRes.setReqId(req_id);
+
+        voipWorkOrderMsgRes.setTransactionDateTime(new Timestamp(new Date().getTime()));
+
+        voipWorkOrderMsgRes.setCreatedTimeStamp(new Date().getTime());
+
+        voipWorkOrderMsgRes.setMessageName(VoipWorkOrderConstants.ACK_MESSAGE_NAME);
+
+        voipWorkOrderMsgRes.setMessageDestination(VoipWorkOrderConstants.BILLING);
+
+        voipWorkOrderMsgRes.setRemarks("");
+
+        voipWorkOrderMsgRes.setPublishedPayload(response.toString());
+
+        log.info("VoipWorkOrderServiceImpl:: dumpResponse : Saving to DB");
+
+        voipWorkOrderMsgResRepo.save(voipWorkOrderMsgRes);
+        voipWorkOrderMsgResRepo.flush();
+
+        log.info("VoipWorkOrderServiceImpl:: dumpResponse : ENDS");
+    }
+
+    private String createVoipWorkOrder(VoIPWorkOrder request) {
+        log.info("VoipWorkOrderServiceImpl:: createVoipWorkOrder : STARTS");
         String account_number = request.getMessageData().getOrders().get(0).getOrderInformation().getSAN().toString();
         String wo_type = Utility.getWorkOrderTypeFromRequest(request);
         String f_name = request.getMessageData().getOrders().get(0).getInstallName().getFirstName().toString();
@@ -136,31 +196,33 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         inputSqlParameterSource.addValue("BILLING_DEAL", billing_deal);
         inputSqlParameterSource.addValue("GL_SEG", gl_seg);
 
-        Optional<String> result = Optional.empty();
+        String result = null;
 
         try {
-
+            log.info("VoipWorkOrderServiceImpl:: createVoipWorkOrder : calling SP");
             Map<String, Object> out = createBRTWOCall.execute(inputSqlParameterSource);
 
             if (out != null) {
                 if (out.containsKey("RETVAL")) {
-                    String retVal = (String) out.get("RETVAL");
-                    result = Optional.of(retVal);
+                    result = (String) out.get("RETVAL");
                 }
             }
+            log.info("VoipWorkOrderServiceImpl:: createVoipWorkOrder : Result from SP obtained successfully : " + result);
 
         } catch (DataAccessException e) {
             // ORA-01403: no data found, or any java.sql.SQLException
             log.error(e.getMessage());
             throw e;
         }
-        log.info("createVoipWorkOrder : ENDS");
+        log.info("VoipWorkOrderServiceImpl:: createVoipWorkOrder : ENDS");
         return result;
     }
 
 
-    private void cancelVoipWorkOrder(VoIPWorkOrder request) {
-        log.info("cancelVoipWorkOrder : STARTS");
-        log.info("cancelVoipWorkOrder : ENDS");
+    private String cancelVoipWorkOrder(VoIPWorkOrder request) {
+        log.info("VoipWorkOrderServiceImpl:: cancelVoipWorkOrder : STARTS");
+        String result = null;
+        log.info("VoipWorkOrderServiceImpl:: cancelVoipWorkOrder : ENDS");
+        return result;
     }
 }
