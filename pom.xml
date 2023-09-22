@@ -40,7 +40,9 @@
 		<dependency>
 			<groupId>com.hughes.bits.frameworks</groupId>
 			<artifactId>pubsub-lib</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/external_packages/pubsub-lib-1.0.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

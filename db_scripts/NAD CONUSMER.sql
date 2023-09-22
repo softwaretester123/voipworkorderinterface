@@ -28,8 +28,6 @@ CREATE TABLE "HNS_BILLING_VOIP_WO_MSG_REQ_T"
 
 );
 
- 
-
 CREATE TABLE "HNS_BILLING_VOIP_WO_MSG_RES_T" 
    (
 	"REQ_ID" NUMBER,  -- ID from HNS_BILLING_VOIP_WO_MSG_REQ_T
@@ -48,6 +46,16 @@ commit;
 
 select * from HNS_BILLING_VOIP_WO_MSG_REQ_T;
 
+delete from HNS_BILLING_VOIP_WO_MSG_REQ_T where id > 0;
+
 drop table HNS_BILLING_VOIP_WO_MSG_REQ_T;
 
 describe HNS_BILLING_VOIP_WO_MSG_REQ_T;
+
+select * from HNS_VOIP_REQUEST_T where san='DSS200197435';
+
+delete from HNS_VOIP_REQUEST_T where san = 'DSS200197435';
+
+select * from HNS_VOIP_ACTIVATION_STATUS_T where san='DSS200197435';
+
+delete from HNS_VOIP_ACTIVATION_STATUS_T where san = 'DSS200197435';

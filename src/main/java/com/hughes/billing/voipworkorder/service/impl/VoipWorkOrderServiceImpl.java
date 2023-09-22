@@ -2,15 +2,15 @@ package com.hughes.billing.voipworkorder.service.impl;
 
 import com.hughes.billing.voipworkorder.dto.avro.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgReq;
-import com.hughes.billing.voipworkorder.exception.MissingParameterException;
 import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgReqRepo;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
+import com.hughes.billing.voipworkorder.utils.Utility;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-public class VoipWorkOrderServiceImpl implements VoipWorkOrderService{
+public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
     @Autowired
     VoipWorkOrderMsgReqRepo voipWorkOrderMsgReqRepo;
@@ -44,23 +44,35 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService{
 
     }
 
+    /**
+     * Process the VoIP work order request.
+     *
+     * @param request the VoIP work order request
+     */
     @Override
     public void processRequest(VoIPWorkOrder request) {
         //TODO Change the method of retrieving WorkOrderType
         //TODO Change constant names
-        //TODO Add loggers at each step
         log.info("VoipWorkOrderServiceImpl :: processRequest : STARTS");
-        String workOrderType = getWorkOrderTypeFromRequest(request);
+
+        // Retrieve the work order type from the request
+        String workOrderType = Utility.getWorkOrderTypeFromRequest(request);
         log.info("VoipWorkOrderServiceImpl :: processRequest : WorkOrderType = " + workOrderType);
 
+        // Determine the action based on the work order type
         if (workOrderType.equals(VoipWorkOrderConstants.ADD_VOIP_CONSTANT)) {
             log.info("VoipWorkOrderServiceImpl :: processRequest : calling createVoipWorkOrder()");
-//            Optional<String> result = createVoipWorkOrder(request);
-//            log.info("VoipWorkOrderServiceImpl :: processRequest : called createVoipWorkOrder() result = " + result);
+
+            // Create the VoIP work order
+            Optional<String> result = createVoipWorkOrder(request);
+            log.info("VoipWorkOrderServiceImpl :: processRequest : called createVoipWorkOrder() result = " + result);
         } else if (workOrderType.equals(VoipWorkOrderConstants.CANCEL_VOIP_CONSTANT)) {
             log.info("VoipWorkOrderServiceImpl :: processRequest : calling cancelVoipWorkOrder()");
+
+            // Cancel the VoIP work order
             cancelVoipWorkOrder(request);
         }
+
         log.info("VoipWorkOrderServiceImpl :: processRequest : ENDS");
     }
 
@@ -84,7 +96,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService{
 
         voipWorkOrderMsgReq.setSan(request.getMessageData().getOrders().get(0).getOrderInformation().getSAN().toString());
 
-        voipWorkOrderMsgReq.setWorkOrderType(getWorkOrderTypeFromRequest(request));
+        voipWorkOrderMsgReq.setWorkOrderType(Utility.getWorkOrderTypeFromRequest(request));
 
         voipWorkOrderMsgReq.setRemarks("");
 
@@ -96,77 +108,58 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService{
         log.info("VoipWorkOrderServiceImpl:: dumpRequest : ENDS");
     }
 
-    private String getWorkOrderTypeFromRequest(VoIPWorkOrder request) {
-        log.info("VoipWorkOrderServiceImpl:: getWorkOrderTypeFromRequest : STARTS");
-        String workOrderType = request.getMessageData().getMessageParameters()
-                .stream().filter(parameter -> parameter.getName().equals("WorkOrderType"))
-                .findFirst().orElseThrow(() ->
-                        new MissingParameterException("MessageData->MessageParameters->name(WorkOrderType)"))
-                .getValue().toString();
-        log.info("VoipWorkOrderServiceImpl:: getWorkOrderTypeFromRequest : ENDS -> workOrderType = " + workOrderType);
-        return workOrderType;
-    }
-
-    private String getBillingDealFromRequest(VoIPWorkOrder request) {
-        log.info("VoipWorkOrderServiceImpl:: getBillingDealFromRequest : STARTS");
-        String voipDealName = request.getMessageData().getOrders().get(0)
-                .getOrderAttributes()
-                .stream().filter(orderAttribute -> orderAttribute.getName().equals("VoipBillingDeal"))
-                .findFirst().orElseThrow(() ->
-                        new MissingParameterException("MessageData->MessageParameters->name(WorkOrderType)"))
-                .getValue().toString();
-        log.info("VoipWorkOrderServiceImpl:: getBillingDealFromRequest : ENDS -> voipDealName = " + voipDealName);
-        return voipDealName;
-    }
-
-    private String getGlSegmentFromRequest(VoIPWorkOrder request) {
-        log.info("VoipWorkOrderServiceImpl:: getWorkOrderTypeFromRequest : STARTS");
-        String voipDealName = request.getMessageData().getOrders().get(0)
-                .getOrderAttributes()
-                .stream().filter(orderAttribute -> orderAttribute.getName().equals("VoipBillingDeal"))
-                .findFirst().orElseThrow(() ->
-                        new MissingParameterException("MessageData->MessageParameters->name(WorkOrderType)"))
-                .getValue().toString();
-        log.info("VoipWorkOrderServiceImpl:: getWorkOrderTypeFromRequest : ENDS -> voipDealName = " + voipDealName);
-        return voipDealName;
-    }
-
-    public Optional<String> createVoipWorkOrder(VoIPWorkOrder request) {
+    private Optional<String> createVoipWorkOrder(VoIPWorkOrder request) {
         log.info("createVoipWorkOrder : STARTS");
-        String wo_type = getWorkOrderTypeFromRequest(request);
-        String fname = request.getMessageData().getOrders().get(0).getInstallName().getFirstName().toString();
-        String lanme = request.getMessageData().getOrders().get(0).getInstallName().getLastName().toString();
+        String account_number = request.getMessageData().getOrders().get(0).getOrderInformation().getSAN().toString();
+        String wo_type = Utility.getWorkOrderTypeFromRequest(request);
+        String f_name = request.getMessageData().getOrders().get(0).getInstallName().getFirstName().toString();
+        String l_name = request.getMessageData().getOrders().get(0).getInstallName().getLastName().toString();
         String addr1 = request.getMessageData().getOrders().get(0).getInstallAddress().getAddress1().toString();
         String city = request.getMessageData().getOrders().get(0).getInstallAddress().getCity().toString();
         String state = request.getMessageData().getOrders().get(0).getInstallAddress().getState().toString();
         String zip = request.getMessageData().getOrders().get(0).getInstallAddress().getZip().toString();
         String phone = request.getMessageData().getOrders().get(0).getInstallPhone().get(0).getNumber().toString();
-        String billing_deal = getBillingDealFromRequest(request);
-        String gl_seg = request.getMessageData().getOrders().get(0).getInstallAddress().getAddress1().toString();
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("WO_TYPE", wo_type);
+        String billing_deal = Utility.getBillingDealFromRequest(request);
+        String gl_seg = Utility.getGlSegmentFromRequest(request);
 
-        Optional result = Optional.empty();
+
+        MapSqlParameterSource inputSqlParameterSource = new MapSqlParameterSource();
+        inputSqlParameterSource.addValue("ACCNO", account_number);
+        inputSqlParameterSource.addValue("WO_TYPE", wo_type);
+        inputSqlParameterSource.addValue("FNAME", f_name);
+        inputSqlParameterSource.addValue("LNAME", l_name);
+        inputSqlParameterSource.addValue("ADDR1", addr1);
+        inputSqlParameterSource.addValue("CITY", city);
+        inputSqlParameterSource.addValue("STATE", state);
+        inputSqlParameterSource.addValue("ZIP", zip);
+        inputSqlParameterSource.addValue("PHONE", phone);
+        inputSqlParameterSource.addValue("BILLING_DEAL", billing_deal);
+        inputSqlParameterSource.addValue("GL_SEG", gl_seg);
+
+        Optional<String> result = Optional.empty();
 
         try {
 
-            Map out = createBRTWOCall.execute(in);
+            Map<String, Object> out = createBRTWOCall.execute(inputSqlParameterSource);
 
             if (out != null) {
-                String retVal = (String) out.get("RETVAL");
-                result = Optional.of(retVal);
+                if (out.containsKey("RETVAL")) {
+                    String retVal = (String) out.get("RETVAL");
+                    result = Optional.of(retVal);
+                }
             }
 
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             // ORA-01403: no data found, or any java.sql.SQLException
-            System.err.println(e.getMessage());
+            log.error(e.getMessage());
+            throw e;
         }
         log.info("createVoipWorkOrder : ENDS");
         return result;
     }
 
 
-    public void cancelVoipWorkOrder(VoIPWorkOrder request) {
+    private void cancelVoipWorkOrder(VoIPWorkOrder request) {
         log.info("cancelVoipWorkOrder : STARTS");
         log.info("cancelVoipWorkOrder : ENDS");
     }

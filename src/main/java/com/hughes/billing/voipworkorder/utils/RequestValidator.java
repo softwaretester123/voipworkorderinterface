@@ -55,7 +55,7 @@ public class RequestValidator implements Validator {
         List<MessageParameter> messageParameters = messageData.getMessageParameters();
 
         //Structure Check for MessageParameters List
-        for (MessageParameter messageParameter: messageParameters) {
+        for (MessageParameter messageParameter : messageParameters) {
             if (messageParameter.getName() == null) {
                 errors.reject("MessageData->MessageParameters->name");
             }
@@ -87,7 +87,7 @@ public class RequestValidator implements Validator {
             return;
         }
 
-        for (Order order: orders) {
+        for (Order order : orders) {
             if (order.getOrderInformation() == null) {
                 errors.reject("MessageData->Orders->OrderInformation");
                 return;
@@ -114,14 +114,12 @@ public class RequestValidator implements Validator {
             }
 
             // OrderInformation properties check
-
             if (order.getOrderInformation().getSAN() == null) {
                 errors.reject("MessageData->Orders->OrderInformation->SAN");
                 return;
             }
 
             // InstallName properties check
-
             if (order.getInstallName().getFirstName() == null) {
                 errors.reject("MessageData->Orders->InstallName->FirstName");
                 return;
@@ -138,7 +136,6 @@ public class RequestValidator implements Validator {
             }
 
             // InstallAddress properties check
-
             if (order.getInstallAddress().getAddress1() == null) {
                 errors.reject("MessageData->Orders->InstallAddress->Address1");
                 return;
@@ -166,25 +163,24 @@ public class RequestValidator implements Validator {
             }
 
             // InstallPhone properties
-
             if (order.getInstallPhone().isEmpty()) {
                 errors.reject("[Array{Number: '', Type: ''}]");
                 return;
             }
 
-            for (InstallPhone installPhone: order.getInstallPhone()) {
+            for (InstallPhone installPhone : order.getInstallPhone()) {
                 if (installPhone.getNumber() == null) {
                     errors.reject("MessageData->Orders->InstallPhone->Number");
                     return;
                 }
             }
 
-            if (order.getOrderAttributes().isEmpty()) {
-                errors.reject("[Array{name: '', value: ''}]");
+            if (order.getOrderAttributes() == null) {
+                errors.reject("MessageData->Orders->OrderAttributes[Array{name: '', value: ''}]");
                 return;
             }
 
-            for (OrderAttribute orderAttribute: order.getOrderAttributes()) {
+            for (OrderAttribute orderAttribute : order.getOrderAttributes()) {
                 if (orderAttribute.getName() == null) {
                     errors.reject("MessageData->Orders->OrderAttributes->name");
                     return;
@@ -194,6 +190,22 @@ public class RequestValidator implements Validator {
                     errors.reject("MessageData->Orders->OrderAttributes->value");
                     return;
                 }
+            }
+
+            //Check for GlSegmentId and VoipBillingDeal in OrderAttributes List
+            boolean isGlSegmentIdPresent = order.getOrderAttributes()
+                    .stream().anyMatch(orderAttribute -> orderAttribute.getName().toString().equals("GlSegmentId"));
+            boolean isVoipBillingDealPresent = order.getOrderAttributes()
+                    .stream().anyMatch(orderAttribute -> orderAttribute.getName().toString().equals("VoipBillingDeal"));
+
+            if (!isGlSegmentIdPresent) {
+                errors.reject("MessageData->Orders->OrderAttributes->name(GlSegmentId)");
+                return;
+            }
+
+            if (!isVoipBillingDealPresent) {
+                errors.reject("MessageData->Orders->OrderAttributes->name(VoipBillingDeal)");
+                return;
             }
 
         }
