@@ -68,6 +68,21 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/external_packages/ojdbc8.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>org.threeten</groupId>
+			<artifactId>threetenbp</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.api</groupId>
+			<artifactId>gax</artifactId>
+			<version>2.20.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-pubsub</artifactId>
+			<version>1.122.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

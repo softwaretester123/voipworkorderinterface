@@ -56,6 +56,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * Process the VoIP work order request.
      *
      * @param request the VoIP work order request
+     * @return the ResponseEntity containing the VoIP work order acknowledgment message
      */
     @Override
     public ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request) {
@@ -69,6 +70,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
         String result = null;
         String responseMessage = null;
+
         // Determine the action based on the work order type
         if (workOrderType.equals(VoipWorkOrderConstants.ADD_VOIP_CONSTANT)) {
             log.info("VoipWorkOrderServiceImpl :: processRequest : calling createVoipWorkOrder()");
@@ -97,26 +99,32 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             }
         }
 
-        //TODO prepare response
-//
-        //TODO send response
-        //TODO save response to db
+        // TODO: Prepare response
+        // TODO: Send response
+        // TODO: Save response to db
 
         log.info("VoipWorkOrderServiceImpl :: processRequest : ENDS");
         return new ResponseEntity<>(voIPWorkOrderAckMsg, HttpStatus.OK);
     }
 
+    /**
+     * Dumps the request to HNS_BILLING_VOIP_WO_MSG_REQ_T table
+     *
+     * @param  request  the VoIPWorkOrder object containing the request data
+     * @return          the ID of the saved VoipWorkOrderMsgReq object
+     * @throws ParseException  if there is an error parsing the timestamp
+     */
     @Override
     public Long dumpRequest(VoIPWorkOrder request) throws ParseException {
         log.info("VoipWorkOrderServiceImpl:: dumpRequest : STARTS");
         VoipWorkOrderMsgReq voipWorkOrderMsgReq = new VoipWorkOrderMsgReq();
-        // Add TransactionSequenceId
+
         String transactionSequenceId = request.getMessageHeader().getTransactionSequenceId().toString();
         voipWorkOrderMsgReq.setTransactionSequenceId(transactionSequenceId);
-        // Add TransactionDateTime
+
         String timestamp = request.getMessageHeader().getTransactionDateTime().toString();
-        SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        voipWorkOrderMsgReq.setTransactionDateTime(new Timestamp(DATE_TIME_FORMAT.parse(timestamp).getTime()));
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        voipWorkOrderMsgReq.setTransactionDateTime(new Timestamp(dateTimeFormat.parse(timestamp).getTime()));
 
         voipWorkOrderMsgReq.setCreatedTimeStamp(new Date().getTime());
 
@@ -141,6 +149,12 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         return voipWorkOrderMsgReq.getId();
     }
 
+    /**
+     * Dump the response of the VoIP work order acknowledgement message.
+     *
+     * @param  response  the VoIP work order acknowledgement message
+     * @param  req_id    the request ID
+     */
     @Override
     public void dumpResponse(VoIPWorkOrderAckMsg response, Long req_id) {
         log.info("VoipWorkOrderServiceImpl:: dumpResponse : STARTS");
@@ -168,6 +182,12 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         log.info("VoipWorkOrderServiceImpl:: dumpResponse : ENDS");
     }
 
+    /**
+     * Creates a VoIP work order.
+     *
+     * @param  request   the VoIP work order request
+     * @return           the result of the work order creation
+     */
     private String createVoipWorkOrder(VoIPWorkOrder request) {
         log.info("VoipWorkOrderServiceImpl:: createVoipWorkOrder : STARTS");
         String account_number = request.getMessageData().getOrders().get(0).getOrderInformation().getSAN().toString();

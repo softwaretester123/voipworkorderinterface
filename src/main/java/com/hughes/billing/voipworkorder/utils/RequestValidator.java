@@ -14,6 +14,12 @@ public class RequestValidator implements Validator {
         return VoIPWorkOrder.class.isAssignableFrom(clazz);
     }
 
+    /**
+     * Validates the given target object and populates the specified Errors object with any validation errors.
+     *
+     * @param  target  the object to be validated
+     * @param  errors  the Errors object to populate with validation errors
+     */
     @Override
     public void validate(Object target, Errors errors) {
         VoIPWorkOrder req = (VoIPWorkOrder) target;
@@ -54,7 +60,7 @@ public class RequestValidator implements Validator {
 
         List<MessageParameter> messageParameters = messageData.getMessageParameters();
 
-        //Structure Check for MessageParameters List
+        // Structure Check for MessageParameters List
         for (MessageParameter messageParameter : messageParameters) {
             if (messageParameter.getName() == null) {
                 errors.reject("MessageData->MessageParameters->name");
@@ -64,18 +70,13 @@ public class RequestValidator implements Validator {
             }
         }
 
-        //Check for WorkOrderType and Destination in MessageParameters List
-        boolean isWorkOrderTypePresent = messageParameters
-                .stream().anyMatch(messageParameter -> messageParameter.getName().toString().equals("WorkOrderType"));
-        boolean isDestinationPresent = messageParameters
-                .stream().anyMatch(messageParameter -> messageParameter.getName().toString().equals("Destination"));
-
-        if (!isWorkOrderTypePresent) {
+        // Check for WorkOrderType and Destination in MessageParameters List
+        if (messageParameters.stream().noneMatch(mp -> mp.getName().toString().equals("WorkOrderType"))) {
             errors.reject("MessageData->MessageParameters->name(WorkOrderType)");
             return;
         }
 
-        if (!isDestinationPresent) {
+        if (messageParameters.stream().noneMatch(mp -> mp.getName().toString().equals("Destination"))) {
             errors.reject("MessageData->MessageParameters->name(Destination)");
             return;
         }
@@ -192,7 +193,7 @@ public class RequestValidator implements Validator {
                 }
             }
 
-            //Check for GlSegmentId and VoipBillingDeal in OrderAttributes List
+            // Check for GlSegmentId and VoipBillingDeal in OrderAttributes List
             boolean isGlSegmentIdPresent = order.getOrderAttributes()
                     .stream().anyMatch(orderAttribute -> orderAttribute.getName().toString().equals("GlSegmentId"));
             boolean isVoipBillingDealPresent = order.getOrderAttributes()
