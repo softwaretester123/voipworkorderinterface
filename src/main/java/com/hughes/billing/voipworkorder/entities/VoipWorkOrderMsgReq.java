@@ -6,10 +6,11 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
-@Entity
-@Table(name = "HNS_BILLING_VOIP_WO_MSG_REQ_T")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "HNS_BILLING_VOIP_WO_MSG_REQ_T")
+@NamedStoredProcedureQuery(name = "PIN.CREATE_BRT_WO", procedureName = "PIN.CREATE_BRT_WO")
 public class VoipWorkOrderMsgReq {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "voip_wo_msg_req_seq")

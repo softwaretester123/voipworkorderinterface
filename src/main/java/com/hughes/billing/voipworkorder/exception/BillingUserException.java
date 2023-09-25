@@ -1,6 +1,6 @@
 package com.hughes.billing.voipworkorder.exception;
 
-public class BillingUserException extends Exception {
+public class BillingUserException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

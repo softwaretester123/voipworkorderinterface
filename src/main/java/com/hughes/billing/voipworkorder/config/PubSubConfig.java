@@ -1,18 +1,17 @@
 package com.hughes.billing.voipworkorder.config;
 
 import com.hughes.billing.voipworkorder.consumer.PubSubMessageSubscriber;
+import com.hughes.bits.framework.pubsub.config.PublisherConfig;
 import com.hughes.bits.framework.pubsub.config.SubscriberConfig;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
+import com.hughes.bits.framework.pubsub.publisher.PublisherFactory;
 import com.hughes.bits.framework.pubsub.subscriber.SubscriberFactory;
-import com.hughes.bits.framework.pubsub.validators.ConfigValidator;
-import com.hughes.bits.framework.pubsub.validators.SubscriberConfigValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.util.Collections;
 
 @Component
@@ -24,6 +23,9 @@ public class PubSubConfig {
 
     @Value("${pubsub.topic.id}")
     private String topicId;
+
+    @Value("${pubsub.topic.id}")
+    public static String PUBSUB_TOPIC_ID;
 
     @Value("${pubsub.subscription.id}")
     private String subscriptionId;
@@ -40,11 +42,13 @@ public class PubSubConfig {
     @PostConstruct
     private void initializeSubscriber() {
         log.info("initializeSubscriber() : STARTS");
+
+        SubscriberConfig config = new SubscriberConfig();
+
         try {
-            SubscriberConfig config = new SubscriberConfig();
-            log.info("initializeSubscriber() :projectId : "+projectId);
-            log.info("initializeSubscriber() :subscriptionId : "+subscriptionId);
-            log.info("initializeSubscriber() :filePath : "+filePath);
+            log.info("initializeSubscriber() :projectId : " + projectId);
+            log.info("initializeSubscriber() :subscriptionId : " + subscriptionId);
+            log.info("initializeSubscriber() :filePath : " + filePath);
             config.setProjectId(projectId);
             config.setSubscriptionId(subscriptionId);
             config.setResponseAdapter(handler);
@@ -54,14 +58,31 @@ public class PubSubConfig {
             SubscriberFactory.INSTANCE.initializeSubscribers(Collections.singletonList(config));
             SubscriberFactory.INSTANCE.pullAsyncMessages(subscriptionId);
         } catch (PubSubFrwkException e) {
-            log.error("initializeSubscriber() : Exception Occurred: " + e.getMessage());
+            log.error("initializeSubscriber() : Exception occurred while initializing the subscriber: " + e.getMessage());
         }
+
         log.info("initializeSubscriber() : ENDS");
     }
 
     @PostConstruct
     private void initializePublisher() {
         log.info("initializePublisher() : STARTS");
+
+        PublisherConfig config = new PublisherConfig();
+
+        try {
+            log.info("initializePublisher() :projectId : " + projectId);
+            log.info("initializePublisher() :topicId : " + topicId);
+            log.info("initializePublisher() :filePath : " + filePath);
+            config.setProjectId(projectId);
+            config.setTopicId(topicId);
+            config.setAuthenticationRequired(true);
+            config.setCredentialFilePath(filePath);
+            PublisherFactory.INSTANCE.initializePublishers(Collections.singletonList(config));
+        } catch (PubSubFrwkException e) {
+            log.error("initializePublisher() : Exception occurred while initializing the publisher: " + e.getMessage());
+        }
+
         log.info("initializePublisher() : ENDS");
     }
 }

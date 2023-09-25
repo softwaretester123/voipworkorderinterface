@@ -1,10 +1,12 @@
 package com.hughes.billing.voipworkorder.controller;
 
 import com.google.gson.Gson;
+import com.hughes.billing.voipworkorder.config.PubSubConfig;
 import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import com.hughes.billing.voipworkorder.exception.MissingParameterException;
+import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.RequestValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @Slf4j
 public class VoipWorkOrderController {
 
     @Autowired
     VoipWorkOrderService voipWorkOrderService;
+
+    @Autowired
+    PublisherService publisherService;
 
     @Autowired
     private RequestValidator requestValidator;
@@ -62,8 +66,14 @@ public class VoipWorkOrderController {
             log.info("voipWorkOrder : Response Received : " + result.getBody());
 
             voipWorkOrderService.dumpResponse(result.getBody(), id);
+
+            String orderingKey = request.getMessageHeader().getTransactionSequenceId().toString();
+
+            boolean status = publisherService.sendMessageToPubSub(String.valueOf(result.getBody()), orderingKey, PubSubConfig.PUBSUB_TOPIC_ID);
+
+            log.info("voipWorkOrder : Response from Pub/Sub : " + status);
         }  catch (Exception e) {
-            log.error("voipWorkOrder : Request Received : Exception Occurred: " + e.getMessage());
+            log.error("voipWorkOrder : Exception Occurred : " + e.getMessage());
             throw new BillingUserException(e.getMessage());
         }
 
