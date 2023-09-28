@@ -18,19 +18,16 @@ import java.util.Collections;
 @Slf4j
 public class PubSubConfig {
 
-    @Value("${pubsub.project.id}")
+    @Value("${spring.cloud.gcp.pubsub.project.id}")
     private String projectId;
 
-    @Value("${pubsub.topic.id}")
-    private String topicId;
+    @Value("${spring.cloud.gcp.pubsub.topic.id}")
+    public String topicId;
 
-    @Value("${pubsub.topic.id}")
-    public static String PUBSUB_TOPIC_ID;
-
-    @Value("${pubsub.subscription.id}")
+    @Value("${spring.cloud.gcp.pubsub.subscription.id}")
     private String subscriptionId;
 
-    @Value("${pubsub.gcp.credentials.location}")
+    @Value("${spring.cloud.gcp.pubsub.gcp.credentials.location}")
     private String filePath;
 
     @Autowired

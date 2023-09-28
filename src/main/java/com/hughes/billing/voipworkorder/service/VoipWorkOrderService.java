@@ -2,17 +2,20 @@ package com.hughes.billing.voipworkorder.service;
 
 import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
+import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
+import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;;
+;
 import java.text.ParseException;
 
 public interface VoipWorkOrderService {
 
-    ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request);
+    ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO dumpedRequest);
 
-    Long dumpRequest(VoIPWorkOrder request) throws ParseException;
+    VoipWorkOrderMsgDTO saveRequest(VoIPWorkOrder request) throws ParseException;
 
-    void dumpResponse(VoIPWorkOrderAckMsg response, Long req_id) throws ParseException;
+    void saveData(VoipWorkOrderMsgDTO dumpedRequest);
+
+    boolean publishMessage(VoIPWorkOrderAckMsg response, String orderingKey) throws PubSubFrwkException;
 }

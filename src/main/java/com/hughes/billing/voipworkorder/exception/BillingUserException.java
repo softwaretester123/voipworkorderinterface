@@ -1,15 +1,21 @@
 package com.hughes.billing.voipworkorder.exception;
 
+import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class BillingUserException extends RuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
     private String message;
     private String code;
+    private VoIPWorkOrder requestObj;
 
     public BillingUserException(String message) {
         super(message);
         this.message = message;
+        this.code = null;
     }
 
     public BillingUserException(String message, String code) {
@@ -18,24 +24,11 @@ public class BillingUserException extends RuntimeException {
         this.code = code;
     }
 
-    public BillingUserException() {
-
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
+    public BillingUserException(String message, VoIPWorkOrder requestObj) {
+        super(message);
         this.message = message;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
+        this.code = null;
+        this.requestObj = requestObj;
     }
 
     @Override

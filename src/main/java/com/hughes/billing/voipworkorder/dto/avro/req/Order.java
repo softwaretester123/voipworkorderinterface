@@ -5,12 +5,13 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.req;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Order extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = 3898461774354938328L;
@@ -26,7 +27,16 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       new BinaryMessageDecoder<Order>(MODEL$, SCHEMA$);
 
   /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<Order> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
    * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<Order> getDecoder() {
     return DECODER;
@@ -35,17 +45,27 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Order> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<Order>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this Order to a ByteBuffer. */
+  /**
+   * Serializes this Order to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a Order from a ByteBuffer. */
+  /**
+   * Deserializes a Order from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a Order instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
   public static Order fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
@@ -80,6 +100,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     this.OrderInformation = OrderInformation;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -114,6 +135,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     return InstallAddress;
   }
 
+
   /**
    * Sets the value of the 'InstallAddress' field.
    * @param value the value to set.
@@ -129,6 +151,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
   public com.hughes.billing.voipworkorder.dto.avro.req.InstallName getInstallName() {
     return InstallName;
   }
+
 
   /**
    * Sets the value of the 'InstallName' field.
@@ -146,6 +169,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     return InstallPhone;
   }
 
+
   /**
    * Sets the value of the 'InstallPhone' field.
    * @param value the value to set.
@@ -162,6 +186,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     return OrderAttributes;
   }
 
+
   /**
    * Sets the value of the 'OrderAttributes' field.
    * @param value the value to set.
@@ -177,6 +202,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
   public com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation getOrderInformation() {
     return OrderInformation;
   }
+
 
   /**
    * Sets the value of the 'OrderInformation' field.
@@ -200,7 +226,11 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
    * @return A new Order RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder(other);
+    }
   }
 
   /**
@@ -209,7 +239,11 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
    * @return A new Order RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.Order other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.Order.Builder(other);
+    }
   }
 
   /**
@@ -240,29 +274,29 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       super(other);
       if (isValidValue(fields()[0], other.InstallAddress)) {
         this.InstallAddress = data().deepCopy(fields()[0].schema(), other.InstallAddress);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (other.hasInstallAddressBuilder()) {
         this.InstallAddressBuilder = com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.newBuilder(other.getInstallAddressBuilder());
       }
       if (isValidValue(fields()[1], other.InstallName)) {
         this.InstallName = data().deepCopy(fields()[1].schema(), other.InstallName);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (other.hasInstallNameBuilder()) {
         this.InstallNameBuilder = com.hughes.billing.voipworkorder.dto.avro.req.InstallName.newBuilder(other.getInstallNameBuilder());
       }
       if (isValidValue(fields()[2], other.InstallPhone)) {
         this.InstallPhone = data().deepCopy(fields()[2].schema(), other.InstallPhone);
-        fieldSetFlags()[2] = true;
+        fieldSetFlags()[2] = other.fieldSetFlags()[2];
       }
       if (isValidValue(fields()[3], other.OrderAttributes)) {
         this.OrderAttributes = data().deepCopy(fields()[3].schema(), other.OrderAttributes);
-        fieldSetFlags()[3] = true;
+        fieldSetFlags()[3] = other.fieldSetFlags()[3];
       }
       if (isValidValue(fields()[4], other.OrderInformation)) {
         this.OrderInformation = data().deepCopy(fields()[4].schema(), other.OrderInformation);
-        fieldSetFlags()[4] = true;
+        fieldSetFlags()[4] = other.fieldSetFlags()[4];
       }
       if (other.hasOrderInformationBuilder()) {
         this.OrderInformationBuilder = com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.newBuilder(other.getOrderInformationBuilder());
@@ -274,7 +308,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.req.Order other) {
-            super(SCHEMA$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.InstallAddress)) {
         this.InstallAddress = data().deepCopy(fields()[0].schema(), other.InstallAddress);
         fieldSetFlags()[0] = true;
@@ -307,6 +341,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress getInstallAddress() {
       return InstallAddress;
     }
+
 
     /**
       * Sets the value of the 'InstallAddress' field.
@@ -382,6 +417,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       return InstallName;
     }
 
+
     /**
       * Sets the value of the 'InstallName' field.
       * @param value The value of 'InstallName'.
@@ -456,6 +492,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       return InstallPhone;
     }
 
+
     /**
       * Sets the value of the 'InstallPhone' field.
       * @param value The value of 'InstallPhone'.
@@ -495,6 +532,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       return OrderAttributes;
     }
 
+
     /**
       * Sets the value of the 'OrderAttributes' field.
       * @param value The value of 'OrderAttributes'.
@@ -533,6 +571,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     public com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation getOrderInformation() {
       return OrderInformation;
     }
+
 
     /**
       * Sets the value of the 'OrderInformation' field.
@@ -606,23 +645,40 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       try {
         Order record = new Order();
         if (InstallAddressBuilder != null) {
-          record.InstallAddress = this.InstallAddressBuilder.build();
+          try {
+            record.InstallAddress = this.InstallAddressBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("InstallAddress"));
+            throw e;
+          }
         } else {
           record.InstallAddress = fieldSetFlags()[0] ? this.InstallAddress : (com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress) defaultValue(fields()[0]);
         }
         if (InstallNameBuilder != null) {
-          record.InstallName = this.InstallNameBuilder.build();
+          try {
+            record.InstallName = this.InstallNameBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("InstallName"));
+            throw e;
+          }
         } else {
           record.InstallName = fieldSetFlags()[1] ? this.InstallName : (com.hughes.billing.voipworkorder.dto.avro.req.InstallName) defaultValue(fields()[1]);
         }
         record.InstallPhone = fieldSetFlags()[2] ? this.InstallPhone : (java.util.List<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone>) defaultValue(fields()[2]);
         record.OrderAttributes = fieldSetFlags()[3] ? this.OrderAttributes : (java.util.List<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute>) defaultValue(fields()[3]);
         if (OrderInformationBuilder != null) {
-          record.OrderInformation = this.OrderInformationBuilder.build();
+          try {
+            record.OrderInformation = this.OrderInformationBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("OrderInformation"));
+            throw e;
+          }
         } else {
           record.OrderInformation = fieldSetFlags()[4] ? this.OrderInformation : (com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation) defaultValue(fields()[4]);
         }
         return record;
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -647,4 +703,291 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    if (this.InstallAddress == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.InstallAddress.customEncode(out);
+    }
+
+    if (this.InstallName == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.InstallName.customEncode(out);
+    }
+
+    if (this.InstallPhone == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      long size0 = this.InstallPhone.size();
+      out.writeArrayStart();
+      out.setItemCount(size0);
+      long actualSize0 = 0;
+      for (com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone e0: this.InstallPhone) {
+        actualSize0++;
+        out.startItem();
+        if (e0 == null) {
+          out.writeIndex(0);
+          out.writeNull();
+        } else {
+          out.writeIndex(1);
+          e0.customEncode(out);
+        }
+      }
+      out.writeArrayEnd();
+      if (actualSize0 != size0)
+        throw new java.util.ConcurrentModificationException("Array-size written was " + size0 + ", but element count was " + actualSize0 + ".");
+    }
+
+    if (this.OrderAttributes == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      long size1 = this.OrderAttributes.size();
+      out.writeArrayStart();
+      out.setItemCount(size1);
+      long actualSize1 = 0;
+      for (com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute e1: this.OrderAttributes) {
+        actualSize1++;
+        out.startItem();
+        if (e1 == null) {
+          out.writeIndex(0);
+          out.writeNull();
+        } else {
+          out.writeIndex(1);
+          e1.customEncode(out);
+        }
+      }
+      out.writeArrayEnd();
+      if (actualSize1 != size1)
+        throw new java.util.ConcurrentModificationException("Array-size written was " + size1 + ", but element count was " + actualSize1 + ".");
+    }
+
+    if (this.OrderInformation == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.OrderInformation.customEncode(out);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.InstallAddress = null;
+      } else {
+        if (this.InstallAddress == null) {
+          this.InstallAddress = new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress();
+        }
+        this.InstallAddress.customDecode(in);
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.InstallName = null;
+      } else {
+        if (this.InstallName == null) {
+          this.InstallName = new com.hughes.billing.voipworkorder.dto.avro.req.InstallName();
+        }
+        this.InstallName.customDecode(in);
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.InstallPhone = null;
+      } else {
+        long size0 = in.readArrayStart();
+        java.util.List<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone> a0 = this.InstallPhone;
+        if (a0 == null) {
+          a0 = new SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone>((int)size0, SCHEMA$.getField("InstallPhone").schema().getTypes().get(1));
+          this.InstallPhone = a0;
+        } else a0.clear();
+        SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone>)a0 : null);
+        for ( ; 0 < size0; size0 = in.arrayNext()) {
+          for ( ; size0 != 0; size0--) {
+            com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone e0 = (ga0 != null ? ga0.peek() : null);
+            if (in.readIndex() != 1) {
+              in.readNull();
+              e0 = null;
+            } else {
+              if (e0 == null) {
+                e0 = new com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone();
+              }
+              e0.customDecode(in);
+            }
+            a0.add(e0);
+          }
+        }
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.OrderAttributes = null;
+      } else {
+        long size1 = in.readArrayStart();
+        java.util.List<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute> a1 = this.OrderAttributes;
+        if (a1 == null) {
+          a1 = new SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute>((int)size1, SCHEMA$.getField("OrderAttributes").schema().getTypes().get(1));
+          this.OrderAttributes = a1;
+        } else a1.clear();
+        SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute> ga1 = (a1 instanceof SpecificData.Array ? (SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute>)a1 : null);
+        for ( ; 0 < size1; size1 = in.arrayNext()) {
+          for ( ; size1 != 0; size1--) {
+            com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute e1 = (ga1 != null ? ga1.peek() : null);
+            if (in.readIndex() != 1) {
+              in.readNull();
+              e1 = null;
+            } else {
+              if (e1 == null) {
+                e1 = new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute();
+              }
+              e1.customDecode(in);
+            }
+            a1.add(e1);
+          }
+        }
+      }
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.OrderInformation = null;
+      } else {
+        if (this.OrderInformation == null) {
+          this.OrderInformation = new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation();
+        }
+        this.OrderInformation.customDecode(in);
+      }
+
+    } else {
+      for (int i = 0; i < 5; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.InstallAddress = null;
+          } else {
+            if (this.InstallAddress == null) {
+              this.InstallAddress = new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress();
+            }
+            this.InstallAddress.customDecode(in);
+          }
+          break;
+
+        case 1:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.InstallName = null;
+          } else {
+            if (this.InstallName == null) {
+              this.InstallName = new com.hughes.billing.voipworkorder.dto.avro.req.InstallName();
+            }
+            this.InstallName.customDecode(in);
+          }
+          break;
+
+        case 2:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.InstallPhone = null;
+          } else {
+            long size0 = in.readArrayStart();
+            java.util.List<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone> a0 = this.InstallPhone;
+            if (a0 == null) {
+              a0 = new SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone>((int)size0, SCHEMA$.getField("InstallPhone").schema().getTypes().get(1));
+              this.InstallPhone = a0;
+            } else a0.clear();
+            SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone> ga0 = (a0 instanceof SpecificData.Array ? (SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone>)a0 : null);
+            for ( ; 0 < size0; size0 = in.arrayNext()) {
+              for ( ; size0 != 0; size0--) {
+                com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone e0 = (ga0 != null ? ga0.peek() : null);
+                if (in.readIndex() != 1) {
+                  in.readNull();
+                  e0 = null;
+                } else {
+                  if (e0 == null) {
+                    e0 = new com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone();
+                  }
+                  e0.customDecode(in);
+                }
+                a0.add(e0);
+              }
+            }
+          }
+          break;
+
+        case 3:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.OrderAttributes = null;
+          } else {
+            long size1 = in.readArrayStart();
+            java.util.List<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute> a1 = this.OrderAttributes;
+            if (a1 == null) {
+              a1 = new SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute>((int)size1, SCHEMA$.getField("OrderAttributes").schema().getTypes().get(1));
+              this.OrderAttributes = a1;
+            } else a1.clear();
+            SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute> ga1 = (a1 instanceof SpecificData.Array ? (SpecificData.Array<com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute>)a1 : null);
+            for ( ; 0 < size1; size1 = in.arrayNext()) {
+              for ( ; size1 != 0; size1--) {
+                com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute e1 = (ga1 != null ? ga1.peek() : null);
+                if (in.readIndex() != 1) {
+                  in.readNull();
+                  e1 = null;
+                } else {
+                  if (e1 == null) {
+                    e1 = new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute();
+                  }
+                  e1.customDecode(in);
+                }
+                a1.add(e1);
+              }
+            }
+          }
+          break;
+
+        case 4:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.OrderInformation = null;
+          } else {
+            if (this.OrderInformation == null) {
+              this.OrderInformation = new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation();
+            }
+            this.OrderInformation.customDecode(in);
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

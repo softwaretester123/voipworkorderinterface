@@ -5,12 +5,13 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.req;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class OrderInformation extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -2177812054581385909L;
@@ -26,7 +27,16 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
       new BinaryMessageDecoder<OrderInformation>(MODEL$, SCHEMA$);
 
   /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<OrderInformation> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
    * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<OrderInformation> getDecoder() {
     return DECODER;
@@ -35,17 +45,27 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<OrderInformation> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<OrderInformation>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this OrderInformation to a ByteBuffer. */
+  /**
+   * Serializes this OrderInformation to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a OrderInformation from a ByteBuffer. */
+  /**
+   * Deserializes a OrderInformation from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a OrderInformation instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
   public static OrderInformation fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
@@ -68,6 +88,7 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
     this.SAN = SAN;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -94,6 +115,7 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
     return SAN;
   }
 
+
   /**
    * Sets the value of the 'SAN' field.
    * @param value the value to set.
@@ -116,7 +138,11 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
    * @return A new OrderInformation RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder(other);
+    }
   }
 
   /**
@@ -125,7 +151,11 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
    * @return A new OrderInformation RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation.Builder(other);
+    }
   }
 
   /**
@@ -149,7 +179,7 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
       super(other);
       if (isValidValue(fields()[0], other.SAN)) {
         this.SAN = data().deepCopy(fields()[0].schema(), other.SAN);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
     }
 
@@ -158,7 +188,7 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.req.OrderInformation other) {
-            super(SCHEMA$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.SAN)) {
         this.SAN = data().deepCopy(fields()[0].schema(), other.SAN);
         fieldSetFlags()[0] = true;
@@ -172,6 +202,7 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
     public java.lang.CharSequence getSAN() {
       return SAN;
     }
+
 
     /**
       * Sets the value of the 'SAN' field.
@@ -211,6 +242,8 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
         OrderInformation record = new OrderInformation();
         record.SAN = fieldSetFlags()[0] ? this.SAN : (java.lang.CharSequence) defaultValue(fields()[0]);
         return record;
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -235,4 +268,59 @@ public class OrderInformation extends org.apache.avro.specific.SpecificRecordBas
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    if (this.SAN == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      out.writeString(this.SAN);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.SAN = null;
+      } else {
+        this.SAN = in.readString(this.SAN instanceof Utf8 ? (Utf8)this.SAN : null);
+      }
+
+    } else {
+      for (int i = 0; i < 1; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.SAN = null;
+          } else {
+            this.SAN = in.readString(this.SAN instanceof Utf8 ? (Utf8)this.SAN : null);
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

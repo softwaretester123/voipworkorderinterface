@@ -5,12 +5,13 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.ack;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class Order extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -1069332998459665164L;
@@ -26,7 +27,16 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       new BinaryMessageDecoder<Order>(MODEL$, SCHEMA$);
 
   /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<Order> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
    * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<Order> getDecoder() {
     return DECODER;
@@ -35,17 +45,27 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Order> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<Order>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this Order to a ByteBuffer. */
+  /**
+   * Serializes this Order to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a Order from a ByteBuffer. */
+  /**
+   * Deserializes a Order from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a Order instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
   public static Order fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
@@ -68,6 +88,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     this.OrderInformation = OrderInformation;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -94,6 +115,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     return OrderInformation;
   }
 
+
   /**
    * Sets the value of the 'OrderInformation' field.
    * @param value the value to set.
@@ -116,7 +138,11 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
    * @return A new Order RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder(other);
+    }
   }
 
   /**
@@ -125,7 +151,11 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
    * @return A new Order RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.ack.Order other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.ack.Order.Builder(other);
+    }
   }
 
   /**
@@ -150,7 +180,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       super(other);
       if (isValidValue(fields()[0], other.OrderInformation)) {
         this.OrderInformation = data().deepCopy(fields()[0].schema(), other.OrderInformation);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (other.hasOrderInformationBuilder()) {
         this.OrderInformationBuilder = com.hughes.billing.voipworkorder.dto.avro.ack.OrderInformation.newBuilder(other.getOrderInformationBuilder());
@@ -162,7 +192,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.ack.Order other) {
-            super(SCHEMA$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.OrderInformation)) {
         this.OrderInformation = data().deepCopy(fields()[0].schema(), other.OrderInformation);
         fieldSetFlags()[0] = true;
@@ -177,6 +207,7 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     public com.hughes.billing.voipworkorder.dto.avro.ack.OrderInformation getOrderInformation() {
       return OrderInformation;
     }
+
 
     /**
       * Sets the value of the 'OrderInformation' field.
@@ -250,11 +281,18 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
       try {
         Order record = new Order();
         if (OrderInformationBuilder != null) {
-          record.OrderInformation = this.OrderInformationBuilder.build();
+          try {
+            record.OrderInformation = this.OrderInformationBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("OrderInformation"));
+            throw e;
+          }
         } else {
           record.OrderInformation = fieldSetFlags()[0] ? this.OrderInformation : (com.hughes.billing.voipworkorder.dto.avro.ack.OrderInformation) defaultValue(fields()[0]);
         }
         return record;
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -279,4 +317,65 @@ public class Order extends org.apache.avro.specific.SpecificRecordBase implement
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    if (this.OrderInformation == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.OrderInformation.customEncode(out);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.OrderInformation = null;
+      } else {
+        if (this.OrderInformation == null) {
+          this.OrderInformation = new com.hughes.billing.voipworkorder.dto.avro.ack.OrderInformation();
+        }
+        this.OrderInformation.customDecode(in);
+      }
+
+    } else {
+      for (int i = 0; i < 1; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.OrderInformation = null;
+          } else {
+            if (this.OrderInformation == null) {
+              this.OrderInformation = new com.hughes.billing.voipworkorder.dto.avro.ack.OrderInformation();
+            }
+            this.OrderInformation.customDecode(in);
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

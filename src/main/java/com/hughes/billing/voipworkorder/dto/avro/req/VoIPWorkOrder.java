@@ -5,12 +5,13 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.req;
 
+import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
+import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
-@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -4029010198776397771L;
@@ -26,7 +27,16 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
       new BinaryMessageDecoder<VoIPWorkOrder>(MODEL$, SCHEMA$);
 
   /**
+   * Return the BinaryMessageEncoder instance used by this class.
+   * @return the message encoder used by this class
+   */
+  public static BinaryMessageEncoder<VoIPWorkOrder> getEncoder() {
+    return ENCODER;
+  }
+
+  /**
    * Return the BinaryMessageDecoder instance used by this class.
+   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<VoIPWorkOrder> getDecoder() {
     return DECODER;
@@ -35,17 +45,27 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
+   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<VoIPWorkOrder> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<VoIPWorkOrder>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this VoIPWorkOrder to a ByteBuffer. */
+  /**
+   * Serializes this VoIPWorkOrder to a ByteBuffer.
+   * @return a buffer holding the serialized data for this instance
+   * @throws java.io.IOException if this instance could not be serialized
+   */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a VoIPWorkOrder from a ByteBuffer. */
+  /**
+   * Deserializes a VoIPWorkOrder from a ByteBuffer.
+   * @param b a byte buffer holding serialized data for an instance of this class
+   * @return a VoIPWorkOrder instance decoded from the given buffer
+   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
+   */
   public static VoIPWorkOrder fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
@@ -71,6 +91,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     this.MessageData = MessageData;
   }
 
+  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -99,6 +120,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     return MessageHeader;
   }
 
+
   /**
    * Sets the value of the 'MessageHeader' field.
    * @param value the value to set.
@@ -114,6 +136,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
   public com.hughes.billing.voipworkorder.dto.avro.req.MessageData getMessageData() {
     return MessageData;
   }
+
 
   /**
    * Sets the value of the 'MessageData' field.
@@ -137,7 +160,11 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
    * @return A new VoIPWorkOrder RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder(other);
+    }
   }
 
   /**
@@ -146,7 +173,11 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
    * @return A new VoIPWorkOrder RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder(other);
+    if (other == null) {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder();
+    } else {
+      return new com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder(other);
+    }
   }
 
   /**
@@ -173,14 +204,14 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
       super(other);
       if (isValidValue(fields()[0], other.MessageHeader)) {
         this.MessageHeader = data().deepCopy(fields()[0].schema(), other.MessageHeader);
-        fieldSetFlags()[0] = true;
+        fieldSetFlags()[0] = other.fieldSetFlags()[0];
       }
       if (other.hasMessageHeaderBuilder()) {
         this.MessageHeaderBuilder = com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader.newBuilder(other.getMessageHeaderBuilder());
       }
       if (isValidValue(fields()[1], other.MessageData)) {
         this.MessageData = data().deepCopy(fields()[1].schema(), other.MessageData);
-        fieldSetFlags()[1] = true;
+        fieldSetFlags()[1] = other.fieldSetFlags()[1];
       }
       if (other.hasMessageDataBuilder()) {
         this.MessageDataBuilder = com.hughes.billing.voipworkorder.dto.avro.req.MessageData.newBuilder(other.getMessageDataBuilder());
@@ -192,7 +223,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder other) {
-            super(SCHEMA$);
+      super(SCHEMA$);
       if (isValidValue(fields()[0], other.MessageHeader)) {
         this.MessageHeader = data().deepCopy(fields()[0].schema(), other.MessageHeader);
         fieldSetFlags()[0] = true;
@@ -212,6 +243,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     public com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader getMessageHeader() {
       return MessageHeader;
     }
+
 
     /**
       * Sets the value of the 'MessageHeader' field.
@@ -287,6 +319,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
       return MessageData;
     }
 
+
     /**
       * Sets the value of the 'MessageData' field.
       * @param value The value of 'MessageData'.
@@ -359,16 +392,28 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
       try {
         VoIPWorkOrder record = new VoIPWorkOrder();
         if (MessageHeaderBuilder != null) {
-          record.MessageHeader = this.MessageHeaderBuilder.build();
+          try {
+            record.MessageHeader = this.MessageHeaderBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("MessageHeader"));
+            throw e;
+          }
         } else {
           record.MessageHeader = fieldSetFlags()[0] ? this.MessageHeader : (com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader) defaultValue(fields()[0]);
         }
         if (MessageDataBuilder != null) {
-          record.MessageData = this.MessageDataBuilder.build();
+          try {
+            record.MessageData = this.MessageDataBuilder.build();
+          } catch (org.apache.avro.AvroMissingFieldException e) {
+            e.addParentField(record.getSchema().getField("MessageData"));
+            throw e;
+          }
         } else {
           record.MessageData = fieldSetFlags()[1] ? this.MessageData : (com.hughes.billing.voipworkorder.dto.avro.req.MessageData) defaultValue(fields()[1]);
         }
         return record;
+      } catch (org.apache.avro.AvroMissingFieldException e) {
+        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -393,4 +438,79 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
+  @Override protected boolean hasCustomCoders() { return true; }
+
+  @Override public void customEncode(org.apache.avro.io.Encoder out)
+    throws java.io.IOException
+  {
+    this.MessageHeader.customEncode(out);
+
+    if (this.MessageData == null) {
+      out.writeIndex(0);
+      out.writeNull();
+    } else {
+      out.writeIndex(1);
+      this.MessageData.customEncode(out);
+    }
+
+  }
+
+  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
+    throws java.io.IOException
+  {
+    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
+    if (fieldOrder == null) {
+      if (this.MessageHeader == null) {
+        this.MessageHeader = new com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader();
+      }
+      this.MessageHeader.customDecode(in);
+
+      if (in.readIndex() != 1) {
+        in.readNull();
+        this.MessageData = null;
+      } else {
+        if (this.MessageData == null) {
+          this.MessageData = new com.hughes.billing.voipworkorder.dto.avro.req.MessageData();
+        }
+        this.MessageData.customDecode(in);
+      }
+
+    } else {
+      for (int i = 0; i < 2; i++) {
+        switch (fieldOrder[i].pos()) {
+        case 0:
+          if (this.MessageHeader == null) {
+            this.MessageHeader = new com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader();
+          }
+          this.MessageHeader.customDecode(in);
+          break;
+
+        case 1:
+          if (in.readIndex() != 1) {
+            in.readNull();
+            this.MessageData = null;
+          } else {
+            if (this.MessageData == null) {
+              this.MessageData = new com.hughes.billing.voipworkorder.dto.avro.req.MessageData();
+            }
+            this.MessageData.customDecode(in);
+          }
+          break;
+
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+

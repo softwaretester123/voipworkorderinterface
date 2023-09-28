@@ -3,6 +3,7 @@ package com.hughes.billing.voipworkorder.utils;
 import com.hughes.billing.voipworkorder.dto.avro.ack.*;
 import com.hughes.billing.voipworkorder.dto.avro.ack.MessageParameter;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
+import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -11,50 +12,47 @@ import java.util.List;
 
 @Slf4j
 public class VoipAckResponseGenerator {
+
+    //TODO implement new method to get from request
     private static VoIPWorkOrderAckMsg getGenericResponse(VoIPWorkOrder request) {
-        log.info("VoipAckResponseGenerator:: getGenericResponse : STARTS");
-        String transactionSequenceId = request.getMessageHeader().getTransactionSequenceId().toString();
-        String transactionDateTime = request.getMessageHeader().getTransactionDateTime().toString();
-        String messageName = VoipWorkOrderConstants.ACK_MESSAGE_NAME;
-        String origin = VoipWorkOrderConstants.BILLING;
-        String correlationId = request.getMessageHeader().getTransactionSequenceId().toString();
-        MessageHeader ackMessageHeader = new MessageHeader(transactionSequenceId, transactionDateTime, messageName, origin, correlationId);
+        log.info("getGenericResponse : STARTS");
+        MessageHeader ackMessageHeader;
+        MessageData ackMessageData;
+        try {
+            String transactionSequenceId = RequestUtility.getTransactionSequenceId(request);
+            String transactionDateTime = RequestUtility.getTransactionDateTimeAsString(request);
+            String correlationId = RequestUtility.getTransactionSequenceId(request);
 
-        List<MessageParameter> ackMessageParameters = new ArrayList<>();
-        ackMessageParameters.add(new MessageParameter("WorkOrderType", Utility.getWorkOrderTypeFromRequest(request)));
-        ackMessageParameters.add(new MessageParameter("Destination", VoipWorkOrderConstants.DSS));
+            ackMessageHeader = new MessageHeader(transactionSequenceId,
+                    transactionDateTime,
+                    VoipWorkOrderConstants.VOIPWORKORDERACKMSG_MSG_NAME,
+                    VoipWorkOrderConstants.BILLING,
+                    correlationId);
 
-        OrderInformation ackOrderInformation = new OrderInformation();
-        ackOrderInformation.setSAN(request.getMessageData().getOrders().get(0).getOrderInformation().getSAN());
-        Order ackOrder = new Order(ackOrderInformation);
+            List<MessageParameter> ackMessageParameters = new ArrayList<>();
+            ackMessageParameters.add(new MessageParameter("WorkOrderType", RequestUtility.getWorkOrderType(request)));
+            ackMessageParameters.add(new MessageParameter("Destination", VoipWorkOrderConstants.DSS));
 
-        List<Order> orders = Collections.singletonList(ackOrder);
+            OrderInformation ackOrderInformation = new OrderInformation();
+            ackOrderInformation.setSAN(RequestUtility.getSan(request));
+            Order ackOrder = new Order(ackOrderInformation);
 
-        MessageData ackMessageData = new MessageData(ackMessageParameters, orders);
+            List<Order> orders = Collections.singletonList(ackOrder);
 
-        log.info("VoipAckResponseGenerator:: getGenericResponse : ENDS");
+            ackMessageData = new MessageData(ackMessageParameters, orders);
+        } catch (Exception e) {
+            throw new BillingUserException(e.getMessage(), request);
+        }
+        log.info("getGenericResponse : ENDS");
         return new VoIPWorkOrderAckMsg(ackMessageHeader, ackMessageData);
     }
 
     public static VoIPWorkOrderAckMsg prepareResponse(VoIPWorkOrder request, String status, String message) {
-
+        log.info("prepareResponse : STARTS");
         VoIPWorkOrderAckMsg genericResponse = getGenericResponse(request);
         genericResponse.getMessageData().getMessageParameters().add(new MessageParameter("Status", status));
         genericResponse.getMessageData().getMessageParameters().add(new MessageParameter("Message", message));
-
-        return genericResponse;
-    }
-
-    public static VoIPWorkOrderAckMsg prepareErrorResponse(VoIPWorkOrder request, String errorMessage) {
-
-        VoIPWorkOrderAckMsg genericResponse = getGenericResponse(request);
-        genericResponse.getMessageData().getMessageParameters()
-                .add(new MessageParameter("Status", Boolean.FALSE.toString()));
-        genericResponse.getMessageData().getMessageParameters()
-                .add(new MessageParameter("errorCode", errorMessage));
-        genericResponse.getMessageData().getMessageParameters()
-                .add(new MessageParameter("Message", errorMessage));
-
+        log.info("prepareResponse : ENDS : response = " + genericResponse);
         return genericResponse;
     }
 }
