@@ -24,15 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 public class VoipWorkOrderController {
+    private final VoipWorkOrderService voipWorkOrderService;
+    private final VoipWorkOrderMsgRepo voipWorkOrderMsgRepo;
+    private final RequestValidator requestValidator;
 
     @Autowired
-    VoipWorkOrderService voipWorkOrderService;
-
-    @Autowired
-    VoipWorkOrderMsgRepo voipWorkOrderMsgRepo;
-
-    @Autowired
-    private RequestValidator requestValidator;
+    public VoipWorkOrderController(VoipWorkOrderService voipWorkOrderService, VoipWorkOrderMsgRepo voipWorkOrderMsgRepo, RequestValidator requestValidator) {
+        this.voipWorkOrderService = voipWorkOrderService;
+        this.voipWorkOrderMsgRepo = voipWorkOrderMsgRepo;
+        this.requestValidator = requestValidator;
+    }
 
     /**
      * This function handles the POST request for the "/voipworkorder" endpoint.
