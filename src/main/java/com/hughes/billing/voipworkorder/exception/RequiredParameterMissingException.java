@@ -1,5 +1,7 @@
 package com.hughes.billing.voipworkorder.exception;
 
+import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
+import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import lombok.Getter;
 import org.springframework.validation.BindingResult;
 
@@ -7,16 +9,13 @@ import org.springframework.validation.BindingResult;
 public class RequiredParameterMissingException extends RuntimeException {
     // transient keyword prevents serialization of the variable
     // done to avoid sonar violation
-    private final transient BindingResult bindingResult;
+    private final VoIPWorkOrder request;
 
-    public RequiredParameterMissingException(String message, BindingResult bindingResult) {
+    private final transient VoipWorkOrderMsgDTO voipWorkOrderMsgDTO;
+
+    public RequiredParameterMissingException(String message, VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         super(message);
-        this.bindingResult = bindingResult;
+        this.request = request;
+        this.voipWorkOrderMsgDTO = voipWorkOrderMsgDTO;
     }
-
-    public RequiredParameterMissingException(String message) {
-        super(message);
-        this.bindingResult = null;
-    }
-
 }

@@ -4,6 +4,7 @@ import com.hughes.billing.voipworkorder.dto.avro.ack.*;
 import com.hughes.billing.voipworkorder.dto.avro.ack.MessageParameter;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
+import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import java.util.List;
 @Slf4j
 public class VoipAckResponseGenerator {
 
-    //TODO implement new method to get from request
     private static VoIPWorkOrderAckMsg getGenericResponse(VoIPWorkOrder request) {
         log.info("getGenericResponse : STARTS");
         MessageHeader ackMessageHeader;
@@ -41,7 +41,8 @@ public class VoipAckResponseGenerator {
 
             ackMessageData = new MessageData(ackMessageParameters, orders);
         } catch (Exception e) {
-            throw new BillingUserException(e.getMessage(), request);
+            log.info("getGenericResponse : Exception Occurred : " + e.getMessage());
+            throw new BillingUserException(e.getMessage(), request, null);
         }
         log.info("getGenericResponse : ENDS");
         return new VoIPWorkOrderAckMsg(ackMessageHeader, ackMessageData);

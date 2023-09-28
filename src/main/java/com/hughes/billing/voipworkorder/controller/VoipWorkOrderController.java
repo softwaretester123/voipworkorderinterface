@@ -57,15 +57,11 @@ public class VoipWorkOrderController {
             if (bindingResult.hasErrors()) {
                 // Handle validation errors here
                 log.error("voipWorkOrder : Request Validation Failed : Throwing MissingParameterException");
-                voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_FAIL);
-                voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
-                voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
-                voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
-                throw new RequiredParameterMissingException(bindingResult.getAllErrors().get(0).getCode(), bindingResult);
+                throw new RequiredParameterMissingException(bindingResult.getAllErrors().get(0).getCode(), request, voipWorkOrderMsgDTO);
             }
 
             voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_OK);
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
+            voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
 
             result = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
 
@@ -78,9 +74,12 @@ public class VoipWorkOrderController {
             voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
 
 //            voipWorkOrderService.publishMessage(result.getBody(), "A");
+        } catch (RequiredParameterMissingException requiredParameterMissingException) {
+            log.error("voipWorkOrder : RequiredParameterMissingException Occurred" + requiredParameterMissingException.getMessage());
+            throw requiredParameterMissingException;
         } catch (Exception e) {
             log.error("voipWorkOrder : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request);
+            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
         }
 
         log.info("voipWorkOrder : ENDS");

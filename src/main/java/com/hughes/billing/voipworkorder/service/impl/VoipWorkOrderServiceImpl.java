@@ -41,9 +41,9 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     /**
      * A description of the entire Java function.
      *
-     * @param  request          description of parameter
-     * @param  voipWorkOrderMsgDTO    description of parameter
-     * @return                  description of return value
+     * @param request             description of parameter
+     * @param voipWorkOrderMsgDTO description of parameter
+     * @return description of return value
      */
     @Override
     public ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
@@ -77,13 +77,14 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
                 log.info("processRequest : result = " + result);
                 if (result.equals(VoipWorkOrderConstants.SP_CALL_SUCCESS_RET_VAL)) {
                     voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_OK);
+                    voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_OK_MSG);
                     voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_SUCCESS);
-                    voipWorkOrderMsgDTO.setRemarks(responseMessage);
                     voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
                     voIPWorkOrderAckMsg = VoipAckResponseGenerator
                             .prepareResponse(request, Boolean.TRUE.toString(), responseMessage);
                 } else {
                     voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_FAIL);
+                    voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_FAIL_MSG);
                     voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
                     voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
                     voIPWorkOrderAckMsg = VoipAckResponseGenerator
@@ -91,42 +92,23 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
                 }
             }
         } catch (Exception e) {
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_FAIL);
-            voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_FAIL_MSG);
             voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
-            throw new BillingUserException(e.getMessage(), request);
+            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
         }
 
         log.info("processRequest : ENDS");
         return new ResponseEntity<>(voIPWorkOrderAckMsg, HttpStatus.OK);
     }
 
-
-
-    /**
-     * Generates a VoipWorkOrderMsgDump object by dumping the VoIPWorkOrder request.
-     *
-     * @param  request The VoIPWorkOrder request object to be dumped.
-     * @return         The generated VoipWorkOrderMsgDump object.
-     */
-    @Override
-    public VoipWorkOrderMsgDTO saveRequest(VoIPWorkOrder request) {
-        log.info("saveRequest : STARTS");
+    public VoipWorkOrderMsgDTO getVoipWOMsg(VoIPWorkOrder request) {
+        log.info("saveRequestHelper : STARTS");
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
 
         try {
             voipWorkOrderMsgDTO = new VoipWorkOrderMsgDTO();
             String transactionSequenceId = RequestUtility.getTransactionSequenceId(request);
             voipWorkOrderMsgDTO.setTransactionSequenceId(transactionSequenceId);
-            Date timestamp = RequestUtility.getTransactionDateTime(request);
-
-            if (timestamp != null) {
-                voipWorkOrderMsgDTO.setTransactionDateTime(new Timestamp(timestamp.getTime()));
-            } else {
-                throw new RequiredParameterMissingException("MessageHeader->TransactionDateTime");
-            }
-
-            voipWorkOrderMsgDTO.setCreatedTimeStamp(Utility.getTimeStamp());
+            voipWorkOrderMsgDTO.setCreatedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
             voipWorkOrderMsgDTO.setMessageName(VoipWorkOrderConstants.VOIPWORKORDER_MSG_NAME);
             voipWorkOrderMsgDTO.setMessageSource(VoipWorkOrderConstants.DSS);
             voipWorkOrderMsgDTO.setMessageDestination(VoipWorkOrderConstants.BILLING);
@@ -137,22 +119,48 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             voipWorkOrderMsgDTO.setRemarks("");
             voipWorkOrderMsgDTO.setConsumedPayload(request.toString());
 
-            log.info("saveRequest : Saving to DB");
+            Date timestamp = RequestUtility.getTransactionDateTime(request);
 
+            if (timestamp != null) {
+                voipWorkOrderMsgDTO.setTransactionDateTime(new Timestamp(timestamp.getTime()));
+            } else {
+                throw new RequiredParameterMissingException("MessageHeader->TransactionDateTime", request, voipWorkOrderMsgDTO);
+            }
+
+        } catch (RequiredParameterMissingException requiredParameterMissingException) {
+            log.error("saveRequestHelper : Exception Occurred" + requiredParameterMissingException.getMessage());
+            throw requiredParameterMissingException;
+        } catch (Exception e) {
+            log.error("saveRequestHelper : Exception Occurred" + e.getMessage());
+            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
+        }
+        log.info("saveRequestHelper : ENDS");
+        return voipWorkOrderMsgDTO;
+    }
+
+    /**
+     * Generates a VoipWorkOrderMsgDump object by dumping the VoIPWorkOrder request.
+     *
+     * @param request The VoIPWorkOrder request object to be dumped.
+     * @return The generated VoipWorkOrderMsgDump object.
+     */
+    @Override
+    public VoipWorkOrderMsgDTO saveRequest(VoIPWorkOrder request) {
+        log.info("saveRequest : STARTS");
+
+        VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
+        try {
+            voipWorkOrderMsgDTO = getVoipWOMsg(request);
+            log.info("saveRequest : Saving to DB");
             voipWorkOrderMsgRepo.save(voipWorkOrderMsgDTO);
             voipWorkOrderMsgRepo.flush();
         } catch (RequiredParameterMissingException requiredParameterMissingException) {
             log.error("saveRequest : Exception Occurred" + requiredParameterMissingException.getMessage());
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_FAIL);
-            voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_FAIL_MSG);
-            saveData(voipWorkOrderMsgDTO);
             throw requiredParameterMissingException;
-        } catch (ParseException parseException) {
-            log.error("saveRequest : Unable to parse timestamp : " + parseException.getMessage());
-            throw new BillingUserException(parseException.getMessage(), request);
         } catch (Exception e) {
-            log.error("saveRequest : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request);
+            log.error("saveRequest : Exception Occurred : " + e.getMessage());
+
+            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
         }
 
         log.info("saveRequest : ENDS");
@@ -162,8 +170,8 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     /**
      * Creates a VoIP work order.
      *
-     * @param  request   the VoIP work order request
-     * @return           the result of the work order creation
+     * @param request the VoIP work order request
+     * @return the result of the work order creation
      */
     private String createVoipWorkOrder(VoIPWorkOrder request) {
         log.info("createVoipWorkOrder : STARTS");
@@ -200,8 +208,8 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     /**
      * Cancels a BRT account.
      *
-     * @param  request   the VoIP work order request
-     * @return           the result of the cancellation
+     * @param request the VoIP work order request
+     * @return the result of the cancellation
      */
     private String cancelVoipWorkOrder(VoIPWorkOrder request) {
         log.info("cancelVoipWorkOrder : STARTS");

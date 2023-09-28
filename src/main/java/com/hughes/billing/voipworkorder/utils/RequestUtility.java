@@ -19,7 +19,7 @@ public class RequestUtility {
      * @return the work order type extracted from the request
      */
     public static String getWorkOrderType(VoIPWorkOrder request) {
-        log.info("getWorkOrderTypeFromRequest : STARTS");
+        log.info("getWorkOrderType : STARTS");
         CharSequence workOrderType = null;
         try {
             workOrderType = request.getMessageData().getMessageParameters()
@@ -27,10 +27,9 @@ public class RequestUtility {
                     .findFirst().orElse(new MessageParameter())
                     .getValue();
         } catch (NullPointerException e) {
-            log.error("getWorkOrderTypeFromRequest : Exception: " + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request);
+            log.error("getWorkOrderType : Exception: " + e.getMessage());
         }
-        log.info("getWorkOrderTypeFromRequest : ENDS -> workOrderType = " + workOrderType);
+        log.info("getWorkOrderType : ENDS -> workOrderType = " + workOrderType);
         return workOrderType != null ? workOrderType.toString() : "";
     }
 
@@ -41,7 +40,7 @@ public class RequestUtility {
      * @return the billing deal name
      */
     public static String getBillingDeal(VoIPWorkOrder request) {
-        log.info("getBillingDealFromRequest : STARTS");
+        log.info("getBillingDeal : STARTS");
         CharSequence voipDealName = null;
         try {
             voipDealName = request.getMessageData().getOrders().get(0)
@@ -50,10 +49,9 @@ public class RequestUtility {
                     .findFirst().orElse(new OrderAttribute())
                     .getValue();
         } catch (NullPointerException e) {
-            log.error("getBillingDealFromRequest : Exception: " + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request);
+            log.error("getBillingDeal : Exception: " + e.getMessage());
         }
-        log.info("getBillingDealFromRequest : ENDS -> voipDealName = " + voipDealName);
+        log.info("getBillingDeal : ENDS -> voipDealName = " + voipDealName);
         return voipDealName != null ? voipDealName.toString() : "";
     }
 
@@ -64,7 +62,7 @@ public class RequestUtility {
      * @return the GL Segment as a string
      */
     public static String getGlSegment(VoIPWorkOrder request) {
-        log.info("getWorkOrderTypeFromRequest : STARTS");
+        log.info("getGlSegment : STARTS");
         CharSequence glSegmentId = null;
         try {
             glSegmentId = request.getMessageData().getOrders().get(0)
@@ -73,8 +71,7 @@ public class RequestUtility {
                     .findFirst().orElse(new OrderAttribute())
                     .getValue();
         } catch (NullPointerException e) {
-            log.error("getWorkOrderTypeFromRequest : Exception: " + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request);
+            log.error("getGlSegment : Exception: " + e.getMessage());
         }
         log.info("getWorkOrderTypeFromRequest : ENDS -> voipDealName = " + glSegmentId);
         return glSegmentId != null ? glSegmentId.toString() : "";
@@ -87,16 +84,15 @@ public class RequestUtility {
      * @return the SAN as a String, or an empty string if it is not found
      */
     public static String getSan(VoIPWorkOrder request) {
-        log.info("getSanFromRequest : STARTS");
-        CharSequence san;
+        log.info("getSan : STARTS");
+        CharSequence san = null;
         try {
             san = request.getMessageData().getOrders().get(0)
                     .getOrderInformation().getSAN();
         } catch (NullPointerException e) {
-            log.error("getSanFromRequest : Exception: " + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request);
+            log.error("getSan : Exception: " + e.getMessage());
         }
-        log.info("getSanFromRequest : ENDS -> san = " + san);
+        log.info("getSan : ENDS -> san = " + san);
         return san != null ? san.toString() : "";
     }
 
@@ -107,13 +103,13 @@ public class RequestUtility {
      * @return the transaction sequence ID as a string, or an empty string if the message header is null
      */
     public static String getTransactionSequenceId(VoIPWorkOrder request) {
-        log.info("getTransactionSequenceIdFromRequest : STARTS");
+        log.info("getTransactionSequenceId : STARTS");
         MessageHeader messageHeader = request.getMessageHeader();
         if (messageHeader == null) {
             return "";
         }
         CharSequence transactionSequenceId = messageHeader.getTransactionSequenceId();
-        log.info("getTransactionSequenceIdFromRequest : ENDS -> voipDealName = " + transactionSequenceId);
+        log.info("getTransactionSequenceId : ENDS -> transactionSequenceId = " + transactionSequenceId);
         return transactionSequenceId != null ? transactionSequenceId.toString() : "";
     }
 
@@ -124,25 +120,25 @@ public class RequestUtility {
      * @return the transaction date and time as a string, or an empty string if the message header is null
      */
     public static Date getTransactionDateTime(VoIPWorkOrder request) throws ParseException {
-        log.info("getTransactionDateTimeFromRequest : STARTS");
+        log.info("getTransactionDateTime : STARTS");
         MessageHeader messageHeader = request.getMessageHeader();
         if (messageHeader == null) {
             return null;
         }
         SimpleDateFormat transactionDateTimeFormat = new SimpleDateFormat(VoipWorkOrderConstants.TRANSACTION_DATE_TIME_FORMAT);
         CharSequence transactionDateTime = messageHeader.getTransactionDateTime();
-        log.info("getTransactionDateTimeFromRequest : ENDS -> voipDealName = " + transactionDateTime);
+        log.info("getTransactionDateTime : ENDS -> transactionDateTime = " + transactionDateTime);
         return transactionDateTime != null ? transactionDateTimeFormat.parse(transactionDateTime.toString()) : null;
     }
 
     public static String getTransactionDateTimeAsString(VoIPWorkOrder request) {
-        log.info("getTransactionDateTimeFromRequest : STARTS");
+        log.info("getTransactionDateTimeAsString : STARTS");
         MessageHeader messageHeader = request.getMessageHeader();
         if (messageHeader == null) {
             return null;
         }
         CharSequence transactionDateTime = messageHeader.getTransactionDateTime();
-        log.info("getTransactionDateTimeFromRequest : ENDS -> voipDealName = " + transactionDateTime);
+        log.info("getTransactionDateTimeAsString : ENDS -> transactionDateTime = " + transactionDateTime);
         return transactionDateTime != null ? transactionDateTime.toString() : null;
     }
 }
