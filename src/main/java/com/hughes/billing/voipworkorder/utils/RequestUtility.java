@@ -30,7 +30,7 @@ public class RequestUtility {
             log.error("getWorkOrderType : Exception: " + e.getMessage());
         }
         log.info("getWorkOrderType : ENDS -> workOrderType = " + workOrderType);
-        return workOrderType != null ? workOrderType.toString() : "";
+        return workOrderType != null ? workOrderType.toString() : null;
     }
 
     /**
@@ -52,7 +52,7 @@ public class RequestUtility {
             log.error("getBillingDeal : Exception: " + e.getMessage());
         }
         log.info("getBillingDeal : ENDS -> voipDealName = " + voipDealName);
-        return voipDealName != null ? voipDealName.toString() : "";
+        return voipDealName != null ? voipDealName.toString() : null;
     }
 
     /**
@@ -74,7 +74,7 @@ public class RequestUtility {
             log.error("getGlSegment : Exception: " + e.getMessage());
         }
         log.info("getWorkOrderTypeFromRequest : ENDS -> voipDealName = " + glSegmentId);
-        return glSegmentId != null ? glSegmentId.toString() : "";
+        return glSegmentId != null ? glSegmentId.toString() : null;
     }
 
     /**
@@ -93,7 +93,7 @@ public class RequestUtility {
             log.error("getSan : Exception: " + e.getMessage());
         }
         log.info("getSan : ENDS -> san = " + san);
-        return san != null ? san.toString() : "";
+        return san != null ? san.toString() : null;
     }
 
     /**
@@ -106,11 +106,12 @@ public class RequestUtility {
         log.info("getTransactionSequenceId : STARTS");
         MessageHeader messageHeader = request.getMessageHeader();
         if (messageHeader == null) {
-            return "";
+            log.info("getTransactionSequenceId : transactionSequenceId is null");
+            return null;
         }
         CharSequence transactionSequenceId = messageHeader.getTransactionSequenceId();
         log.info("getTransactionSequenceId : ENDS -> transactionSequenceId = " + transactionSequenceId);
-        return transactionSequenceId != null ? transactionSequenceId.toString() : "";
+        return transactionSequenceId != null ? transactionSequenceId.toString() : null;
     }
 
     /**
@@ -123,6 +124,7 @@ public class RequestUtility {
         log.info("getTransactionDateTime : STARTS");
         MessageHeader messageHeader = request.getMessageHeader();
         if (messageHeader == null) {
+            log.info("getTransactionDateTime : transactionDateTime is null");
             return null;
         }
         SimpleDateFormat transactionDateTimeFormat = new SimpleDateFormat(VoipWorkOrderConstants.TRANSACTION_DATE_TIME_FORMAT);
@@ -135,6 +137,7 @@ public class RequestUtility {
         log.info("getTransactionDateTimeAsString : STARTS");
         MessageHeader messageHeader = request.getMessageHeader();
         if (messageHeader == null) {
+            log.info("getTransactionDateTimeAsString : transactionDateTime is null");
             return null;
         }
         CharSequence transactionDateTime = messageHeader.getTransactionDateTime();

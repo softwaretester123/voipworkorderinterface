@@ -23,29 +23,29 @@ public class VoipWorkOrderConstants {
 
     public static final String VOIP_MSG_STATUS_FAILURE = "FAILURE";
 
-    public static final Integer VOIP_MSG_STATE_LANDED = 1;
+    public static final Integer VOIP_REQ_STATE_LANDED = 1;
 
-    public static final Integer VOIP_MSG_STATE_VALIDATION_OK = 2;
+    public static final Integer VOIP_REQ_STATE_VALIDATION_OK = 2;
 
-    public static final Integer VOIP_MSG_STATE_VALIDATION_FAIL = 3;
+    public static final Integer VOIP_REQ_STATE_VALIDATION_FAIL = 3;
 
-    public static final Integer VOIP_MSG_STATE_SP_CALLED_OK = 4;
+    public static final Integer VOIP_REQ_STATE_SP_CALLED_OK = 4;
 
-    public static final Integer VOIP_MSG_STATE_SP_CALLED_FAIL = 5;
+    public static final Integer VOIP_REQ_STATE_SP_CALLED_FAIL = 5;
 
-    public static final Integer VOIP_MSG_STATE_RESPONSE_SENT = 6;
+    public static final Integer VOIP_REQ_STATE_RESPONSE_SENT = 6;
 
-    public static final String VOIP_MSG_STATE_LANDED_MSG = "Request Landed";
+    public static final String VOIP_REQ_STATE_LANDED_MSG = "Request Landed";
 
-    public static final String VOIP_MSG_STATE_VALIDATION_OK_MSG = "Request Validated Successfully";
+    public static final String VOIP_REQ_STATE_VALIDATION_OK_MSG = "Request Validated Successfully";
 
-    public static final String VOIP_MSG_STATE_VALIDATION_FAIL_MSG = "Request Validation Failed";
+    public static final String VOIP_REQ_STATE_VALIDATION_FAIL_MSG = "Request Validation Failed";
 
-    public static final String VOIP_MSG_STATE_SP_CALLED_OK_MSG = "SP Call Successful";
+    public static final String VOIP_REQ_STATE_SP_CALLED_OK_MSG = "SP Call Successful";
 
-    public static final String VOIP_MSG_STATE_SP_CALLED_FAIL_MSG = "SP Call Failed";
+    public static final String VOIP_REQ_STATE_SP_CALLED_FAIL_MSG = "SP Call Failed";
 
-    public static final String VOIP_MSG_STATE_RESPONSE_SENT_MSG = "Response Sent";
+    public static final String VOIP_REQ_STATE_RESPONSE_SENT_MSG = "Response Sent";
 
     public static final String VOIP_WO_CREATE_SUCCESS_MESSAGE = "Work Order Created Successfully";
 

@@ -3,7 +3,6 @@ package com.hughes.billing.voipworkorder.exception;
 import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
-import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.Utility;
 import com.hughes.billing.voipworkorder.utils.VoipAckResponseGenerator;
@@ -36,18 +35,19 @@ public class GenericExceptionHandler {
         log.info("handleMandatoryParameterMissing : STARTS : message = " + e.getMessage());
 
         VoIPWorkOrderAckMsg response = null;
+        String message = null;
         try {
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
             if (voipWorkOrderMsgDTO == null) {
                 voipWorkOrderMsgDTO = new VoipWorkOrderMsgDTO();
             }
             VoIPWorkOrder request = e.getRequest();
-            String message = e.getMessage() + "is missing";
+            message = e.getMessage() + " is missing";
             response = VoipAckResponseGenerator.prepareResponse(request, Boolean.FALSE.toString(), message);
             log.info("handleMandatoryParameterMissing : response = " + response);
 
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_FAIL);
-            voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_FAIL_MSG);
+            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_FAIL);
+            voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_FAIL_MSG);
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
             voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
             voipWorkOrderMsgDTO.setPublishedPayload(response.toString());
@@ -57,7 +57,7 @@ public class GenericExceptionHandler {
         }
 
         log.info("handleMandatoryParameterMissing : ENDS");
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     /**

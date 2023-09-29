@@ -10,9 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.threeten.bp.Duration;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -25,43 +28,64 @@ public class PubSubConfig {
     public String topicId;
 
     @Value("${spring.cloud.gcp.pubsub.subscription.id}")
-    private String subscriptionId;
+    private String subscriptionIds;
 
     @Value("${spring.cloud.gcp.pubsub.gcp.credentials.location}")
     private String filePath;
 
-    @Autowired
+    @Value("${spring.cloud.gcp.pubsub.enable.flowcontrol}")
+    private boolean enableFlowControl;
+
+    @Value("${spring.cloud.gcp.pubsub.ack.deadline}")
+    private Long ackDeadline;
+
     PubSubMessageSubscriber handler;
 
+    @Autowired
+    public PubSubConfig(PubSubMessageSubscriber handler) {
+        this.handler = handler;
+    }
+
     /**
-     * Initializes the subscriber for the given projectId, subscription, and file path.
+     * Initializes the subscriber and sets up the necessary configuration.
      */
-    @PostConstruct
     private void initializeSubscriber() {
         log.info("initializeSubscriber() : STARTS");
-
-        SubscriberConfig config = new SubscriberConfig();
+        List<SubscriberConfig> subscriberConfigList;
+        log.info("initializeSubscriber() :projectId : " + projectId);
+        log.info("initializeSubscriber() :subscriptionId : " + subscriptionIds);
+        log.info("initializeSubscriber() :filePath : " + filePath);
 
         try {
-            log.info("initializeSubscriber() :projectId : " + projectId);
-            log.info("initializeSubscriber() :subscriptionId : " + subscriptionId);
-            log.info("initializeSubscriber() :filePath : " + filePath);
-            config.setProjectId(projectId);
-            config.setSubscriptionId(subscriptionId);
-            config.setResponseAdapter(handler);
-            config.setAuthenticationRequired(true);
-            config.setCredentialFilePath(filePath);
-            log.info("initializeSubscriber() : calling validateSubscriberConfig()");
-            SubscriberFactory.INSTANCE.initializeSubscribers(Collections.singletonList(config));
-            SubscriberFactory.INSTANCE.pullAsyncMessages(subscriptionId);
+            if (subscriptionIds != null) {
+                subscriberConfigList = new ArrayList<>();
+                String[] subscriptionIdList = subscriptionIds.split(",");
+                for (String subscriptionId : subscriptionIdList) {
+                    SubscriberConfig config = new SubscriberConfig();
+                    config.setProjectId(projectId);
+                    config.setSubscriptionId(subscriptionId);
+                    config.setResponseAdapter(handler);
+                    config.setEnableFlowControl(enableFlowControl);
+                    config.setAuthenticationRequired(true);
+                    config.setCredentialFilePath(filePath);
+                    config.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));
+                    subscriberConfigList.add(config);
+                }
+
+                if (!subscriberConfigList.isEmpty()) {
+                    SubscriberFactory.INSTANCE.initializeSubscribers(subscriberConfigList);
+                }
+
+                for (String subscriptionId : subscriptionIdList) {
+                    SubscriberFactory.INSTANCE.pullAsyncMessages(subscriptionId);
+                }
+            }
         } catch (PubSubFrwkException e) {
             log.error("initializeSubscriber() : Exception occurred while initializing the subscriber: " + e.getMessage());
         }
-
         log.info("initializeSubscriber() : ENDS");
     }
 
-    @PostConstruct
     private void initializePublisher() {
         log.info("initializePublisher() : STARTS");
 
@@ -81,5 +105,11 @@ public class PubSubConfig {
         }
 
         log.info("initializePublisher() : ENDS");
+    }
+
+    @PostConstruct
+    private void init() {
+        initializePublisher();
+        initializeSubscriber();
     }
 }

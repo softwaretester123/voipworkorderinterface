@@ -9,7 +9,6 @@ import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
 import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.RequestUtility;
-import com.hughes.billing.voipworkorder.utils.Utility;
 import com.hughes.billing.voipworkorder.utils.VoipAckResponseGenerator;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
@@ -22,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.Date;
 
 @Service
@@ -76,15 +74,15 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             if (result != null) {
                 log.info("processRequest : result = " + result);
                 if (result.equals(VoipWorkOrderConstants.SP_CALL_SUCCESS_RET_VAL)) {
-                    voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_OK);
-                    voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_OK_MSG);
+                    voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_OK);
+                    voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_OK_MSG);
                     voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_SUCCESS);
                     voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
                     voIPWorkOrderAckMsg = VoipAckResponseGenerator
                             .prepareResponse(request, Boolean.TRUE.toString(), responseMessage);
                 } else {
-                    voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_FAIL);
-                    voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_MSG_STATE_SP_CALLED_FAIL_MSG);
+                    voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_FAIL);
+                    voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_FAIL_MSG);
                     voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
                     voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
                     voIPWorkOrderAckMsg = VoipAckResponseGenerator
@@ -115,8 +113,8 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             voipWorkOrderMsgDTO.setSan(RequestUtility.getSan(request));
             voipWorkOrderMsgDTO.setWorkOrderType(RequestUtility.getWorkOrderType(request));
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_PENDING);
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_LANDED);
-            voipWorkOrderMsgDTO.setRemarks("");
+            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_LANDED);
+            voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_LANDED_MSG);
             voipWorkOrderMsgDTO.setConsumedPayload(request.toString());
 
             Date timestamp = RequestUtility.getTransactionDateTime(request);
@@ -124,7 +122,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             if (timestamp != null) {
                 voipWorkOrderMsgDTO.setTransactionDateTime(new Timestamp(timestamp.getTime()));
             } else {
-                throw new RequiredParameterMissingException("MessageHeader->TransactionDateTime", request, voipWorkOrderMsgDTO);
+                voipWorkOrderMsgDTO.setTransactionDateTime(null);
             }
 
         } catch (RequiredParameterMissingException requiredParameterMissingException) {

@@ -60,7 +60,7 @@ public class VoipWorkOrderController {
                 throw new RequiredParameterMissingException(bindingResult.getAllErrors().get(0).getCode(), request, voipWorkOrderMsgDTO);
             }
 
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_MSG_STATE_VALIDATION_OK);
+            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
             voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
 
             result = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
