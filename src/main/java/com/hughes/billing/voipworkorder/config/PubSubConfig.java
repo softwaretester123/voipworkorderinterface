@@ -25,7 +25,7 @@ public class PubSubConfig {
     private String projectId;
 
     @Value("${spring.cloud.gcp.pubsub.topic.id}")
-    public String topicId;
+    private String topicId;
 
     @Value("${spring.cloud.gcp.pubsub.subscription.id}")
     private String subscriptionIds;
