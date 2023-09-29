@@ -1,6 +1,7 @@
 package com.hughes.billing.voipworkorder.config;
 
 import com.hughes.billing.voipworkorder.consumer.PubSubMessageSubscriber;
+import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.config.PubSubConfig;
 import com.hughes.bits.framework.pubsub.config.PublisherConfig;
 import com.hughes.bits.framework.pubsub.config.SubscriberConfig;
@@ -47,27 +48,10 @@ public class VoipPubSubConfig {
         this.handler = handler;
     }
 
-    private PubSubConfig initializeHelper(String type, String id) {
-        SubscriberConfig subscriberConfig = null;
-        PublisherConfig publisherConfig = null;
-        if (type.equals("Subscriber")) {
-            subscriberConfig = new SubscriberConfig();
-            subscriberConfig.setProjectId(projectId);
-            subscriberConfig.setSubscriptionId(id);
-            subscriberConfig.setResponseAdapter(handler);
-            subscriberConfig.setEnableFlowControl(enableFlowControl);
-            subscriberConfig.setAuthenticationRequired(true);
-            subscriberConfig.setCredentialFilePath(filePath);
-            subscriberConfig.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));
-            return subscriberConfig;
-        } else {
-            publisherConfig = new PublisherConfig();
-            publisherConfig.setProjectId(projectId);
-            publisherConfig.setTopicId(id);
-            publisherConfig.setAuthenticationRequired(true);
-            publisherConfig.setCredentialFilePath(filePath);
-            return publisherConfig;
-        }
+    @PostConstruct
+    private void init() {
+        initializePublisher();
+        initializeSubscriber();
     }
 
     /**
@@ -82,7 +66,7 @@ public class VoipPubSubConfig {
                 subscriberConfigList = new ArrayList<>();
                 String[] subscriptionIdList = subscriptionIds.split(",");
                 for (String subscriptionId : subscriptionIdList) {
-                    SubscriberConfig config = (SubscriberConfig) initializeHelper("Subscriber", subscriptionId);
+                    SubscriberConfig config = (SubscriberConfig) initializeHelper(VoipWorkOrderConstants.SUBSCRIBER, subscriptionId);
                     subscriberConfigList.add(config);
                 }
 
@@ -106,7 +90,7 @@ public class VoipPubSubConfig {
         PublisherConfig config;
         try {
             log.info("initializePublisher() :projectId : " + projectId + " : topicId : " + topicId + " : filePath : " + filePath);
-            config = (PublisherConfig) initializeHelper("Publisher", topicId);
+            config = (PublisherConfig) initializeHelper(VoipWorkOrderConstants.PUBLISHER, topicId);
             PublisherFactory.INSTANCE.initializePublishers(Collections.singletonList(config));
         } catch (PubSubFrwkException e) {
             log.error("initializePublisher() : Exception occurred while initializing the publisher: " + e.getMessage());
@@ -115,9 +99,26 @@ public class VoipPubSubConfig {
         log.info("initializePublisher() : ENDS");
     }
 
-    @PostConstruct
-    private void init() {
-        initializePublisher();
-        initializeSubscriber();
+    private PubSubConfig initializeHelper(String type, String id) {
+        SubscriberConfig subscriberConfig = null;
+        PublisherConfig publisherConfig = null;
+        if (type.equals(VoipWorkOrderConstants.SUBSCRIBER)) {
+            subscriberConfig = new SubscriberConfig();
+            subscriberConfig.setProjectId(projectId);
+            subscriberConfig.setSubscriptionId(id);
+            subscriberConfig.setResponseAdapter(handler);
+            subscriberConfig.setEnableFlowControl(enableFlowControl);
+            subscriberConfig.setAuthenticationRequired(true);
+            subscriberConfig.setCredentialFilePath(filePath);
+            subscriberConfig.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));
+            return subscriberConfig;
+        } else {
+            publisherConfig = new PublisherConfig();
+            publisherConfig.setProjectId(projectId);
+            publisherConfig.setTopicId(id);
+            publisherConfig.setAuthenticationRequired(true);
+            publisherConfig.setCredentialFilePath(filePath);
+            return publisherConfig;
+        }
     }
 }

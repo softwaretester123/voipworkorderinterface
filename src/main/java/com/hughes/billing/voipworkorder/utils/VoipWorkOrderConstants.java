@@ -54,4 +54,8 @@ public class VoipWorkOrderConstants {
     public static final String TRANSACTION_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     public static final String SP_CALL_SUCCESS_RET_VAL = "0";
+
+    public static final String SUBSCRIBER = "SUBSCRIBER";
+
+    public static final String PUBLISHER = "PUBLISHER";
 }
