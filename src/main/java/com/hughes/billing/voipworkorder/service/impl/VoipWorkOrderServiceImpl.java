@@ -125,9 +125,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
                 voipWorkOrderMsgDTO.setTransactionDateTime(null);
             }
 
-        } catch (RequiredParameterMissingException requiredParameterMissingException) {
-            log.error("saveRequestHelper : Exception Occurred" + requiredParameterMissingException.getMessage());
-            throw requiredParameterMissingException;
         } catch (Exception e) {
             log.error("saveRequestHelper : Exception Occurred" + e.getMessage());
             throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
@@ -152,9 +149,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             log.info("saveRequest : Saving to DB");
             voipWorkOrderMsgRepo.save(voipWorkOrderMsgDTO);
             voipWorkOrderMsgRepo.flush();
-        } catch (RequiredParameterMissingException requiredParameterMissingException) {
-            log.error("saveRequest : Exception Occurred" + requiredParameterMissingException.getMessage());
-            throw requiredParameterMissingException;
         } catch (Exception e) {
             log.error("saveRequest : Exception Occurred : " + e.getMessage());
 
