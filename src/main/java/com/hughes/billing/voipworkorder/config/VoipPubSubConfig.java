@@ -1,6 +1,7 @@
 package com.hughes.billing.voipworkorder.config;
 
 import com.hughes.billing.voipworkorder.consumer.PubSubMessageSubscriber;
+import com.hughes.bits.framework.pubsub.config.PubSubConfig;
 import com.hughes.bits.framework.pubsub.config.PublisherConfig;
 import com.hughes.bits.framework.pubsub.config.SubscriberConfig;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class PubSubConfig {
+public class VoipPubSubConfig {
 
     @Value("${spring.cloud.gcp.pubsub.project.id}")
     private String projectId;
@@ -42,8 +43,31 @@ public class PubSubConfig {
     PubSubMessageSubscriber handler;
 
     @Autowired
-    public PubSubConfig(PubSubMessageSubscriber handler) {
+    public VoipPubSubConfig(PubSubMessageSubscriber handler) {
         this.handler = handler;
+    }
+
+    private PubSubConfig initializeHelper(String type, String id) {
+        SubscriberConfig subscriberConfig = null;
+        PublisherConfig publisherConfig = null;
+        if (type.equals("Subscriber")) {
+            subscriberConfig = new SubscriberConfig();
+            subscriberConfig.setProjectId(projectId);
+            subscriberConfig.setSubscriptionId(id);
+            subscriberConfig.setResponseAdapter(handler);
+            subscriberConfig.setEnableFlowControl(enableFlowControl);
+            subscriberConfig.setAuthenticationRequired(true);
+            subscriberConfig.setCredentialFilePath(filePath);
+            subscriberConfig.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));
+            return subscriberConfig;
+        } else {
+            publisherConfig = new PublisherConfig();
+            publisherConfig.setProjectId(projectId);
+            publisherConfig.setTopicId(id);
+            publisherConfig.setAuthenticationRequired(true);
+            publisherConfig.setCredentialFilePath(filePath);
+            return publisherConfig;
+        }
     }
 
     /**
@@ -52,23 +76,13 @@ public class PubSubConfig {
     private void initializeSubscriber() {
         log.info("initializeSubscriber() : STARTS");
         List<SubscriberConfig> subscriberConfigList;
-        log.info("initializeSubscriber() :projectId : " + projectId);
-        log.info("initializeSubscriber() :subscriptionId : " + subscriptionIds);
-        log.info("initializeSubscriber() :filePath : " + filePath);
-
+        log.info("initializeSubscriber() :projectId : " + projectId + " : subscriptionIds : " + subscriptionIds + " : filePath : " + filePath);
         try {
             if (subscriptionIds != null) {
                 subscriberConfigList = new ArrayList<>();
                 String[] subscriptionIdList = subscriptionIds.split(",");
                 for (String subscriptionId : subscriptionIdList) {
-                    SubscriberConfig config = new SubscriberConfig();
-                    config.setProjectId(projectId);
-                    config.setSubscriptionId(subscriptionId);
-                    config.setResponseAdapter(handler);
-                    config.setEnableFlowControl(enableFlowControl);
-                    config.setAuthenticationRequired(true);
-                    config.setCredentialFilePath(filePath);
-                    config.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));
+                    SubscriberConfig config = (SubscriberConfig) initializeHelper("Subscriber", subscriptionId);
                     subscriberConfigList.add(config);
                 }
 
@@ -89,16 +103,10 @@ public class PubSubConfig {
     private void initializePublisher() {
         log.info("initializePublisher() : STARTS");
 
-        PublisherConfig config = new PublisherConfig();
-
+        PublisherConfig config;
         try {
-            log.info("initializePublisher() :projectId : " + projectId);
-            log.info("initializePublisher() :topicId : " + topicId);
-            log.info("initializePublisher() :filePath : " + filePath);
-            config.setProjectId(projectId);
-            config.setTopicId(topicId);
-            config.setAuthenticationRequired(true);
-            config.setCredentialFilePath(filePath);
+            log.info("initializePublisher() :projectId : " + projectId + " : topicId : " + topicId + " : filePath : " + filePath);
+            config = (PublisherConfig) initializeHelper("Publisher", topicId);
             PublisherFactory.INSTANCE.initializePublishers(Collections.singletonList(config));
         } catch (PubSubFrwkException e) {
             log.error("initializePublisher() : Exception occurred while initializing the publisher: " + e.getMessage());
