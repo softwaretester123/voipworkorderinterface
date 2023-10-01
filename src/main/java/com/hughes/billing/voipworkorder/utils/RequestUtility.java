@@ -1,13 +1,11 @@
 package com.hughes.billing.voipworkorder.utils;
 
 import com.hughes.billing.voipworkorder.dto.avro.req.*;
-import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Slf4j
 public class RequestUtility {

@@ -1,5 +1,6 @@
 package com.hughes.billing.voipworkorder.consumer;
 
+import com.hughes.billing.voipworkorder.utils.SubscriberUtils;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
 import com.hughes.bits.framework.pubsub.message.Message;
 import com.hughes.bits.framework.pubsub.message.SubscriberResponseAdapter;
@@ -21,6 +22,7 @@ public class PubSubMessageSubscriber implements SubscriberResponseAdapter {
         if (message.getOrderingKey() != null) {
             log.info("Ordering Key : " + message.getOrderingKey());
         }
+        SubscriberUtils.deserializeRequest(message.getData());
         log.info("processMessage : ENDS");
         return true;
     }

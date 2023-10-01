@@ -16,7 +16,7 @@ public class PublisherUtils {
     public static byte[] serializeResponse(VoIPWorkOrderAckMsg response) {
         log.info("serializeResponse : STARTS");
         DatumWriter<VoIPWorkOrderAckMsg> writer = new SpecificDatumWriter<>(VoIPWorkOrderAckMsg.getClassSchema());
-        byte[] data = new byte[0];
+        byte[] data;
         log.info("serializeResponse : response = " + response);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
@@ -27,6 +27,7 @@ public class PublisherUtils {
             stream.close();
         } catch (Exception e) {
             log.error("serializeResponse : Exception occurred while serializing the response: " + e.getMessage());
+            data = new byte[0];
         }
         log.info("serializeResponse : ENDS");
         return data;

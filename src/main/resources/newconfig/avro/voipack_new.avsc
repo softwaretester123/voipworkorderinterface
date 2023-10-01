@@ -1,0 +1,71 @@
+{
+  "type" : "record",
+  "name" : "VoIPWorkOrderAckMsg",
+  "namespace" : "com.hughes.billing.voipworkorder.dto.avro.ack",
+  "fields" : [ {
+    "name" : "MessageHeader",
+    "type" : {
+      "type" : "record",
+      "name" : "MessageHeader",
+      "fields" : [ {
+        "name" : "TransactionSequenceId",
+        "type" : "string"
+      }, {
+        "name" : "TransactionDateTime",
+        "type" : "string"
+      }, {
+        "name" : "MessageName",
+        "type" : "string"
+      }, {
+        "name" : "Origin",
+        "type" : "string"
+      }, {
+        "name" : "CorrelationId",
+        "type" : "string"
+      } ]
+    }
+  }, {
+    "name" : "MessageData",
+    "type" : {
+      "type" : "record",
+      "name" : "MessageData",
+      "fields" : [ {
+        "name" : "MessageParameters",
+        "type" : {
+          "type" : "array",
+          "items" : {
+            "type" : "record",
+            "name" : "MessageParameters",
+            "fields" : [ {
+              "name" : "name",
+              "type" : "string"
+            }, {
+              "name" : "value",
+              "type" : "string"
+            } ]
+          }
+        }
+      }, {
+        "name" : "Orders",
+        "type" : {
+          "type" : "array",
+          "items" : {
+            "type" : "record",
+            "name" : "Orders",
+            "fields" : [ {
+              "name" : "OrderInformation",
+              "type" : {
+                "type" : "record",
+                "name" : "OrderInformation",
+                "fields" : [ {
+                  "name" : "SAN",
+                  "type" : "string"
+                } ]
+              }
+            } ]
+          }
+        }
+      } ]
+    }
+  } ]
+}

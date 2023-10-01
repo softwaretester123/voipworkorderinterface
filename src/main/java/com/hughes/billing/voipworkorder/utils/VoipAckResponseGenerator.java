@@ -1,10 +1,8 @@
 package com.hughes.billing.voipworkorder.utils;
 
 import com.hughes.billing.voipworkorder.dto.avro.ack.*;
-import com.hughes.billing.voipworkorder.dto.avro.ack.MessageParameter;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
-import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

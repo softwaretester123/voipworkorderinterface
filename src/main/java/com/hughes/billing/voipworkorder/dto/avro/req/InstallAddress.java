@@ -5,17 +5,16 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.req;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6376288381294299425L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallAddress\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"Address1\",\"type\":[\"null\",\"string\"]},{\"name\":\"Address2\",\"type\":\"null\"},{\"name\":\"City\",\"type\":[\"null\",\"string\"]},{\"name\":\"Country\",\"type\":[\"null\",\"string\"]},{\"name\":\"State\",\"type\":[\"null\",\"string\"]},{\"name\":\"Zip\",\"type\":[\"null\",\"string\"]}]}");
+  private static final long serialVersionUID = -8075332782678147760L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallAddress\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"Address1\",\"type\":\"string\"},{\"name\":\"Address2\",\"type\":[\"string\",\"null\"]},{\"name\":\"City\",\"type\":\"string\"},{\"name\":\"State\",\"type\":\"string\"},{\"name\":\"Zip\",\"type\":\"string\"},{\"name\":\"Country\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -27,16 +26,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       new BinaryMessageDecoder<InstallAddress>(MODEL$, SCHEMA$);
 
   /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<InstallAddress> getEncoder() {
-    return ENCODER;
-  }
-
-  /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<InstallAddress> getDecoder() {
     return DECODER;
@@ -45,38 +35,28 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<InstallAddress> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<InstallAddress>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this InstallAddress to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this InstallAddress to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a InstallAddress from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a InstallAddress instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a InstallAddress from a ByteBuffer. */
   public static InstallAddress fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
   @Deprecated public java.lang.CharSequence Address1;
-  @Deprecated public java.lang.Void Address2;
+  @Deprecated public java.lang.CharSequence Address2;
   @Deprecated public java.lang.CharSequence City;
-  @Deprecated public java.lang.CharSequence Country;
   @Deprecated public java.lang.CharSequence State;
   @Deprecated public java.lang.CharSequence Zip;
+  @Deprecated public java.lang.CharSequence Country;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -90,20 +70,19 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
    * @param Address1 The new value for Address1
    * @param Address2 The new value for Address2
    * @param City The new value for City
-   * @param Country The new value for Country
    * @param State The new value for State
    * @param Zip The new value for Zip
+   * @param Country The new value for Country
    */
-  public InstallAddress(java.lang.CharSequence Address1, java.lang.Void Address2, java.lang.CharSequence City, java.lang.CharSequence Country, java.lang.CharSequence State, java.lang.CharSequence Zip) {
+  public InstallAddress(java.lang.CharSequence Address1, java.lang.CharSequence Address2, java.lang.CharSequence City, java.lang.CharSequence State, java.lang.CharSequence Zip, java.lang.CharSequence Country) {
     this.Address1 = Address1;
     this.Address2 = Address2;
     this.City = City;
-    this.Country = Country;
     this.State = State;
     this.Zip = Zip;
+    this.Country = Country;
   }
 
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -111,9 +90,9 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     case 0: return Address1;
     case 1: return Address2;
     case 2: return City;
-    case 3: return Country;
-    case 4: return State;
-    case 5: return Zip;
+    case 3: return State;
+    case 4: return Zip;
+    case 5: return Country;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -123,11 +102,11 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: Address1 = (java.lang.CharSequence)value$; break;
-    case 1: Address2 = (java.lang.Void)value$; break;
+    case 1: Address2 = (java.lang.CharSequence)value$; break;
     case 2: City = (java.lang.CharSequence)value$; break;
-    case 3: Country = (java.lang.CharSequence)value$; break;
-    case 4: State = (java.lang.CharSequence)value$; break;
-    case 5: Zip = (java.lang.CharSequence)value$; break;
+    case 3: State = (java.lang.CharSequence)value$; break;
+    case 4: Zip = (java.lang.CharSequence)value$; break;
+    case 5: Country = (java.lang.CharSequence)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -139,7 +118,6 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
   public java.lang.CharSequence getAddress1() {
     return Address1;
   }
-
 
   /**
    * Sets the value of the 'Address1' field.
@@ -153,16 +131,15 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
    * Gets the value of the 'Address2' field.
    * @return The value of the 'Address2' field.
    */
-  public java.lang.Void getAddress2() {
+  public java.lang.CharSequence getAddress2() {
     return Address2;
   }
-
 
   /**
    * Sets the value of the 'Address2' field.
    * @param value the value to set.
    */
-  public void setAddress2(java.lang.Void value) {
+  public void setAddress2(java.lang.CharSequence value) {
     this.Address2 = value;
   }
 
@@ -174,7 +151,6 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     return City;
   }
 
-
   /**
    * Sets the value of the 'City' field.
    * @param value the value to set.
@@ -184,30 +160,12 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   /**
-   * Gets the value of the 'Country' field.
-   * @return The value of the 'Country' field.
-   */
-  public java.lang.CharSequence getCountry() {
-    return Country;
-  }
-
-
-  /**
-   * Sets the value of the 'Country' field.
-   * @param value the value to set.
-   */
-  public void setCountry(java.lang.CharSequence value) {
-    this.Country = value;
-  }
-
-  /**
    * Gets the value of the 'State' field.
    * @return The value of the 'State' field.
    */
   public java.lang.CharSequence getState() {
     return State;
   }
-
 
   /**
    * Sets the value of the 'State' field.
@@ -225,13 +183,28 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     return Zip;
   }
 
-
   /**
    * Sets the value of the 'Zip' field.
    * @param value the value to set.
    */
   public void setZip(java.lang.CharSequence value) {
     this.Zip = value;
+  }
+
+  /**
+   * Gets the value of the 'Country' field.
+   * @return The value of the 'Country' field.
+   */
+  public java.lang.CharSequence getCountry() {
+    return Country;
+  }
+
+  /**
+   * Sets the value of the 'Country' field.
+   * @param value the value to set.
+   */
+  public void setCountry(java.lang.CharSequence value) {
+    this.Country = value;
   }
 
   /**
@@ -248,11 +221,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
    * @return A new InstallAddress RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder(other);
-    }
+    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder(other);
   }
 
   /**
@@ -261,11 +230,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
    * @return A new InstallAddress RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder(other);
-    }
+    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder(other);
   }
 
   /**
@@ -275,11 +240,11 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     implements org.apache.avro.data.RecordBuilder<InstallAddress> {
 
     private java.lang.CharSequence Address1;
-    private java.lang.Void Address2;
+    private java.lang.CharSequence Address2;
     private java.lang.CharSequence City;
-    private java.lang.CharSequence Country;
     private java.lang.CharSequence State;
     private java.lang.CharSequence Zip;
+    private java.lang.CharSequence Country;
 
     /** Creates a new Builder */
     private Builder() {
@@ -294,27 +259,27 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       super(other);
       if (isValidValue(fields()[0], other.Address1)) {
         this.Address1 = data().deepCopy(fields()[0].schema(), other.Address1);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.Address2)) {
         this.Address2 = data().deepCopy(fields()[1].schema(), other.Address2);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
       if (isValidValue(fields()[2], other.City)) {
         this.City = data().deepCopy(fields()[2].schema(), other.City);
-        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+        fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.Country)) {
-        this.Country = data().deepCopy(fields()[3].schema(), other.Country);
-        fieldSetFlags()[3] = other.fieldSetFlags()[3];
+      if (isValidValue(fields()[3], other.State)) {
+        this.State = data().deepCopy(fields()[3].schema(), other.State);
+        fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.State)) {
-        this.State = data().deepCopy(fields()[4].schema(), other.State);
-        fieldSetFlags()[4] = other.fieldSetFlags()[4];
+      if (isValidValue(fields()[4], other.Zip)) {
+        this.Zip = data().deepCopy(fields()[4].schema(), other.Zip);
+        fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.Zip)) {
-        this.Zip = data().deepCopy(fields()[5].schema(), other.Zip);
-        fieldSetFlags()[5] = other.fieldSetFlags()[5];
+      if (isValidValue(fields()[5], other.Country)) {
+        this.Country = data().deepCopy(fields()[5].schema(), other.Country);
+        fieldSetFlags()[5] = true;
       }
     }
 
@@ -323,7 +288,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress other) {
-      super(SCHEMA$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.Address1)) {
         this.Address1 = data().deepCopy(fields()[0].schema(), other.Address1);
         fieldSetFlags()[0] = true;
@@ -336,16 +301,16 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
         this.City = data().deepCopy(fields()[2].schema(), other.City);
         fieldSetFlags()[2] = true;
       }
-      if (isValidValue(fields()[3], other.Country)) {
-        this.Country = data().deepCopy(fields()[3].schema(), other.Country);
+      if (isValidValue(fields()[3], other.State)) {
+        this.State = data().deepCopy(fields()[3].schema(), other.State);
         fieldSetFlags()[3] = true;
       }
-      if (isValidValue(fields()[4], other.State)) {
-        this.State = data().deepCopy(fields()[4].schema(), other.State);
+      if (isValidValue(fields()[4], other.Zip)) {
+        this.Zip = data().deepCopy(fields()[4].schema(), other.Zip);
         fieldSetFlags()[4] = true;
       }
-      if (isValidValue(fields()[5], other.Zip)) {
-        this.Zip = data().deepCopy(fields()[5].schema(), other.Zip);
+      if (isValidValue(fields()[5], other.Country)) {
+        this.Country = data().deepCopy(fields()[5].schema(), other.Country);
         fieldSetFlags()[5] = true;
       }
     }
@@ -357,7 +322,6 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     public java.lang.CharSequence getAddress1() {
       return Address1;
     }
-
 
     /**
       * Sets the value of the 'Address1' field.
@@ -394,17 +358,16 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       * Gets the value of the 'Address2' field.
       * @return The value.
       */
-    public java.lang.Void getAddress2() {
+    public java.lang.CharSequence getAddress2() {
       return Address2;
     }
-
 
     /**
       * Sets the value of the 'Address2' field.
       * @param value The value of 'Address2'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder setAddress2(java.lang.Void value) {
+    public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder setAddress2(java.lang.CharSequence value) {
       validate(fields()[1], value);
       this.Address2 = value;
       fieldSetFlags()[1] = true;
@@ -438,7 +401,6 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       return City;
     }
 
-
     /**
       * Sets the value of the 'City' field.
       * @param value The value of 'City'.
@@ -471,46 +433,6 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     }
 
     /**
-      * Gets the value of the 'Country' field.
-      * @return The value.
-      */
-    public java.lang.CharSequence getCountry() {
-      return Country;
-    }
-
-
-    /**
-      * Sets the value of the 'Country' field.
-      * @param value The value of 'Country'.
-      * @return This builder.
-      */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder setCountry(java.lang.CharSequence value) {
-      validate(fields()[3], value);
-      this.Country = value;
-      fieldSetFlags()[3] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'Country' field has been set.
-      * @return True if the 'Country' field has been set, false otherwise.
-      */
-    public boolean hasCountry() {
-      return fieldSetFlags()[3];
-    }
-
-
-    /**
-      * Clears the value of the 'Country' field.
-      * @return This builder.
-      */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder clearCountry() {
-      Country = null;
-      fieldSetFlags()[3] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'State' field.
       * @return The value.
       */
@@ -518,16 +440,15 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       return State;
     }
 
-
     /**
       * Sets the value of the 'State' field.
       * @param value The value of 'State'.
       * @return This builder.
       */
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder setState(java.lang.CharSequence value) {
-      validate(fields()[4], value);
+      validate(fields()[3], value);
       this.State = value;
-      fieldSetFlags()[4] = true;
+      fieldSetFlags()[3] = true;
       return this;
     }
 
@@ -536,7 +457,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'State' field has been set, false otherwise.
       */
     public boolean hasState() {
-      return fieldSetFlags()[4];
+      return fieldSetFlags()[3];
     }
 
 
@@ -546,7 +467,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       */
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder clearState() {
       State = null;
-      fieldSetFlags()[4] = false;
+      fieldSetFlags()[3] = false;
       return this;
     }
 
@@ -558,16 +479,15 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       return Zip;
     }
 
-
     /**
       * Sets the value of the 'Zip' field.
       * @param value The value of 'Zip'.
       * @return This builder.
       */
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder setZip(java.lang.CharSequence value) {
-      validate(fields()[5], value);
+      validate(fields()[4], value);
       this.Zip = value;
-      fieldSetFlags()[5] = true;
+      fieldSetFlags()[4] = true;
       return this;
     }
 
@@ -576,7 +496,7 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       * @return True if the 'Zip' field has been set, false otherwise.
       */
     public boolean hasZip() {
-      return fieldSetFlags()[5];
+      return fieldSetFlags()[4];
     }
 
 
@@ -586,6 +506,45 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       */
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder clearZip() {
       Zip = null;
+      fieldSetFlags()[4] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'Country' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getCountry() {
+      return Country;
+    }
+
+    /**
+      * Sets the value of the 'Country' field.
+      * @param value The value of 'Country'.
+      * @return This builder.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder setCountry(java.lang.CharSequence value) {
+      validate(fields()[5], value);
+      this.Country = value;
+      fieldSetFlags()[5] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'Country' field has been set.
+      * @return True if the 'Country' field has been set, false otherwise.
+      */
+    public boolean hasCountry() {
+      return fieldSetFlags()[5];
+    }
+
+
+    /**
+      * Clears the value of the 'Country' field.
+      * @return This builder.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.InstallAddress.Builder clearCountry() {
+      Country = null;
       fieldSetFlags()[5] = false;
       return this;
     }
@@ -596,14 +555,12 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
       try {
         InstallAddress record = new InstallAddress();
         record.Address1 = fieldSetFlags()[0] ? this.Address1 : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.Address2 = fieldSetFlags()[1] ? this.Address2 : (java.lang.Void) defaultValue(fields()[1]);
+        record.Address2 = fieldSetFlags()[1] ? this.Address2 : (java.lang.CharSequence) defaultValue(fields()[1]);
         record.City = fieldSetFlags()[2] ? this.City : (java.lang.CharSequence) defaultValue(fields()[2]);
-        record.Country = fieldSetFlags()[3] ? this.Country : (java.lang.CharSequence) defaultValue(fields()[3]);
-        record.State = fieldSetFlags()[4] ? this.State : (java.lang.CharSequence) defaultValue(fields()[4]);
-        record.Zip = fieldSetFlags()[5] ? this.Zip : (java.lang.CharSequence) defaultValue(fields()[5]);
+        record.State = fieldSetFlags()[3] ? this.State : (java.lang.CharSequence) defaultValue(fields()[3]);
+        record.Zip = fieldSetFlags()[4] ? this.Zip : (java.lang.CharSequence) defaultValue(fields()[4]);
+        record.Country = fieldSetFlags()[5] ? this.Country : (java.lang.CharSequence) defaultValue(fields()[5]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -628,163 +585,4 @@ public class InstallAddress extends org.apache.avro.specific.SpecificRecordBase 
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.Address1 == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.Address1);
-    }
-
-    out.writeNull();
-
-    if (this.City == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.City);
-    }
-
-    if (this.Country == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.Country);
-    }
-
-    if (this.State == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.State);
-    }
-
-    if (this.Zip == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.Zip);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.Address1 = null;
-      } else {
-        this.Address1 = in.readString(this.Address1 instanceof Utf8 ? (Utf8)this.Address1 : null);
-      }
-
-      in.readNull();
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.City = null;
-      } else {
-        this.City = in.readString(this.City instanceof Utf8 ? (Utf8)this.City : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.Country = null;
-      } else {
-        this.Country = in.readString(this.Country instanceof Utf8 ? (Utf8)this.Country : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.State = null;
-      } else {
-        this.State = in.readString(this.State instanceof Utf8 ? (Utf8)this.State : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.Zip = null;
-      } else {
-        this.Zip = in.readString(this.Zip instanceof Utf8 ? (Utf8)this.Zip : null);
-      }
-
-    } else {
-      for (int i = 0; i < 6; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.Address1 = null;
-          } else {
-            this.Address1 = in.readString(this.Address1 instanceof Utf8 ? (Utf8)this.Address1 : null);
-          }
-          break;
-
-        case 1:
-          in.readNull();
-          break;
-
-        case 2:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.City = null;
-          } else {
-            this.City = in.readString(this.City instanceof Utf8 ? (Utf8)this.City : null);
-          }
-          break;
-
-        case 3:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.Country = null;
-          } else {
-            this.Country = in.readString(this.Country instanceof Utf8 ? (Utf8)this.Country : null);
-          }
-          break;
-
-        case 4:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.State = null;
-          } else {
-            this.State = in.readString(this.State instanceof Utf8 ? (Utf8)this.State : null);
-          }
-          break;
-
-        case 5:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.Zip = null;
-          } else {
-            this.Zip = in.readString(this.Zip instanceof Utf8 ? (Utf8)this.Zip : null);
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

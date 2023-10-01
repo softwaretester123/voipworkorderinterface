@@ -35,3 +35,4 @@ build/
 *.zip
 
 /external_packages/
+/backup_files/

@@ -4,7 +4,6 @@ import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
-import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingException;
 import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
 import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;

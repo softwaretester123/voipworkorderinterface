@@ -8,6 +8,7 @@ import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingExcept
 import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.RequestValidator;
+import com.hughes.billing.voipworkorder.utils.SubscriberUtils;
 import com.hughes.billing.voipworkorder.utils.Utility;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -91,5 +92,11 @@ public class VoipWorkOrderController {
         Long result = voipWorkOrderMsgRepo.getServerTime();
         log.info(String.valueOf(result));
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/deserialize")
+    public ResponseEntity<String> deserialize(@RequestBody String request) {
+        SubscriberUtils.deserializeRequest(request);
+        return new ResponseEntity<>("Ok", HttpStatus.OK);
     }
 }

@@ -5,17 +5,16 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.req;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -445640561018212845L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderAttribute\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"name\",\"type\":[\"null\",\"string\"]},{\"name\":\"value\",\"type\":[\"null\",\"string\"]}]}");
+  private static final long serialVersionUID = -5993344020405258823L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"OrderAttributes\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -27,16 +26,7 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
       new BinaryMessageDecoder<OrderAttribute>(MODEL$, SCHEMA$);
 
   /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<OrderAttribute> getEncoder() {
-    return ENCODER;
-  }
-
-  /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<OrderAttribute> getDecoder() {
     return DECODER;
@@ -45,27 +35,17 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<OrderAttribute> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<OrderAttribute>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this OrderAttribute to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this OrderAttributes to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a OrderAttribute from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a OrderAttribute instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a OrderAttributes from a ByteBuffer. */
   public static OrderAttribute fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
@@ -91,7 +71,6 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
     this.value = value;
   }
 
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
@@ -120,7 +99,6 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
     return name;
   }
 
-
   /**
    * Sets the value of the 'name' field.
    * @param value the value to set.
@@ -137,7 +115,6 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
     return value;
   }
 
-
   /**
    * Sets the value of the 'value' field.
    * @param value the value to set.
@@ -147,41 +124,33 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
   }
 
   /**
-   * Creates a new OrderAttribute RecordBuilder.
-   * @return A new OrderAttribute RecordBuilder
+   * Creates a new OrderAttributes RecordBuilder.
+   * @return A new OrderAttributes RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder newBuilder() {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder();
+  public static OrderAttribute.Builder newBuilder() {
+    return new OrderAttribute.Builder();
   }
 
   /**
-   * Creates a new OrderAttribute RecordBuilder by copying an existing Builder.
+   * Creates a new OrderAttributes RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new OrderAttribute RecordBuilder
+   * @return A new OrderAttributes RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder(other);
-    }
+  public static OrderAttribute.Builder newBuilder(OrderAttribute.Builder other) {
+    return new OrderAttribute.Builder(other);
   }
 
   /**
-   * Creates a new OrderAttribute RecordBuilder by copying an existing OrderAttribute instance.
+   * Creates a new OrderAttributes RecordBuilder by copying an existing OrderAttributes instance.
    * @param other The existing instance to copy.
-   * @return A new OrderAttribute RecordBuilder
+   * @return A new OrderAttributes RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder(other);
-    }
+  public static OrderAttribute.Builder newBuilder(OrderAttribute other) {
+    return new OrderAttribute.Builder(other);
   }
 
   /**
-   * RecordBuilder for OrderAttribute instances.
+   * RecordBuilder for OrderAttributes instances.
    */
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<OrderAttribute>
     implements org.apache.avro.data.RecordBuilder<OrderAttribute> {
@@ -198,24 +167,24 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder other) {
+    private Builder(OrderAttribute.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
       if (isValidValue(fields()[1], other.value)) {
         this.value = data().deepCopy(fields()[1].schema(), other.value);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+        fieldSetFlags()[1] = true;
       }
     }
 
     /**
-     * Creates a Builder by copying an existing OrderAttribute instance
+     * Creates a Builder by copying an existing OrderAttributes instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute other) {
-      super(SCHEMA$);
+    private Builder(OrderAttribute other) {
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.name)) {
         this.name = data().deepCopy(fields()[0].schema(), other.name);
         fieldSetFlags()[0] = true;
@@ -234,13 +203,12 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
       return name;
     }
 
-
     /**
       * Sets the value of the 'name' field.
       * @param value The value of 'name'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder setName(java.lang.CharSequence value) {
+    public OrderAttribute.Builder setName(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.name = value;
       fieldSetFlags()[0] = true;
@@ -260,7 +228,7 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
       * Clears the value of the 'name' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder clearName() {
+    public OrderAttribute.Builder clearName() {
       name = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -274,13 +242,12 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
       return value;
     }
 
-
     /**
       * Sets the value of the 'value' field.
       * @param value The value of 'value'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder setValue(java.lang.CharSequence value) {
+    public OrderAttribute.Builder setValue(java.lang.CharSequence value) {
       validate(fields()[1], value);
       this.value = value;
       fieldSetFlags()[1] = true;
@@ -300,7 +267,7 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
       * Clears the value of the 'value' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.OrderAttribute.Builder clearValue() {
+    public OrderAttribute.Builder clearValue() {
       value = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -314,8 +281,6 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
         record.name = fieldSetFlags()[0] ? this.name : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.value = fieldSetFlags()[1] ? this.value : (java.lang.CharSequence) defaultValue(fields()[1]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -340,83 +305,4 @@ public class OrderAttribute extends org.apache.avro.specific.SpecificRecordBase 
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.name == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.name);
-    }
-
-    if (this.value == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.value);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.name = null;
-      } else {
-        this.name = in.readString(this.name instanceof Utf8 ? (Utf8)this.name : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.value = null;
-      } else {
-        this.value = in.readString(this.value instanceof Utf8 ? (Utf8)this.value : null);
-      }
-
-    } else {
-      for (int i = 0; i < 2; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.name = null;
-          } else {
-            this.name = in.readString(this.name instanceof Utf8 ? (Utf8)this.name : null);
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.value = null;
-          } else {
-            this.value = in.readString(this.value instanceof Utf8 ? (Utf8)this.value : null);
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-

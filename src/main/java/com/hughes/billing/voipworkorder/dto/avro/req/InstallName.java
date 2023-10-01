@@ -5,17 +5,16 @@
  */
 package com.hughes.billing.voipworkorder.dto.avro.req;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
-import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
 import org.apache.avro.message.BinaryMessageDecoder;
 import org.apache.avro.message.SchemaStore;
 
+@SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class InstallName extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 1915299637269645093L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallName\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"FirstName\",\"type\":[\"null\",\"string\"]},{\"name\":\"LastName\",\"type\":[\"null\",\"string\"]},{\"name\":\"MiddleName\",\"type\":[\"null\",\"string\"]}]}");
+  private static final long serialVersionUID = -8670643146053884252L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallName\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"FirstName\",\"type\":\"string\"},{\"name\":\"MiddleName\",\"type\":\"string\"},{\"name\":\"LastName\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -27,16 +26,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       new BinaryMessageDecoder<InstallName>(MODEL$, SCHEMA$);
 
   /**
-   * Return the BinaryMessageEncoder instance used by this class.
-   * @return the message encoder used by this class
-   */
-  public static BinaryMessageEncoder<InstallName> getEncoder() {
-    return ENCODER;
-  }
-
-  /**
    * Return the BinaryMessageDecoder instance used by this class.
-   * @return the message decoder used by this class
    */
   public static BinaryMessageDecoder<InstallName> getDecoder() {
     return DECODER;
@@ -45,35 +35,25 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
   /**
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
-   * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<InstallName> createDecoder(SchemaStore resolver) {
     return new BinaryMessageDecoder<InstallName>(MODEL$, SCHEMA$, resolver);
   }
 
-  /**
-   * Serializes this InstallName to a ByteBuffer.
-   * @return a buffer holding the serialized data for this instance
-   * @throws java.io.IOException if this instance could not be serialized
-   */
+  /** Serializes this InstallName to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /**
-   * Deserializes a InstallName from a ByteBuffer.
-   * @param b a byte buffer holding serialized data for an instance of this class
-   * @return a InstallName instance decoded from the given buffer
-   * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
-   */
+  /** Deserializes a InstallName from a ByteBuffer. */
   public static InstallName fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
   @Deprecated public java.lang.CharSequence FirstName;
-  @Deprecated public java.lang.CharSequence LastName;
   @Deprecated public java.lang.CharSequence MiddleName;
+  @Deprecated public java.lang.CharSequence LastName;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -85,23 +65,22 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
   /**
    * All-args constructor.
    * @param FirstName The new value for FirstName
-   * @param LastName The new value for LastName
    * @param MiddleName The new value for MiddleName
+   * @param LastName The new value for LastName
    */
-  public InstallName(java.lang.CharSequence FirstName, java.lang.CharSequence LastName, java.lang.CharSequence MiddleName) {
+  public InstallName(java.lang.CharSequence FirstName, java.lang.CharSequence MiddleName, java.lang.CharSequence LastName) {
     this.FirstName = FirstName;
-    this.LastName = LastName;
     this.MiddleName = MiddleName;
+    this.LastName = LastName;
   }
 
-  public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
   // Used by DatumWriter.  Applications should not call.
   public java.lang.Object get(int field$) {
     switch (field$) {
     case 0: return FirstName;
-    case 1: return LastName;
-    case 2: return MiddleName;
+    case 1: return MiddleName;
+    case 2: return LastName;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -111,8 +90,8 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
     case 0: FirstName = (java.lang.CharSequence)value$; break;
-    case 1: LastName = (java.lang.CharSequence)value$; break;
-    case 2: MiddleName = (java.lang.CharSequence)value$; break;
+    case 1: MiddleName = (java.lang.CharSequence)value$; break;
+    case 2: LastName = (java.lang.CharSequence)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -125,30 +104,12 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     return FirstName;
   }
 
-
   /**
    * Sets the value of the 'FirstName' field.
    * @param value the value to set.
    */
   public void setFirstName(java.lang.CharSequence value) {
     this.FirstName = value;
-  }
-
-  /**
-   * Gets the value of the 'LastName' field.
-   * @return The value of the 'LastName' field.
-   */
-  public java.lang.CharSequence getLastName() {
-    return LastName;
-  }
-
-
-  /**
-   * Sets the value of the 'LastName' field.
-   * @param value the value to set.
-   */
-  public void setLastName(java.lang.CharSequence value) {
-    this.LastName = value;
   }
 
   /**
@@ -159,13 +120,28 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     return MiddleName;
   }
 
-
   /**
    * Sets the value of the 'MiddleName' field.
    * @param value the value to set.
    */
   public void setMiddleName(java.lang.CharSequence value) {
     this.MiddleName = value;
+  }
+
+  /**
+   * Gets the value of the 'LastName' field.
+   * @return The value of the 'LastName' field.
+   */
+  public java.lang.CharSequence getLastName() {
+    return LastName;
+  }
+
+  /**
+   * Sets the value of the 'LastName' field.
+   * @param value the value to set.
+   */
+  public void setLastName(java.lang.CharSequence value) {
+    this.LastName = value;
   }
 
   /**
@@ -182,11 +158,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
    * @return A new InstallName RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder(other);
-    }
+    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder(other);
   }
 
   /**
@@ -195,11 +167,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
    * @return A new InstallName RecordBuilder
    */
   public static com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName other) {
-    if (other == null) {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder();
-    } else {
-      return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder(other);
-    }
+    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder(other);
   }
 
   /**
@@ -209,8 +177,8 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     implements org.apache.avro.data.RecordBuilder<InstallName> {
 
     private java.lang.CharSequence FirstName;
-    private java.lang.CharSequence LastName;
     private java.lang.CharSequence MiddleName;
+    private java.lang.CharSequence LastName;
 
     /** Creates a new Builder */
     private Builder() {
@@ -225,15 +193,15 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       super(other);
       if (isValidValue(fields()[0], other.FirstName)) {
         this.FirstName = data().deepCopy(fields()[0].schema(), other.FirstName);
-        fieldSetFlags()[0] = other.fieldSetFlags()[0];
+        fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.LastName)) {
-        this.LastName = data().deepCopy(fields()[1].schema(), other.LastName);
-        fieldSetFlags()[1] = other.fieldSetFlags()[1];
+      if (isValidValue(fields()[1], other.MiddleName)) {
+        this.MiddleName = data().deepCopy(fields()[1].schema(), other.MiddleName);
+        fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.MiddleName)) {
-        this.MiddleName = data().deepCopy(fields()[2].schema(), other.MiddleName);
-        fieldSetFlags()[2] = other.fieldSetFlags()[2];
+      if (isValidValue(fields()[2], other.LastName)) {
+        this.LastName = data().deepCopy(fields()[2].schema(), other.LastName);
+        fieldSetFlags()[2] = true;
       }
     }
 
@@ -242,17 +210,17 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
      * @param other The existing instance to copy.
      */
     private Builder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName other) {
-      super(SCHEMA$);
+            super(SCHEMA$);
       if (isValidValue(fields()[0], other.FirstName)) {
         this.FirstName = data().deepCopy(fields()[0].schema(), other.FirstName);
         fieldSetFlags()[0] = true;
       }
-      if (isValidValue(fields()[1], other.LastName)) {
-        this.LastName = data().deepCopy(fields()[1].schema(), other.LastName);
+      if (isValidValue(fields()[1], other.MiddleName)) {
+        this.MiddleName = data().deepCopy(fields()[1].schema(), other.MiddleName);
         fieldSetFlags()[1] = true;
       }
-      if (isValidValue(fields()[2], other.MiddleName)) {
-        this.MiddleName = data().deepCopy(fields()[2].schema(), other.MiddleName);
+      if (isValidValue(fields()[2], other.LastName)) {
+        this.LastName = data().deepCopy(fields()[2].schema(), other.LastName);
         fieldSetFlags()[2] = true;
       }
     }
@@ -264,7 +232,6 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     public java.lang.CharSequence getFirstName() {
       return FirstName;
     }
-
 
     /**
       * Sets the value of the 'FirstName' field.
@@ -298,46 +265,6 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     }
 
     /**
-      * Gets the value of the 'LastName' field.
-      * @return The value.
-      */
-    public java.lang.CharSequence getLastName() {
-      return LastName;
-    }
-
-
-    /**
-      * Sets the value of the 'LastName' field.
-      * @param value The value of 'LastName'.
-      * @return This builder.
-      */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder setLastName(java.lang.CharSequence value) {
-      validate(fields()[1], value);
-      this.LastName = value;
-      fieldSetFlags()[1] = true;
-      return this;
-    }
-
-    /**
-      * Checks whether the 'LastName' field has been set.
-      * @return True if the 'LastName' field has been set, false otherwise.
-      */
-    public boolean hasLastName() {
-      return fieldSetFlags()[1];
-    }
-
-
-    /**
-      * Clears the value of the 'LastName' field.
-      * @return This builder.
-      */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder clearLastName() {
-      LastName = null;
-      fieldSetFlags()[1] = false;
-      return this;
-    }
-
-    /**
       * Gets the value of the 'MiddleName' field.
       * @return The value.
       */
@@ -345,16 +272,15 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       return MiddleName;
     }
 
-
     /**
       * Sets the value of the 'MiddleName' field.
       * @param value The value of 'MiddleName'.
       * @return This builder.
       */
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder setMiddleName(java.lang.CharSequence value) {
-      validate(fields()[2], value);
+      validate(fields()[1], value);
       this.MiddleName = value;
-      fieldSetFlags()[2] = true;
+      fieldSetFlags()[1] = true;
       return this;
     }
 
@@ -363,7 +289,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * @return True if the 'MiddleName' field has been set, false otherwise.
       */
     public boolean hasMiddleName() {
-      return fieldSetFlags()[2];
+      return fieldSetFlags()[1];
     }
 
 
@@ -373,6 +299,45 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       */
     public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder clearMiddleName() {
       MiddleName = null;
+      fieldSetFlags()[1] = false;
+      return this;
+    }
+
+    /**
+      * Gets the value of the 'LastName' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getLastName() {
+      return LastName;
+    }
+
+    /**
+      * Sets the value of the 'LastName' field.
+      * @param value The value of 'LastName'.
+      * @return This builder.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder setLastName(java.lang.CharSequence value) {
+      validate(fields()[2], value);
+      this.LastName = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'LastName' field has been set.
+      * @return True if the 'LastName' field has been set, false otherwise.
+      */
+    public boolean hasLastName() {
+      return fieldSetFlags()[2];
+    }
+
+
+    /**
+      * Clears the value of the 'LastName' field.
+      * @return This builder.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder clearLastName() {
+      LastName = null;
       fieldSetFlags()[2] = false;
       return this;
     }
@@ -383,11 +348,9 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       try {
         InstallName record = new InstallName();
         record.FirstName = fieldSetFlags()[0] ? this.FirstName : (java.lang.CharSequence) defaultValue(fields()[0]);
-        record.LastName = fieldSetFlags()[1] ? this.LastName : (java.lang.CharSequence) defaultValue(fields()[1]);
-        record.MiddleName = fieldSetFlags()[2] ? this.MiddleName : (java.lang.CharSequence) defaultValue(fields()[2]);
+        record.MiddleName = fieldSetFlags()[1] ? this.MiddleName : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.LastName = fieldSetFlags()[2] ? this.LastName : (java.lang.CharSequence) defaultValue(fields()[2]);
         return record;
-      } catch (org.apache.avro.AvroMissingFieldException e) {
-        throw e;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
       }
@@ -412,107 +375,4 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
-  @Override protected boolean hasCustomCoders() { return true; }
-
-  @Override public void customEncode(org.apache.avro.io.Encoder out)
-    throws java.io.IOException
-  {
-    if (this.FirstName == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.FirstName);
-    }
-
-    if (this.LastName == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.LastName);
-    }
-
-    if (this.MiddleName == null) {
-      out.writeIndex(0);
-      out.writeNull();
-    } else {
-      out.writeIndex(1);
-      out.writeString(this.MiddleName);
-    }
-
-  }
-
-  @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-    throws java.io.IOException
-  {
-    org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
-    if (fieldOrder == null) {
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.FirstName = null;
-      } else {
-        this.FirstName = in.readString(this.FirstName instanceof Utf8 ? (Utf8)this.FirstName : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.LastName = null;
-      } else {
-        this.LastName = in.readString(this.LastName instanceof Utf8 ? (Utf8)this.LastName : null);
-      }
-
-      if (in.readIndex() != 1) {
-        in.readNull();
-        this.MiddleName = null;
-      } else {
-        this.MiddleName = in.readString(this.MiddleName instanceof Utf8 ? (Utf8)this.MiddleName : null);
-      }
-
-    } else {
-      for (int i = 0; i < 3; i++) {
-        switch (fieldOrder[i].pos()) {
-        case 0:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.FirstName = null;
-          } else {
-            this.FirstName = in.readString(this.FirstName instanceof Utf8 ? (Utf8)this.FirstName : null);
-          }
-          break;
-
-        case 1:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.LastName = null;
-          } else {
-            this.LastName = in.readString(this.LastName instanceof Utf8 ? (Utf8)this.LastName : null);
-          }
-          break;
-
-        case 2:
-          if (in.readIndex() != 1) {
-            in.readNull();
-            this.MiddleName = null;
-          } else {
-            this.MiddleName = in.readString(this.MiddleName instanceof Utf8 ? (Utf8)this.MiddleName : null);
-          }
-          break;
-
-        default:
-          throw new java.io.IOException("Corrupt ResolvingDecoder.");
-        }
-      }
-    }
-  }
 }
-
-
-
-
-
-
-
-
-
-
