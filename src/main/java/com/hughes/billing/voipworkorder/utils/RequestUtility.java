@@ -21,8 +21,8 @@ public class RequestUtility {
         CharSequence workOrderType = null;
         try {
             workOrderType = request.getMessageData().getMessageParameters()
-                    .stream().filter(parameter -> parameter.getName().equals("WorkOrderType"))
-                    .findFirst().orElse(new MessageParameter())
+                    .stream().filter(parameter -> parameter.getName().toString().equals("WorkOrderType"))
+                    .findFirst().orElse(new MessageParameters())
                     .getValue();
         } catch (NullPointerException e) {
             log.error("getWorkOrderType : Exception: " + e.getMessage());
@@ -43,8 +43,8 @@ public class RequestUtility {
         try {
             voipDealName = request.getMessageData().getOrders().get(0)
                     .getOrderAttributes()
-                    .stream().filter(orderAttribute -> orderAttribute.getName().equals("VoipBillingDeal"))
-                    .findFirst().orElse(new OrderAttribute())
+                    .stream().filter(orderAttribute -> orderAttribute.getName().toString().equals("VoipBillingDeal"))
+                    .findFirst().orElse(new OrderAttributes())
                     .getValue();
         } catch (NullPointerException e) {
             log.error("getBillingDeal : Exception: " + e.getMessage());
@@ -65,8 +65,8 @@ public class RequestUtility {
         try {
             glSegmentId = request.getMessageData().getOrders().get(0)
                     .getOrderAttributes()
-                    .stream().filter(orderAttribute -> orderAttribute.getName().equals("GlSegmentId"))
-                    .findFirst().orElse(new OrderAttribute())
+                    .stream().filter(orderAttribute -> orderAttribute.getName().toString().equals("GlSegmentId"))
+                    .findFirst().orElse(new OrderAttributes())
                     .getValue();
         } catch (NullPointerException e) {
             log.error("getGlSegment : Exception: " + e.getMessage());

@@ -2,20 +2,14 @@ package com.hughes.billing.voipworkorder.utils;
 
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.specific.SpecificDatumReader;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.InputStream;
-
 @Slf4j
 public class SubscriberUtils {
-    public static void deserializeRequest(String data) {
+    public static VoIPWorkOrder deserializeRequest(String data) {
         log.info("deserializeRequest : STARTS : data = " + data);
         VoIPWorkOrder voIPWorkOrder = null;
         try {
@@ -29,5 +23,6 @@ public class SubscriberUtils {
             e.printStackTrace();
         }
         log.info("deserializeRequest : ENDS");
+        return voIPWorkOrder;
     }
 }

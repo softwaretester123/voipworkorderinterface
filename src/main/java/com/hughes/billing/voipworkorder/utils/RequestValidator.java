@@ -42,7 +42,7 @@ public class RequestValidator implements Validator {
             return;
         }
 
-        List<MessageParameter> messageParameters = messageData.getMessageParameters();
+        List<MessageParameters> messageParameters = messageData.getMessageParameters();
 
         validateMessageParameters(messageParameters, errors);
 
@@ -50,7 +50,7 @@ public class RequestValidator implements Validator {
             return;
         }
 
-        List<Order> orders = messageData.getOrders();
+        List<Orders> orders = messageData.getOrders();
 
         if (orders.isEmpty()) {
             errors.reject("MessageData->Orders");
@@ -60,9 +60,9 @@ public class RequestValidator implements Validator {
         validateOrder(orders.get(0), errors);
     }
 
-    private void validateMessageParameters(List<MessageParameter> messageParameters, Errors errors) {
+    private void validateMessageParameters(List<MessageParameters> messageParameters, Errors errors) {
         // Structure Check for MessageParameters List
-        for (MessageParameter messageParameter : messageParameters) {
+        for (MessageParameters messageParameter : messageParameters) {
             if (messageParameter.getName() == null) {
                 errors.reject("MessageData->MessageParameters->name");
             }
@@ -82,7 +82,7 @@ public class RequestValidator implements Validator {
         }
     }
 
-    private void validateOrder(Order order, Errors errors) {
+    private void validateOrder(Orders order, Errors errors) {
 
         if (order.getOrderInformation() == null) {
             errors.reject("MessageData->Orders->OrderInformation");
@@ -159,7 +159,7 @@ public class RequestValidator implements Validator {
 
     }
 
-    private void validateInstallAddress(Order order, Errors errors) {
+    private void validateInstallAddress(Orders order, Errors errors) {
         // InstallAddress properties check
         if (order.getInstallAddress().getAddress1() == null) {
             errors.reject("MessageData->Orders->InstallAddress->Address1");
@@ -187,8 +187,8 @@ public class RequestValidator implements Validator {
         }
     }
 
-    private void validateOrderAttribute(Order order, Errors errors) {
-        for (OrderAttribute orderAttribute : order.getOrderAttributes()) {
+    private void validateOrderAttribute(Orders order, Errors errors) {
+        for (OrderAttributes orderAttribute : order.getOrderAttributes()) {
             if (orderAttribute.getName() == null) {
                 errors.reject("MessageData->Orders->OrderAttributes->name");
                 return;

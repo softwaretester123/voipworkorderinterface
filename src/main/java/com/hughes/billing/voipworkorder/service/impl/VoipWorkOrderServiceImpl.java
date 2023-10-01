@@ -110,6 +110,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             voipWorkOrderMsgDTO.setMessageSource(VoipWorkOrderConstants.DSS);
             voipWorkOrderMsgDTO.setMessageDestination(VoipWorkOrderConstants.BILLING);
             voipWorkOrderMsgDTO.setSan(RequestUtility.getSan(request));
+            String workOrderType = RequestUtility.getWorkOrderType(request);
             voipWorkOrderMsgDTO.setWorkOrderType(RequestUtility.getWorkOrderType(request));
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_PENDING);
             voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_LANDED);

@@ -25,15 +25,15 @@ public class VoipAckResponseGenerator {
                 VoipWorkOrderConstants.BILLING,
                 correlationId);
 
-        List<MessageParameter> ackMessageParameters = new ArrayList<>();
-        ackMessageParameters.add(new MessageParameter("WorkOrderType", RequestUtility.getWorkOrderType(request)));
-        ackMessageParameters.add(new MessageParameter("Destination", VoipWorkOrderConstants.DSS));
+        List<MessageParameters> ackMessageParameters = new ArrayList<>();
+        ackMessageParameters.add(new MessageParameters("WorkOrderType", RequestUtility.getWorkOrderType(request)));
+        ackMessageParameters.add(new MessageParameters("Destination", VoipWorkOrderConstants.DSS));
 
         OrderInformation ackOrderInformation = new OrderInformation();
         ackOrderInformation.setSAN(RequestUtility.getSan(request));
-        Order ackOrder = new Order(ackOrderInformation);
+        Orders ackOrder = new Orders(ackOrderInformation);
 
-        List<Order> orders = Collections.singletonList(ackOrder);
+        List<Orders> orders = Collections.singletonList(ackOrder);
 
         MessageData ackMessageData = new MessageData(ackMessageParameters, orders);
 
@@ -54,8 +54,8 @@ public class VoipAckResponseGenerator {
         VoIPWorkOrderAckMsg genericResponse = null;
         try {
             genericResponse = getGenericResponse(request);
-            genericResponse.getMessageData().getMessageParameters().add(new MessageParameter("Status", status));
-            genericResponse.getMessageData().getMessageParameters().add(new MessageParameter("Message", message));
+            genericResponse.getMessageData().getMessageParameters().add(new MessageParameters("Status", status));
+            genericResponse.getMessageData().getMessageParameters().add(new MessageParameters("Message", message));
         } catch (Exception e) {
             log.info("prepareResponse : Exception Occurred : " + e.getMessage());
             throw new BillingUserException(e.getMessage(), request, null);
