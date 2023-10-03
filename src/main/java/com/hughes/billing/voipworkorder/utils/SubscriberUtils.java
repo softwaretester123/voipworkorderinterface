@@ -20,7 +20,6 @@ public class SubscriberUtils {
             log.info("deserializeRequest : voIPWorkOrder = " + voIPWorkOrder);
         } catch (Exception e) {
             log.error("deserializeRequest : Exception: " + e.getMessage());
-            e.printStackTrace();
         }
         log.info("deserializeRequest : ENDS");
         return voIPWorkOrder;

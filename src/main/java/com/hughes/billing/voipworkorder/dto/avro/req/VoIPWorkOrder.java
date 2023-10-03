@@ -13,8 +13,8 @@ import org.apache.avro.message.SchemaStore;
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
 public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 2464757116994447841L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"VoIPWorkOrder\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"MessageHeader\",\"type\":{\"type\":\"record\",\"name\":\"MessageHeader\",\"fields\":[{\"name\":\"TransactionSequenceId\",\"type\":\"string\"},{\"name\":\"TransactionDateTime\",\"type\":\"string\"},{\"name\":\"MessageName\",\"type\":\"string\"},{\"name\":\"Origin\",\"type\":\"string\"}]}},{\"name\":\"MessageData\",\"type\":{\"type\":\"record\",\"name\":\"MessageData\",\"fields\":[{\"name\":\"MessageParameters\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"MessageParameters\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}}},{\"name\":\"Orders\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Orders\",\"fields\":[{\"name\":\"OrderInformation\",\"type\":{\"type\":\"record\",\"name\":\"OrderInformation\",\"fields\":[{\"name\":\"SAN\",\"type\":\"string\"}]}},{\"name\":\"InstallName\",\"type\":{\"type\":\"record\",\"name\":\"InstallName\",\"fields\":[{\"name\":\"FirstName\",\"type\":\"string\"},{\"name\":\"MiddleName\",\"type\":\"string\"},{\"name\":\"LastName\",\"type\":\"string\"}]}},{\"name\":\"InstallAddress\",\"type\":{\"type\":\"record\",\"name\":\"InstallAddress\",\"fields\":[{\"name\":\"Address1\",\"type\":\"string\"},{\"name\":\"Address2\",\"type\":[\"string\",\"null\"]},{\"name\":\"City\",\"type\":\"string\"},{\"name\":\"State\",\"type\":\"string\"},{\"name\":\"Zip\",\"type\":\"string\"},{\"name\":\"Country\",\"type\":\"string\"}]}},{\"name\":\"InstallPhone\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"InstallPhone\",\"fields\":[{\"name\":\"Number\",\"type\":\"string\"},{\"name\":\"Type\",\"type\":[\"string\",\"null\"]}]}}},{\"name\":\"OrderAttributes\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"OrderAttributes\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}}}]}}}]}}]}");
+  private static final long serialVersionUID = 5492987386338807967L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"VoIPWorkOrder\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"MessageHeader\",\"type\":{\"type\":\"record\",\"name\":\"MessageHeader\",\"fields\":[{\"name\":\"TransactionSequenceId\",\"type\":\"string\"},{\"name\":\"TransactionDateTime\",\"type\":\"string\"},{\"name\":\"MessageName\",\"type\":\"string\"},{\"name\":\"Origin\",\"type\":\"string\"}]}},{\"name\":\"MessageData\",\"type\":{\"type\":\"record\",\"name\":\"MessageData\",\"fields\":[{\"name\":\"MessageParameters\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"MessageParameters\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}}},{\"name\":\"Orders\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"Orders\",\"fields\":[{\"name\":\"OrderInformation\",\"type\":{\"type\":\"record\",\"name\":\"OrderInformation\",\"fields\":[{\"name\":\"SAN\",\"type\":\"string\"}]}},{\"name\":\"InstallName\",\"type\":{\"type\":\"record\",\"name\":\"InstallName\",\"fields\":[{\"name\":\"FirstName\",\"type\":\"string\"},{\"name\":\"MiddleName\",\"type\":\"string\"},{\"name\":\"LastName\",\"type\":\"string\"}]}},{\"name\":\"InstallAddress\",\"type\":{\"type\":\"record\",\"name\":\"InstallAddress\",\"fields\":[{\"name\":\"Address1\",\"type\":\"string\"},{\"name\":\"Address2\",\"type\":[\"string\",\"null\"]},{\"name\":\"City\",\"type\":\"string\"},{\"name\":\"State\",\"type\":\"string\"},{\"name\":\"Zip\",\"type\":\"string\"},{\"name\":\"Country\",\"type\":\"string\"}]}},{\"name\":\"InstallPhone\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"InstallPhone\",\"fields\":[{\"name\":\"Number\",\"type\":\"string\"},{\"name\":\"Type\",\"type\":\"string\"}]}}},{\"name\":\"OrderAttributes\",\"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"OrderAttributes\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"value\",\"type\":\"string\"}]}}}]}}}]}},{\"name\":\"headers\",\"type\":{\"type\":\"record\",\"name\":\"headers\",\"fields\":[{\"name\":\"KEY\",\"type\":\"string\"}]}}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
@@ -53,6 +53,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
 
   @Deprecated public com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader MessageHeader;
   @Deprecated public com.hughes.billing.voipworkorder.dto.avro.req.MessageData MessageData;
+  @Deprecated public com.hughes.billing.voipworkorder.dto.avro.req.headers headers;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -65,10 +66,12 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
    * All-args constructor.
    * @param MessageHeader The new value for MessageHeader
    * @param MessageData The new value for MessageData
+   * @param headers The new value for headers
    */
-  public VoIPWorkOrder(com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader MessageHeader, com.hughes.billing.voipworkorder.dto.avro.req.MessageData MessageData) {
+  public VoIPWorkOrder(com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader MessageHeader, com.hughes.billing.voipworkorder.dto.avro.req.MessageData MessageData, com.hughes.billing.voipworkorder.dto.avro.req.headers headers) {
     this.MessageHeader = MessageHeader;
     this.MessageData = MessageData;
+    this.headers = headers;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -77,6 +80,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     switch (field$) {
     case 0: return MessageHeader;
     case 1: return MessageData;
+    case 2: return headers;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -87,6 +91,7 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     switch (field$) {
     case 0: MessageHeader = (com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader)value$; break;
     case 1: MessageData = (com.hughes.billing.voipworkorder.dto.avro.req.MessageData)value$; break;
+    case 2: headers = (com.hughes.billing.voipworkorder.dto.avro.req.headers)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -121,6 +126,22 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
    */
   public void setMessageData(com.hughes.billing.voipworkorder.dto.avro.req.MessageData value) {
     this.MessageData = value;
+  }
+
+  /**
+   * Gets the value of the 'headers' field.
+   * @return The value of the 'headers' field.
+   */
+  public com.hughes.billing.voipworkorder.dto.avro.req.headers getHeaders() {
+    return headers;
+  }
+
+  /**
+   * Sets the value of the 'headers' field.
+   * @param value the value to set.
+   */
+  public void setHeaders(com.hughes.billing.voipworkorder.dto.avro.req.headers value) {
+    this.headers = value;
   }
 
   /**
@@ -159,6 +180,8 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
     private com.hughes.billing.voipworkorder.dto.avro.req.MessageHeader.Builder MessageHeaderBuilder;
     private com.hughes.billing.voipworkorder.dto.avro.req.MessageData MessageData;
     private com.hughes.billing.voipworkorder.dto.avro.req.MessageData.Builder MessageDataBuilder;
+    private com.hughes.billing.voipworkorder.dto.avro.req.headers headers;
+    private com.hughes.billing.voipworkorder.dto.avro.req.headers.Builder headersBuilder;
 
     /** Creates a new Builder */
     private Builder() {
@@ -185,6 +208,13 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
       if (other.hasMessageDataBuilder()) {
         this.MessageDataBuilder = com.hughes.billing.voipworkorder.dto.avro.req.MessageData.newBuilder(other.getMessageDataBuilder());
       }
+      if (isValidValue(fields()[2], other.headers)) {
+        this.headers = data().deepCopy(fields()[2].schema(), other.headers);
+        fieldSetFlags()[2] = true;
+      }
+      if (other.hasHeadersBuilder()) {
+        this.headersBuilder = com.hughes.billing.voipworkorder.dto.avro.req.headers.newBuilder(other.getHeadersBuilder());
+      }
     }
 
     /**
@@ -203,6 +233,11 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
         fieldSetFlags()[1] = true;
       }
       this.MessageDataBuilder = null;
+      if (isValidValue(fields()[2], other.headers)) {
+        this.headers = data().deepCopy(fields()[2].schema(), other.headers);
+        fieldSetFlags()[2] = true;
+      }
+      this.headersBuilder = null;
     }
 
     /**
@@ -353,6 +388,80 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
       return this;
     }
 
+    /**
+      * Gets the value of the 'headers' field.
+      * @return The value.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.headers getHeaders() {
+      return headers;
+    }
+
+    /**
+      * Sets the value of the 'headers' field.
+      * @param value The value of 'headers'.
+      * @return This builder.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder setHeaders(com.hughes.billing.voipworkorder.dto.avro.req.headers value) {
+      validate(fields()[2], value);
+      this.headersBuilder = null;
+      this.headers = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'headers' field has been set.
+      * @return True if the 'headers' field has been set, false otherwise.
+      */
+    public boolean hasHeaders() {
+      return fieldSetFlags()[2];
+    }
+
+    /**
+     * Gets the Builder instance for the 'headers' field and creates one if it doesn't exist yet.
+     * @return This builder.
+     */
+    public com.hughes.billing.voipworkorder.dto.avro.req.headers.Builder getHeadersBuilder() {
+      if (headersBuilder == null) {
+        if (hasHeaders()) {
+          setHeadersBuilder(com.hughes.billing.voipworkorder.dto.avro.req.headers.newBuilder(headers));
+        } else {
+          setHeadersBuilder(com.hughes.billing.voipworkorder.dto.avro.req.headers.newBuilder());
+        }
+      }
+      return headersBuilder;
+    }
+
+    /**
+     * Sets the Builder instance for the 'headers' field
+     * @param value The builder instance that must be set.
+     * @return This builder.
+     */
+    public com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder setHeadersBuilder(com.hughes.billing.voipworkorder.dto.avro.req.headers.Builder value) {
+      clearHeaders();
+      headersBuilder = value;
+      return this;
+    }
+
+    /**
+     * Checks whether the 'headers' field has an active Builder instance
+     * @return True if the 'headers' field has an active Builder instance
+     */
+    public boolean hasHeadersBuilder() {
+      return headersBuilder != null;
+    }
+
+    /**
+      * Clears the value of the 'headers' field.
+      * @return This builder.
+      */
+    public com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder.Builder clearHeaders() {
+      headers = null;
+      headersBuilder = null;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public VoIPWorkOrder build() {
@@ -367,6 +476,11 @@ public class VoIPWorkOrder extends org.apache.avro.specific.SpecificRecordBase i
           record.MessageData = this.MessageDataBuilder.build();
         } else {
           record.MessageData = fieldSetFlags()[1] ? this.MessageData : (com.hughes.billing.voipworkorder.dto.avro.req.MessageData) defaultValue(fields()[1]);
+        }
+        if (headersBuilder != null) {
+          record.headers = this.headersBuilder.build();
+        } else {
+          record.headers = fieldSetFlags()[2] ? this.headers : (com.hughes.billing.voipworkorder.dto.avro.req.headers) defaultValue(fields()[2]);
         }
         return record;
       } catch (java.lang.Exception e) {

@@ -17,21 +17,17 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public boolean publish(VoIPWorkOrderAckMsg response, String orderingKey, String topic) throws PubSubFrwkException {
-        log.info("sendMessageToPubSub : STARTS");
+        log.info("publish() : STARTS");
         boolean status;
 
         byte[] serializedResponse = PublisherUtils.serializeResponse(response);
 
         String msgId = PublisherFactory.INSTANCE.publishMessage(new Message(new String(serializedResponse), orderingKey), topic);
-
-
-        log.info("sendMessageToPubSub : msgId : " + msgId);
+        log.info("publish() : msgId : " + msgId);
 
         status = msgId != null && !("").equals(msgId);
 
-        log.info("sendMessageToPubSub : ENDS");
+        log.info("publish : ENDS");
         return status;
     }
-
-
 }

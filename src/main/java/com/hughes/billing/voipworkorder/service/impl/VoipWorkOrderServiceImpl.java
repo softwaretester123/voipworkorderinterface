@@ -45,8 +45,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     @Override
     public ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         log.info("processRequest : STARTS");
-
-        // Retrieve the work order type from the request
         String workOrderType = RequestUtility.getWorkOrderType(request);
         log.info("processRequest : WorkOrderType = " + workOrderType);
 
@@ -56,16 +54,10 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
         try {
             // Determine the action based on the work order type
-            if (workOrderType.equals(VoipWorkOrderConstants.ADD_VOIP_WORKORDER)) {
-                log.info("processRequest : calling createVoipWorkOrder()");
-
-                // Create the VoIP work order
+            if (VoipWorkOrderConstants.ADD_VOIP_WORKORDER.equals(workOrderType)) {
                 result = createVoipWorkOrder(request);
                 responseMessage = VoipWorkOrderConstants.VOIP_WO_CREATE_SUCCESS_MESSAGE;
-            } else if (workOrderType.equals(VoipWorkOrderConstants.CANCEL_VOIP_WORKORDER)) {
-                log.info("processRequest : calling cancelVoipWorkOrder()");
-
-                // Cancel the VoIP BRT Account
+            } else if (VoipWorkOrderConstants.CANCEL_VOIP_WORKORDER.equals(workOrderType)) {
                 result = cancelVoipWorkOrder(request);
                 responseMessage = VoipWorkOrderConstants.VOIP_WO_CANCEL_SUCCESS_MESSAGE;
             }
@@ -76,21 +68,18 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
                     voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_OK);
                     voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_OK_MSG);
                     voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_SUCCESS);
-                    voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
                     voIPWorkOrderAckMsg = VoipAckResponseGenerator
-                            .prepareResponse(request, Boolean.TRUE.toString(), responseMessage);
+                            .prepareResponse(voipWorkOrderMsgDTO, Boolean.TRUE.toString(), responseMessage);
                 } else {
                     voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_FAIL);
                     voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_SP_CALLED_FAIL_MSG);
                     voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
-                    voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
                     voIPWorkOrderAckMsg = VoipAckResponseGenerator
-                            .prepareResponse(request, Boolean.FALSE.toString(), result);
+                            .prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), result);
                 }
             }
         } catch (Exception e) {
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
-            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
         }
 
         log.info("processRequest : ENDS");
@@ -98,7 +87,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     }
 
     public VoipWorkOrderMsgDTO getVoipWOMsg(VoIPWorkOrder request) {
-        log.info("saveRequestHelper : STARTS");
+        log.info("getVoipWOMsg : STARTS");
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
 
         try {
@@ -110,7 +99,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             voipWorkOrderMsgDTO.setMessageSource(VoipWorkOrderConstants.DSS);
             voipWorkOrderMsgDTO.setMessageDestination(VoipWorkOrderConstants.BILLING);
             voipWorkOrderMsgDTO.setSan(RequestUtility.getSan(request));
-            String workOrderType = RequestUtility.getWorkOrderType(request);
             voipWorkOrderMsgDTO.setWorkOrderType(RequestUtility.getWorkOrderType(request));
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_PENDING);
             voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_LANDED);
@@ -126,10 +114,10 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             }
 
         } catch (Exception e) {
-            log.error("saveRequestHelper : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
+            log.error("getVoipWOMsg : Exception Occurred" + e.getMessage());
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
         }
-        log.info("saveRequestHelper : ENDS");
+        log.info("getVoipWOMsg : ENDS");
         return voipWorkOrderMsgDTO;
     }
 
@@ -151,8 +139,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             voipWorkOrderMsgRepo.flush();
         } catch (Exception e) {
             log.error("saveRequest : Exception Occurred : " + e.getMessage());
-
-            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
         }
 
         log.info("saveRequest : ENDS");
@@ -180,7 +167,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         String glSeg = RequestUtility.getGlSegment(request);
 
         String result = null;
-
         log.info("createVoipWorkOrder : calling SP");
 
         try {
@@ -191,7 +177,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         }
 
         log.info("createVoipWorkOrder : result = " + result);
-
         log.info("createVoipWorkOrder : ENDS");
 
         return result;
@@ -208,7 +193,6 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         String accountNumber = RequestUtility.getSan(request);
 
         String result = null;
-
         log.info("cancelVoipWorkOrder : calling SP");
 
         try {
@@ -219,15 +203,17 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         }
 
         log.info("cancelVoipWorkOrder : result = " + result);
-
         log.info("cancelVoipWorkOrder : ENDS");
         return result;
     }
 
     @Override
     public void saveData(VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
+        log.info("saveData : STARTS");
+        voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
         voipWorkOrderMsgRepo.save(voipWorkOrderMsgDTO);
         voipWorkOrderMsgRepo.flush();
+        log.info("saveData : ENDS");
     }
 
     @Override

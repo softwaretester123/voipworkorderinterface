@@ -58,11 +58,10 @@ public class VoipWorkOrderController {
             if (bindingResult.hasErrors()) {
                 // Handle validation errors here
                 log.error("voipWorkOrder : Request Validation Failed : Throwing MissingParameterException");
-                throw new RequiredParameterMissingException(bindingResult.getAllErrors().get(0).getCode(), request, voipWorkOrderMsgDTO);
+                throw new RequiredParameterMissingException(bindingResult.getAllErrors().get(0).getCode(), voipWorkOrderMsgDTO);
             }
 
             voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
 
             result = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
 
@@ -71,7 +70,6 @@ public class VoipWorkOrderController {
             if (result.getBody() != null) {
                 voipWorkOrderMsgDTO.setPublishedPayload(result.getBody().toString());
             }
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
             voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
 
 //            voipWorkOrderService.publishMessage(result.getBody(), "A");
@@ -80,7 +78,7 @@ public class VoipWorkOrderController {
             throw requiredParameterMissingException;
         } catch (Exception e) {
             log.error("voipWorkOrder : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
         }
 
         log.info("voipWorkOrder : ENDS");

@@ -9,13 +9,11 @@ import org.springframework.validation.BindingResult;
 public class RequiredParameterMissingException extends RuntimeException {
     // transient keyword prevents serialization of the variable
     // done to avoid sonar violation
-    private final VoIPWorkOrder request;
 
-    private final transient VoipWorkOrderMsgDTO voipWorkOrderMsgDTO;
+    private final VoipWorkOrderMsgDTO voipWorkOrderMsgDTO;
 
-    public RequiredParameterMissingException(String message, VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
+    public RequiredParameterMissingException(String message, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         super(message);
-        this.request = request;
         this.voipWorkOrderMsgDTO = voipWorkOrderMsgDTO;
     }
 }

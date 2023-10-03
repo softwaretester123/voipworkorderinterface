@@ -48,12 +48,6 @@ public class VoipPubSubConfig {
         this.handler = handler;
     }
 
-    @PostConstruct
-    private void init() {
-        initializePublisher();
-        initializeSubscriber();
-    }
-
     /**
      * Initializes the subscriber and sets up the necessary configuration.
      */
@@ -66,7 +60,7 @@ public class VoipPubSubConfig {
                 subscriberConfigList = new ArrayList<>();
                 String[] subscriptionIdList = subscriptionIds.split(",");
                 for (String subscriptionId : subscriptionIdList) {
-                    SubscriberConfig config = (SubscriberConfig) initializeHelper(VoipWorkOrderConstants.SUBSCRIBER, subscriptionId);
+                    SubscriberConfig config = (SubscriberConfig) initializeConfig(VoipWorkOrderConstants.SUBSCRIBER, subscriptionId);
                     subscriberConfigList.add(config);
                 }
 
@@ -87,10 +81,10 @@ public class VoipPubSubConfig {
     private void initializePublisher() {
         log.info("initializePublisher() : STARTS");
 
-        PublisherConfig config;
+        PublisherConfig config = null;
         try {
             log.info("initializePublisher() :projectId : " + projectId + " : topicId : " + topicId + " : filePath : " + filePath);
-            config = (PublisherConfig) initializeHelper(VoipWorkOrderConstants.PUBLISHER, topicId);
+            config = (PublisherConfig) initializeConfig(VoipWorkOrderConstants.PUBLISHER, topicId);
             PublisherFactory.INSTANCE.initializePublishers(Collections.singletonList(config));
         } catch (PubSubFrwkException e) {
             log.error("initializePublisher() : Exception occurred while initializing the publisher: " + e.getMessage());
@@ -99,7 +93,7 @@ public class VoipPubSubConfig {
         log.info("initializePublisher() : ENDS");
     }
 
-    private PubSubConfig initializeHelper(String type, String id) {
+    private PubSubConfig initializeConfig(String type, String id) {
         SubscriberConfig subscriberConfig = null;
         PublisherConfig publisherConfig = null;
         if (type.equals(VoipWorkOrderConstants.SUBSCRIBER)) {
@@ -120,5 +114,11 @@ public class VoipPubSubConfig {
             publisherConfig.setCredentialFilePath(filePath);
             return publisherConfig;
         }
+    }
+
+    @PostConstruct
+    private void init() {
+        initializePublisher();
+        initializeSubscriber();
     }
 }

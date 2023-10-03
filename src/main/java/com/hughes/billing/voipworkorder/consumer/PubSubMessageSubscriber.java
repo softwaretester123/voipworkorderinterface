@@ -32,46 +32,43 @@ public class PubSubMessageSubscriber implements SubscriberResponseAdapter {
 
     private final VoipWorkOrderService voipWorkOrderService;
     private final VoipWorkOrderMsgRepo voipWorkOrderMsgRepo;
-    private final RequestValidator requestValidator;
 
     @Autowired
-    public PubSubMessageSubscriber(VoipWorkOrderService voipWorkOrderService, VoipWorkOrderMsgRepo voipWorkOrderMsgRepo, RequestValidator requestValidator) {
+    public PubSubMessageSubscriber(VoipWorkOrderService voipWorkOrderService, VoipWorkOrderMsgRepo voipWorkOrderMsgRepo) {
         this.voipWorkOrderService = voipWorkOrderService;
         this.voipWorkOrderMsgRepo = voipWorkOrderMsgRepo;
-        this.requestValidator = requestValidator;
     }
 
     @Override
-    public boolean processMessage(Message message, String s) {
-        log.info("processMessage : STARTS");
-        log.info("processMessage : processMessage : Message Id : " + message.getMessageId() + ", Message Data : " + message.getData());
+    public boolean processMessage(Message message, String subscriptionId) {
+        log.info("processMessage : STARTS : Message Id : " + message.getMessageId() + ", Message Data : " + message.getData());
 
         ResponseEntity<VoIPWorkOrderAckMsg> result = null;
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
         VoIPWorkOrder request = null;
         try {
             request = SubscriberUtils.deserializeRequest(message.getData());
-            voipWorkOrderMsgDTO = voipWorkOrderService.saveRequest(request);
 
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
+            if (request != null) {
+                voipWorkOrderMsgDTO = voipWorkOrderService.saveRequest(request);
 
-            result = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
+                //TODO Implement Validation
 
-            log.info("processMessage : Response Received : " + result.getBody());
+                voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
 
-            if (result.getBody() != null) {
-                voipWorkOrderMsgDTO.setPublishedPayload(result.getBody().toString());
+                result = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
+
+                log.info("processMessage : Response Received : " + result.getBody());
+
+                if (result.getBody() != null) {
+                    voipWorkOrderMsgDTO.setPublishedPayload(result.getBody().toString());
+                }
+                voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
             }
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
-            voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
 
-        } catch (RequiredParameterMissingException requiredParameterMissingException) {
-            log.error("voipWorkOrder : RequiredParameterMissingException Occurred" + requiredParameterMissingException.getMessage());
-            throw requiredParameterMissingException;
         } catch (Exception e) {
             log.error("voipWorkOrder : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), request, voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
         }
         log.info("processMessage : ENDS");
         return true;

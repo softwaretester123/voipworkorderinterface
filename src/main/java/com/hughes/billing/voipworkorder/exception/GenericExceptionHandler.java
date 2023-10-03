@@ -31,25 +31,21 @@ public class GenericExceptionHandler {
      * @return    the ResponseEntity object
      */
     @ExceptionHandler(RequiredParameterMissingException.class)
-    public ResponseEntity<Object> handleMandatoryParameterMissing(RequiredParameterMissingException e) {
+    public void handleMandatoryParameterMissing(RequiredParameterMissingException e) {
         log.info("handleMandatoryParameterMissing : STARTS : message = " + e.getMessage());
 
         VoIPWorkOrderAckMsg response = null;
         String message = null;
         try {
+            //TODO move to a separate function
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
-            if (voipWorkOrderMsgDTO == null) {
-                voipWorkOrderMsgDTO = new VoipWorkOrderMsgDTO();
-            }
-            VoIPWorkOrder request = e.getRequest();
             message = e.getMessage() + " is missing";
-            response = VoipAckResponseGenerator.prepareResponse(request, Boolean.FALSE.toString(), message);
+            response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), message);
             log.info("handleMandatoryParameterMissing : response = " + response);
 
             voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_FAIL);
             voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_FAIL_MSG);
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
             voipWorkOrderMsgDTO.setPublishedPayload(response.toString());
             voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
         } catch (Exception ex) {
@@ -57,7 +53,6 @@ public class GenericExceptionHandler {
         }
 
         log.info("handleMandatoryParameterMissing : ENDS");
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -67,24 +62,18 @@ public class GenericExceptionHandler {
      * @return    a ResponseEntity object with the error message and HTTP status code
      */
     @ExceptionHandler(BillingUserException.class)
-    public ResponseEntity<Object> handleBillingUserException(BillingUserException e) {
+    public void handleBillingUserException(BillingUserException e) {
         log.info("handleBillingUserException : STARTS");
         VoIPWorkOrderAckMsg response = null;
         try {
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
-            if (voipWorkOrderMsgDTO == null) {
-                voipWorkOrderMsgDTO = new VoipWorkOrderMsgDTO();
-            }
-            VoIPWorkOrder request = e.getRequestObj();
-            response = VoipAckResponseGenerator.prepareResponse(request, Boolean.FALSE.toString(), e.getMessage());
+            response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), e.getMessage());
             log.info("handleMandatoryParameterMissing : response = " + response);
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
-            voipWorkOrderMsgDTO.setModifiedTimeStamp(Utility.getTimeStamp());
             voipWorkOrderMsgDTO.setPublishedPayload(response.toString());
             voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
         } catch (Exception ex) {
             log.error("handleMandatoryParameterMissing : Exception = " + ex.getMessage());
         }
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

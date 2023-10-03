@@ -93,7 +93,7 @@
 							<goal>schema</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>src/main/resources/newconfig/avro/</sourceDirectory>
+							<sourceDirectory>src/main/resources/config/avro/</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
 							<includes>
 								<include>**/*.avsc</include>
@@ -101,11 +101,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.2.0.RELEASE</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
