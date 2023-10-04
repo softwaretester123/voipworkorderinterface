@@ -39,7 +39,7 @@ public class GenericExceptionHandler {
         try {
             //TODO move to a separate function
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
-            message = e.getMessage() + " is missing";
+            message = e.getMessage();
             response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), message);
             log.info("handleMandatoryParameterMissing : response = " + response);
 

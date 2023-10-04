@@ -58,4 +58,6 @@ public class VoipWorkOrderConstants {
     public static final String SUBSCRIBER = "SUBSCRIBER";
 
     public static final String PUBLISHER = "PUBLISHER";
+
+    public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
 }

@@ -6,8 +6,10 @@ import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -16,7 +18,8 @@ public class VoipAckResponseGenerator {
     private static VoIPWorkOrderAckMsg getGenericResponse(VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         log.info("getGenericResponse : STARTS");
 
-        String transactionDateTime = "";
+        SimpleDateFormat sdf = new SimpleDateFormat(VoipWorkOrderConstants.TRANSACTION_DATE_TIME_FORMAT);
+        String transactionDateTime = sdf.format(new Date());
 
         MessageHeader ackMessageHeader = new MessageHeader(voipWorkOrderMsgDTO.getTransactionSequenceId(),
                 transactionDateTime,
@@ -44,7 +47,7 @@ public class VoipAckResponseGenerator {
     }
 
     public static VoIPWorkOrderAckMsg prepareResponse(VoipWorkOrderMsgDTO voipWorkOrderMsgDTO, String status, String message) {
-        log.info("prepareResponse : STARTS");
+        log.info("prepareResponse : STARTS : voipWorkOrderMsgDTO = " + voipWorkOrderMsgDTO + ", status = " + status + ", message = " + message);
         VoIPWorkOrderAckMsg genericResponse = null;
         try {
             if (voipWorkOrderMsgDTO == null) {

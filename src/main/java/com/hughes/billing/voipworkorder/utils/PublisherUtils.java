@@ -14,10 +14,9 @@ import java.io.ByteArrayOutputStream;
 public class PublisherUtils {
 
     public static byte[] serializeResponse(VoIPWorkOrderAckMsg response) {
-        log.info("serializeResponse : STARTS");
+        log.info("serializeResponse : STARTS: serializeResponse : response = " + response);
         DatumWriter<VoIPWorkOrderAckMsg> writer = new SpecificDatumWriter<>(VoIPWorkOrderAckMsg.getClassSchema());
         byte[] data;
-        log.info("serializeResponse : response = " + response);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             Encoder encoder = EncoderFactory.get().binaryEncoder(stream, null);

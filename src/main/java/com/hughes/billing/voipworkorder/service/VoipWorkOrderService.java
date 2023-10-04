@@ -11,7 +11,7 @@ import java.text.ParseException;
 
 public interface VoipWorkOrderService {
 
-    ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO dumpedRequest);
+    VoIPWorkOrderAckMsg processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO dumpedRequest);
 
     VoipWorkOrderMsgDTO saveRequest(VoIPWorkOrder request) throws ParseException;
 

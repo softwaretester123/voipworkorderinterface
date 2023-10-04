@@ -17,7 +17,8 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     public boolean publish(VoIPWorkOrderAckMsg response, String orderingKey, String topic) throws PubSubFrwkException {
-        log.info("publish() : STARTS");
+        log.info("publish() : STARTS : response = " + response + ", orderingKey = " + orderingKey + ", topic = " + topic);
+
         boolean status;
 
         byte[] serializedResponse = PublisherUtils.serializeResponse(response);

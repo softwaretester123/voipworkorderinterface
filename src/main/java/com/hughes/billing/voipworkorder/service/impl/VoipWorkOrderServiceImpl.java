@@ -43,7 +43,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * @return description of return value
      */
     @Override
-    public ResponseEntity<VoIPWorkOrderAckMsg> processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
+    public VoIPWorkOrderAckMsg processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         log.info("processRequest : STARTS");
         String workOrderType = RequestUtility.getWorkOrderType(request);
         log.info("processRequest : WorkOrderType = " + workOrderType);
@@ -83,7 +83,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         }
 
         log.info("processRequest : ENDS");
-        return new ResponseEntity<>(voIPWorkOrderAckMsg, HttpStatus.OK);
+        return voIPWorkOrderAckMsg;
     }
 
     public VoipWorkOrderMsgDTO getVoipWOMsg(VoIPWorkOrder request) {
