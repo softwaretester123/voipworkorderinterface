@@ -36,13 +36,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.hughes.bits.frameworks</groupId>
-			<artifactId>pubsub-lib</artifactId>
-			<version>1.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/external_packages/pubsub-lib-1.0.1.jar</systemPath>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -53,26 +56,19 @@
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.oracle.jdbc</groupId>
+			<groupId>com.hughes.bits.frameworks</groupId>
+			<artifactId>pubsub-lib</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc8</artifactId>
-			<version>12.2.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/external_packages/ojdbc8.jar</systemPath>
+			<version>19.3.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.threeten</groupId>
-			<artifactId>threetenbp</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.api</groupId>
-			<artifactId>gax</artifactId>
-			<version>2.34.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>google-cloud-pubsub</artifactId>
-			<version>1.125.2</version>
+			<groupId>com.github.ulisesbocchio</groupId>
+			<artifactId>jasypt-spring-boot-starter</artifactId>
+			<version>2.1.2</version>
 		</dependency>
 	</dependencies>
 
@@ -93,10 +89,10 @@
 							<goal>schema</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>src/main/resources/config/avro/</sourceDirectory>
+							<sourceDirectory>src/main/resources/avro/</sourceDirectory>
 							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
 							<includes>
-								<include>**/*.avsc</include>
+								<include>*.avsc</include>
 							</includes>
 						</configuration>
 					</execution>

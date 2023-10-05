@@ -28,18 +28,13 @@ import java.util.Set;
 @Slf4j
 public class VoipWorkOrderController {
     private final VoipWorkOrderService voipWorkOrderService;
-    private final VoipWorkOrderMsgRepo voipWorkOrderMsgRepo;
-    private final RequestValidator requestValidator;
     private final PubSubMessageValidator pubSubMessageValidator;
 
     @Autowired
     public VoipWorkOrderController(VoipWorkOrderService voipWorkOrderService,
                                    VoipWorkOrderMsgRepo voipWorkOrderMsgRepo,
-                                   RequestValidator requestValidator,
                                    PubSubMessageValidator pubSubMessageValidator) {
         this.voipWorkOrderService = voipWorkOrderService;
-        this.voipWorkOrderMsgRepo = voipWorkOrderMsgRepo;
-        this.requestValidator = requestValidator;
         this.pubSubMessageValidator = pubSubMessageValidator;
     }
 
@@ -85,7 +80,7 @@ public class VoipWorkOrderController {
             throw requiredParameterMissingException;
         } catch (Exception e) {
             log.error("voipWorkOrder : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO, result);
         }
 
         log.info("voipWorkOrder : ENDS");

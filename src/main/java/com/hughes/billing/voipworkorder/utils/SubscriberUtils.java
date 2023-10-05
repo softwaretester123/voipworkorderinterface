@@ -9,6 +9,12 @@ import org.apache.avro.specific.SpecificDatumReader;
 
 @Slf4j
 public class SubscriberUtils {
+    /**
+     * Deserialize the given data into a VoIPWorkOrder object.
+     *
+     * @param  data  the data to be deserialized
+     * @return       the deserialized VoIPWorkOrder object, or null if deserialization fails
+     */
     public static VoIPWorkOrder deserializeRequest(String data) {
         log.info("deserializeRequest : STARTS : data = " + data);
         VoIPWorkOrder voIPWorkOrder = null;

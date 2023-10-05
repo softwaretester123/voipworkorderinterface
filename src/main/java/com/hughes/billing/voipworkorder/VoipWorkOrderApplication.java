@@ -1,15 +1,15 @@
 package com.hughes.billing.voipworkorder;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@EnableTransactionManagement
-public class VoipworkorderinterfaceApplication {
+@EnableEncryptableProperties
+public class VoipWorkOrderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VoipworkorderinterfaceApplication.class, args);
+		SpringApplication.run(VoipWorkOrderApplication.class, args);
 	}
 
 }

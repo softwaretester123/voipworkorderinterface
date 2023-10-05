@@ -3,6 +3,8 @@ package com.hughes.billing.voipworkorder.utils;
 //1= Landed; 2 = Validation OK ; 3 = Validation FAIL ; 4 = SP Called OK ; 5 = SP Called FAIL; 6 = Response Sent
 
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class VoipWorkOrderConstants {
 
     public static final String ADD_VOIP_WORKORDER = "A";
@@ -41,9 +43,9 @@ public class VoipWorkOrderConstants {
 
     public static final String VOIP_REQ_STATE_VALIDATION_FAIL_MSG = "Request Validation Failed";
 
-    public static final String VOIP_REQ_STATE_SP_CALLED_OK_MSG = "SP Call Successful";
+    public static final String VOIP_REQ_STATE_SP_CALLED_OK_MSG = "SP Call Success";
 
-    public static final String VOIP_REQ_STATE_SP_CALLED_FAIL_MSG = "SP Call Failed";
+    public static final String VOIP_REQ_STATE_SP_CALLED_FAIL_MSG = "SP Call Failure";
 
     public static final String VOIP_REQ_STATE_RESPONSE_SENT_MSG = "Response Sent";
 

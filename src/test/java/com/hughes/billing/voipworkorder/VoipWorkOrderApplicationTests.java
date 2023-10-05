@@ -1,10 +1,10 @@
-package com.hughes.billing.voipworkorder.voipworkorderinterface;
+package com.hughes.billing.voipworkorder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class VoipworkorderinterfaceApplicationTests {
+class VoipWorkOrderApplicationTests {
 
 	@Test
 	void contextLoads() {

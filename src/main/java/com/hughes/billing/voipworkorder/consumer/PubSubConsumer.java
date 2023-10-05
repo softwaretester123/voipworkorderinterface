@@ -4,51 +4,54 @@ import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
 import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
+import com.hughes.billing.voipworkorder.exception.GenericExceptionHandler;
 import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingException;
-import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
+import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
-import com.hughes.billing.voipworkorder.utils.*;
+import com.hughes.billing.voipworkorder.utils.PubSubMessageValidator;
+import com.hughes.billing.voipworkorder.utils.SubscriberUtils;
+import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
 import com.hughes.bits.framework.pubsub.message.Message;
 import com.hughes.bits.framework.pubsub.message.SubscriberResponseAdapter;
-
-import java.util.Collections;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.MapBindingResult;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 @Component
 @Slf4j
-public class PubSubMessageSubscriber implements SubscriberResponseAdapter {
+public class PubSubConsumer implements SubscriberResponseAdapter {
 
     private final VoipWorkOrderService voipWorkOrderService;
-    private final VoipWorkOrderMsgRepo voipWorkOrderMsgRepo;
+    private final GenericExceptionHandler genericExceptionHandler;
     private final PubSubMessageValidator pubSubMessageValidator;
+    private final PublisherService publisherService;
+
+    @Value("${spring.cloud.gcp.pubsub.topic.id}")
+    private String topicId;
 
     @Autowired
-    public PubSubMessageSubscriber(VoipWorkOrderService voipWorkOrderService,
-                                   VoipWorkOrderMsgRepo voipWorkOrderMsgRepo,
-                                   PubSubMessageValidator pubSubMessageValidator) {
+    public PubSubConsumer(VoipWorkOrderService voipWorkOrderService,
+                          GenericExceptionHandler genericExceptionHandler,
+                          PubSubMessageValidator pubSubMessageValidator,
+                          PublisherService publisherService) {
         this.voipWorkOrderService = voipWorkOrderService;
-        this.voipWorkOrderMsgRepo = voipWorkOrderMsgRepo;
+        this.genericExceptionHandler = genericExceptionHandler;
         this.pubSubMessageValidator = pubSubMessageValidator;
+        this.publisherService = publisherService;
     }
 
     @Override
     public boolean processMessage(Message message, String subscriptionId) {
         log.info("processMessage : STARTS : Message Id : " + message.getMessageId() + ", Message Data : " + message.getData());
-
-        VoIPWorkOrderAckMsg response = null;
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
         VoIPWorkOrder request = null;
+        VoIPWorkOrderAckMsg response = null;
         try {
             request = SubscriberUtils.deserializeRequest(message.getData());
 
@@ -65,10 +68,16 @@ public class PubSubMessageSubscriber implements SubscriberResponseAdapter {
                 }
 
                 voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
+                voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_PENDING);
+                voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK_MSG);
 
                 response = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
 
                 log.info("processMessage : Response Received : " + response);
+
+                boolean publishStatus = publisherService.publish(response,
+                        voipWorkOrderMsgDTO.getSan(),
+                        "topicId");
 
                 if (response != null) {
                     voipWorkOrderMsgDTO.setPublishedPayload(response.toString());
@@ -78,10 +87,19 @@ public class PubSubMessageSubscriber implements SubscriberResponseAdapter {
 
         } catch (RequiredParameterMissingException requiredParameterMissingException) {
             log.error("processMessage : Required Parameter Missing : " + requiredParameterMissingException.getMessage());
-            throw requiredParameterMissingException;
+            genericExceptionHandler.handleRequiredParameterMissing(requiredParameterMissingException);
+        } catch (PubSubFrwkException pubSubFrwkException) {
+            log.error("processMessage : PubSubFrwkException Occurred" + pubSubFrwkException.getMessage());
+            genericExceptionHandler.handleBillingUserException(
+                    new BillingUserException(pubSubFrwkException.getMessage(),
+                            voipWorkOrderMsgDTO,
+                            response));
         } catch (Exception e) {
             log.error("voipWorkOrder : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
+            genericExceptionHandler.handleBillingUserException(
+                    new BillingUserException(e.getMessage(),
+                            voipWorkOrderMsgDTO,
+                            response));
         }
         log.info("processMessage : ENDS");
         return true;

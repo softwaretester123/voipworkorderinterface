@@ -13,6 +13,12 @@ import java.io.ByteArrayOutputStream;
 @Slf4j
 public class PublisherUtils {
 
+    /**
+     * Serializes the given VoIPWorkOrderAckMsg response into a byte array.
+     *
+     * @param  response  the VoIPWorkOrderAckMsg response to be serialized
+     * @return           the serialized byte array of the response, or an empty byte array if an exception occurs
+     */
     public static byte[] serializeResponse(VoIPWorkOrderAckMsg response) {
         log.info("serializeResponse : STARTS: serializeResponse : response = " + response);
         DatumWriter<VoIPWorkOrderAckMsg> writer = new SpecificDatumWriter<>(VoIPWorkOrderAckMsg.getClassSchema());

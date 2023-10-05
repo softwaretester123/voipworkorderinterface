@@ -26,7 +26,7 @@ public class PublisherServiceImpl implements PublisherService {
         String msgId = PublisherFactory.INSTANCE.publishMessage(new Message(new String(serializedResponse), orderingKey), topic);
         log.info("publish() : msgId : " + msgId);
 
-        status = msgId != null && !("").equals(msgId);
+        status = msgId != null && !msgId.isEmpty();
 
         log.info("publish : ENDS");
         return status;

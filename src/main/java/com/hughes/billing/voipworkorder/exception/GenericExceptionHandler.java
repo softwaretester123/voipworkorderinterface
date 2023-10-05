@@ -1,16 +1,13 @@
 package com.hughes.billing.voipworkorder.exception;
 
 import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
-import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
-import com.hughes.billing.voipworkorder.utils.Utility;
-import com.hughes.billing.voipworkorder.utils.VoipAckResponseGenerator;
+import com.hughes.billing.voipworkorder.producer.VoipAckResponseGenerator;
+import com.hughes.billing.voipworkorder.utils.ResponseUtility;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -31,7 +28,7 @@ public class GenericExceptionHandler {
      * @return    the ResponseEntity object
      */
     @ExceptionHandler(RequiredParameterMissingException.class)
-    public void handleMandatoryParameterMissing(RequiredParameterMissingException e) {
+    public void handleRequiredParameterMissing(RequiredParameterMissingException e) {
         log.info("handleMandatoryParameterMissing : STARTS : message = " + e.getMessage());
 
         VoIPWorkOrderAckMsg response = null;
@@ -67,7 +64,13 @@ public class GenericExceptionHandler {
         VoIPWorkOrderAckMsg response = null;
         try {
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
-            response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), e.getMessage());
+            response = e.getVoipWorkOrderAckMsg();
+            if (response == null) {
+                log.debug("handleBillingUserException : response is null - creating a new response object");
+                response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), e.getMessage());
+            } else {
+                ResponseUtility.setStatusAndMessage(response, Boolean.FALSE.toString(), e.getMessage());
+            }
             log.info("handleMandatoryParameterMissing : response = " + response);
             voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_FAILURE);
             voipWorkOrderMsgDTO.setPublishedPayload(response.toString());

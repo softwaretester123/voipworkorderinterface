@@ -71,7 +71,7 @@ public class RequestUtility {
         } catch (NullPointerException e) {
             log.error("getGlSegment : Exception: " + e.getMessage());
         }
-        log.info("getWorkOrderTypeFromRequest : ENDS -> voipDealName = " + glSegmentId);
+        log.info("getGlSegment : ENDS -> glSegmentId = " + glSegmentId);
         return glSegmentId != null ? glSegmentId.toString() : null;
     }
 
@@ -85,6 +85,7 @@ public class RequestUtility {
         log.info("getSan : STARTS");
         CharSequence san = null;
         try {
+            //TODO order not empty check
             san = request.getMessageData().getOrders().get(0)
                     .getOrderInformation().getSAN();
         } catch (NullPointerException e) {
@@ -129,17 +130,5 @@ public class RequestUtility {
         CharSequence transactionDateTime = messageHeader.getTransactionDateTime();
         log.info("getTransactionDateTime : ENDS -> transactionDateTime = " + transactionDateTime);
         return transactionDateTime != null ? transactionDateTimeFormat.parse(transactionDateTime.toString()) : null;
-    }
-
-    public static String getTransactionDateTimeAsString(VoIPWorkOrder request) {
-        log.info("getTransactionDateTimeAsString : STARTS");
-        MessageHeader messageHeader = request.getMessageHeader();
-        if (messageHeader == null) {
-            log.info("getTransactionDateTimeAsString : transactionDateTime is null");
-            return null;
-        }
-        CharSequence transactionDateTime = messageHeader.getTransactionDateTime();
-        log.info("getTransactionDateTimeAsString : ENDS -> transactionDateTime = " + transactionDateTime);
-        return transactionDateTime != null ? transactionDateTime.toString() : null;
     }
 }

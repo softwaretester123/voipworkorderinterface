@@ -1,6 +1,6 @@
 package com.hughes.billing.voipworkorder.config;
 
-import com.hughes.billing.voipworkorder.consumer.PubSubMessageSubscriber;
+import com.hughes.billing.voipworkorder.consumer.PubSubConsumer;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.config.PubSubConfig;
 import com.hughes.bits.framework.pubsub.config.PublisherConfig;
@@ -8,6 +8,7 @@ import com.hughes.bits.framework.pubsub.config.SubscriberConfig;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
 import com.hughes.bits.framework.pubsub.publisher.PublisherFactory;
 import com.hughes.bits.framework.pubsub.subscriber.SubscriberFactory;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,7 @@ public class VoipPubSubConfig {
     @Value("${spring.cloud.gcp.pubsub.project.id}")
     private String projectId;
 
+    @Getter
     @Value("${spring.cloud.gcp.pubsub.topic.id}")
     private String topicId;
 
@@ -41,16 +43,13 @@ public class VoipPubSubConfig {
     @Value("${spring.cloud.gcp.pubsub.ack.deadline}")
     private Long ackDeadline;
 
-    PubSubMessageSubscriber handler;
+    PubSubConsumer handler;
 
     @Autowired
-    public VoipPubSubConfig(PubSubMessageSubscriber handler) {
+    public VoipPubSubConfig(PubSubConsumer handler) {
         this.handler = handler;
     }
 
-    /**
-     * Initializes the subscriber and sets up the necessary configuration.
-     */
     private void initializeSubscriber() {
         log.info("initializeSubscriber() : STARTS");
         List<SubscriberConfig> subscriberConfigList;
@@ -93,6 +92,13 @@ public class VoipPubSubConfig {
         log.info("initializePublisher() : ENDS");
     }
 
+    /**
+     * Initializes the configuration for the given type and ID.
+     *
+     * @param  type  the type of configuration (subscriber or publisher)
+     * @param  id    the ID of the configuration (subscription ID or topic ID)
+     * @return       the initialized configuration object
+     */
     private PubSubConfig initializeConfig(String type, String id) {
         SubscriberConfig subscriberConfig = null;
         PublisherConfig publisherConfig = null;
@@ -102,6 +108,7 @@ public class VoipPubSubConfig {
             subscriberConfig.setSubscriptionId(id);
             subscriberConfig.setResponseAdapter(handler);
             subscriberConfig.setEnableFlowControl(enableFlowControl);
+            //TBD Is the setAuthenticationRequired required
             subscriberConfig.setAuthenticationRequired(true);
             subscriberConfig.setCredentialFilePath(filePath);
             subscriberConfig.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));
@@ -116,6 +123,9 @@ public class VoipPubSubConfig {
         }
     }
 
+    /**
+     * Initializes the publisher and subscriber for the Java function.
+     */
     @PostConstruct
     private void init() {
         initializePublisher();

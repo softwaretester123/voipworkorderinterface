@@ -1,9 +1,7 @@
 package com.hughes.billing.voipworkorder.exception;
 
-import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import lombok.Getter;
-import org.springframework.validation.BindingResult;
 
 @Getter
 public class RequiredParameterMissingException extends RuntimeException {

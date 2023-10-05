@@ -33,6 +33,8 @@ build/
 .vscode/
 
 *.zip
+*.log
 
 /external_packages/
 /backup_files/
+/opt/

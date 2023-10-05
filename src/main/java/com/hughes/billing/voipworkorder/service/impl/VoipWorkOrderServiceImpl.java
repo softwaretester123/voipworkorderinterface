@@ -8,15 +8,13 @@ import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
 import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.RequestUtility;
-import com.hughes.billing.voipworkorder.utils.VoipAckResponseGenerator;
+import com.hughes.billing.voipworkorder.producer.VoipAckResponseGenerator;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -45,7 +43,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     @Override
     public VoIPWorkOrderAckMsg processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         log.info("processRequest : STARTS");
-        String workOrderType = RequestUtility.getWorkOrderType(request);
+        String workOrderType = voipWorkOrderMsgDTO.getWorkOrderType();
         log.info("processRequest : WorkOrderType = " + workOrderType);
 
         String result = null;
@@ -79,7 +77,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
                 }
             }
         } catch (Exception e) {
-            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO, voIPWorkOrderAckMsg);
         }
 
         log.info("processRequest : ENDS");
@@ -92,9 +90,10 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
         try {
             voipWorkOrderMsgDTO = new VoipWorkOrderMsgDTO();
-            String transactionSequenceId = RequestUtility.getTransactionSequenceId(request);
-            voipWorkOrderMsgDTO.setTransactionSequenceId(transactionSequenceId);
-            voipWorkOrderMsgDTO.setCreatedTimeStamp(voipWorkOrderMsgRepo.getServerTime());
+            voipWorkOrderMsgDTO.setTransactionSequenceId(RequestUtility.getTransactionSequenceId(request));
+            Long serverTime = voipWorkOrderMsgRepo.getServerTime();
+            voipWorkOrderMsgDTO.setCreatedTimeStamp(serverTime);
+            voipWorkOrderMsgDTO.setModifiedTimeStamp(serverTime);
             voipWorkOrderMsgDTO.setMessageName(VoipWorkOrderConstants.VOIPWORKORDER_MSG_NAME);
             voipWorkOrderMsgDTO.setMessageSource(VoipWorkOrderConstants.DSS);
             voipWorkOrderMsgDTO.setMessageDestination(VoipWorkOrderConstants.BILLING);
@@ -115,7 +114,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
 
         } catch (Exception e) {
             log.error("getVoipWOMsg : Exception Occurred" + e.getMessage());
-            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO, null);
         }
         log.info("getVoipWOMsg : ENDS");
         return voipWorkOrderMsgDTO;
@@ -139,7 +138,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
             voipWorkOrderMsgRepo.flush();
         } catch (Exception e) {
             log.error("saveRequest : Exception Occurred : " + e.getMessage());
-            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO);
+            throw new BillingUserException(e.getMessage(), voipWorkOrderMsgDTO, null);
         }
 
         log.info("saveRequest : ENDS");
