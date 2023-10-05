@@ -34,6 +34,7 @@ build/
 
 *.zip
 *.log
+*.jar
 
 /external_packages/
 /backup_files/
