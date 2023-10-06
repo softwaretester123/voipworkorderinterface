@@ -1,7 +1,5 @@
 package com.hughes.billing.voipworkorder.consumer;
 
-import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
-import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import com.hughes.billing.voipworkorder.exception.GenericExceptionHandler;
@@ -9,11 +7,12 @@ import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingExcept
 import com.hughes.billing.voipworkorder.service.PublisherService;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.utils.PubSubMessageValidator;
-import com.hughes.billing.voipworkorder.utils.SubscriberUtils;
+import com.hughes.billing.voipworkorder.utils.PubSubUtils;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
 import com.hughes.bits.framework.pubsub.message.Message;
 import com.hughes.bits.framework.pubsub.message.SubscriberResponseAdapter;
+import com.hughes.sdg.avro.CommonMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,12 +47,13 @@ public class PubSubConsumer implements SubscriberResponseAdapter {
 
     @Override
     public boolean processMessage(Message message, String subscriptionId) {
-        log.info("processMessage : STARTS : Message Id : " + message.getMessageId() + ", Message Data : " + message.getData());
+        log.info("processMessage : STARTS : Message Id : " + message.getMessageId() + ", Request : " + message.getData());
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
-        VoIPWorkOrder request = null;
-        VoIPWorkOrderAckMsg response = null;
+        CommonMessage request = null;
+        CommonMessage response = null;
         try {
-            request = SubscriberUtils.deserializeRequest(message.getData());
+            request = PubSubUtils.deSerialize(message.getData().getBytes());
+            log.info("processMessage : deSerialized request : " + request);
 
             if (request != null) {
                 voipWorkOrderMsgDTO = voipWorkOrderService.saveRequest(request);
@@ -89,13 +89,13 @@ public class PubSubConsumer implements SubscriberResponseAdapter {
             log.error("processMessage : Required Parameter Missing : " + requiredParameterMissingException.getMessage());
             genericExceptionHandler.handleRequiredParameterMissing(requiredParameterMissingException);
         } catch (PubSubFrwkException pubSubFrwkException) {
-            log.error("processMessage : PubSubFrwkException Occurred" + pubSubFrwkException.getMessage());
+            log.error("processMessage : PubSubFrwkException Occurred : " + pubSubFrwkException.getMessage());
             genericExceptionHandler.handleBillingUserException(
                     new BillingUserException(pubSubFrwkException.getMessage(),
                             voipWorkOrderMsgDTO,
                             response));
         } catch (Exception e) {
-            log.error("voipWorkOrder : Exception Occurred" + e.getMessage());
+            log.error("processMessage : Exception Occurred : " + e.getMessage());
             genericExceptionHandler.handleBillingUserException(
                     new BillingUserException(e.getMessage(),
                             voipWorkOrderMsgDTO,

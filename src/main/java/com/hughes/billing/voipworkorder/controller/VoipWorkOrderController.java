@@ -1,28 +1,25 @@
 package com.hughes.billing.voipworkorder.controller;
 
-import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
-import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import com.hughes.billing.voipworkorder.exception.RequiredParameterMissingException;
 import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
-import com.hughes.billing.voipworkorder.utils.*;
+import com.hughes.billing.voipworkorder.utils.PubSubMessageValidator;
+import com.hughes.billing.voipworkorder.utils.PubSubUtils;
+import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
+import com.hughes.sdg.avro.CommonMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 @RestController
 @Slf4j
@@ -47,10 +44,10 @@ public class VoipWorkOrderController {
      * @throws BillingUserException If there is an exception related to the billing user.
      */
     @PostMapping(value = "/voipworkorder")
-    public ResponseEntity<String> voipWorkOrder(@RequestBody @Validated VoIPWorkOrder request, BindingResult bindingResult) {
+    public ResponseEntity<String> voipWorkOrder(@RequestBody @Validated CommonMessage request, BindingResult bindingResult) {
         log.info("voipWorkOrder : Request Received : " + request);
 
-        VoIPWorkOrderAckMsg result = null;
+        CommonMessage result = null;
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
         try {
             voipWorkOrderMsgDTO = voipWorkOrderService.saveRequest(request);
@@ -88,7 +85,7 @@ public class VoipWorkOrderController {
     }
 
     @PostMapping(value = "/testValidation")
-    public ResponseEntity<String> testValidation(@RequestBody VoIPWorkOrder request) {
+    public ResponseEntity<String> testValidation(@RequestBody CommonMessage request) {
         pubSubMessageValidator.validate(request);
         for (Map.Entry<String, String> entry : pubSubMessageValidator.getErrorMap().entrySet()) {
             log.info("Key : " + entry.getKey() + " Value : " + entry.getValue());
@@ -97,8 +94,8 @@ public class VoipWorkOrderController {
     }
 
     @PostMapping(value = "/deserialize")
-    public ResponseEntity<String> deserialize(@RequestBody String request) {
-        SubscriberUtils.deserializeRequest(request);
+    public ResponseEntity<String> deserialize(@RequestBody String request) throws Exception {
+        PubSubUtils.deSerialize(request.getBytes());
         return new ResponseEntity<>("Ok", HttpStatus.OK);
     }
 }

@@ -1,11 +1,11 @@
 package com.hughes.billing.voipworkorder.exception;
 
-import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.service.VoipWorkOrderService;
 import com.hughes.billing.voipworkorder.producer.VoipAckResponseGenerator;
 import com.hughes.billing.voipworkorder.utils.ResponseUtility;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
+import com.hughes.sdg.avro.CommonMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +31,7 @@ public class GenericExceptionHandler {
     public void handleRequiredParameterMissing(RequiredParameterMissingException e) {
         log.info("handleMandatoryParameterMissing : STARTS : message = " + e.getMessage());
 
-        VoIPWorkOrderAckMsg response = null;
+        CommonMessage response = null;
         String message = null;
         try {
             //TODO move to a separate function
@@ -61,10 +61,10 @@ public class GenericExceptionHandler {
     @ExceptionHandler(BillingUserException.class)
     public void handleBillingUserException(BillingUserException e) {
         log.info("handleBillingUserException : STARTS");
-        VoIPWorkOrderAckMsg response = null;
+        CommonMessage response = null;
         try {
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
-            response = e.getVoipWorkOrderAckMsg();
+            response = e.getCommonMessage();
             if (response == null) {
                 log.debug("handleBillingUserException : response is null - creating a new response object");
                 response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), e.getMessage());

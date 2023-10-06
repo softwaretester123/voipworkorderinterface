@@ -50,6 +50,9 @@ public class VoipPubSubConfig {
         this.handler = handler;
     }
 
+    /**
+     * Initializes the subscriber.
+     */
     private void initializeSubscriber() {
         log.info("initializeSubscriber() : STARTS");
         List<SubscriberConfig> subscriberConfigList;
@@ -77,6 +80,9 @@ public class VoipPubSubConfig {
         log.info("initializeSubscriber() : ENDS");
     }
 
+    /**
+     * Initializes the publisher.
+     */
     private void initializePublisher() {
         log.info("initializePublisher() : STARTS");
 
@@ -108,7 +114,6 @@ public class VoipPubSubConfig {
             subscriberConfig.setSubscriptionId(id);
             subscriberConfig.setResponseAdapter(handler);
             subscriberConfig.setEnableFlowControl(enableFlowControl);
-            //TBD Is the setAuthenticationRequired required
             subscriberConfig.setAuthenticationRequired(true);
             subscriberConfig.setCredentialFilePath(filePath);
             subscriberConfig.setMaxAckExtensionPeriod(Duration.ofSeconds(ackDeadline));

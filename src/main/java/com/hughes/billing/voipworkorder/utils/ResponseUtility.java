@@ -1,11 +1,11 @@
 package com.hughes.billing.voipworkorder.utils;
 
-import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
+import com.hughes.sdg.avro.CommonMessage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ResponseUtility {
-    public static VoIPWorkOrderAckMsg setStatusAndMessage(VoIPWorkOrderAckMsg voipWorkOrderAckMsg, String status, String message) {
+    public static CommonMessage setStatusAndMessage(CommonMessage voipWorkOrderAckMsg, String status, String message) {
         log.info("setStatusAndMessage: STARTS");
         voipWorkOrderAckMsg
                 .getMessageData()

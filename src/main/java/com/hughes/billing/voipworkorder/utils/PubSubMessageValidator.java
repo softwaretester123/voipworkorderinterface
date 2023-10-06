@@ -1,6 +1,7 @@
 package com.hughes.billing.voipworkorder.utils;
 
-import com.hughes.billing.voipworkorder.dto.avro.req.*;
+import com.hughes.sdg.avro.*;
+import com.hughes.sdg.avro.types.*;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class PubSubMessageValidator {
 
     private Map<String, String> errorMap;
 
-    private void validateMessageHeader(VoIPWorkOrder message) {
+    private void validateMessageHeader(CommonMessage message) {
         log.debug("validateMessageHeader : STARTS");
         if (message.getMessageHeader().getTransactionSequenceId().toString().isEmpty()) {
             this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageHeader->TransactionSequenceId is empty");
@@ -36,32 +37,7 @@ public class PubSubMessageValidator {
         log.debug("validateMessageHeader : ENDS");
     }
 
-    private void validateMessageData(VoIPWorkOrder message) {
-        log.debug("validateMessageData : STARTS");
-        if (message.getMessageData().getOrders().isEmpty()) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders is empty");
-            return;
-        }
-
-        validateOrder(message.getMessageData().getOrders().get(0));
-
-        if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
-            return;
-        }
-
-        validateMessageParameters(message.getMessageData().getMessageParameters());
-        log.debug("validateMessageData : ENDS");
-    }
-
-    private void validateHeaders(VoIPWorkOrder message) {
-        log.debug("validateHeaders : STARTS");
-        if (message.getHeaders().getKEY().toString().isEmpty()) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "Headers->KEY is empty");
-        }
-        log.debug("validateHeaders : ENDS");
-    }
-
-    private void validateMessageParameters(List<MessageParameters> messageParameters) {
+    private void validateMessageParameters(List<NameValueParameter> messageParameters) {
         log.debug("validateMessageParameters : STARTS");
         if (messageParameters.isEmpty()) {
             this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->MessageParameters is empty");
@@ -89,19 +65,33 @@ public class PubSubMessageValidator {
         log.debug("validateMessageParameters : ENDS");
     }
 
-    private void validateOrder(Orders order) {
+    private void validateOrder(Order order) {
         log.debug("validateOrder : STARTS");
-        validateOrderInformation(order.getOrderInformation());
+
+        // Validating OrderInformation STARTS
+        if (order.getOrderInformation().getSAN().toString().isEmpty()) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderInformation->SAN is empty");
+        }
 
         if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
             return;
         }
+        // Validating OrderInformation ENDS
 
-        validateInstallName(order.getInstallName());
+        // Validating InstallName STARTS
+        if (order.getInstallName().getFirstName().toString().isEmpty()) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallName->FirstName is empty");
+            return;
+        }
+
+        if (order.getInstallName().getLastName().toString().isEmpty()) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallName->LastName is empty");
+        }
 
         if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
             return;
         }
+        // Validating InstallName ENDS
 
         validateInstallAddress(order.getInstallAddress());
 
@@ -109,38 +99,36 @@ public class PubSubMessageValidator {
             return;
         }
 
-        validateInstallPhones(order.getInstallPhone());
+        // Validating InstallPhone STARTS
+        if (order.getInstallPhone().isEmpty()) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallPhone is empty");
+            return;
+        }
+
+        if (order.getInstallPhone().stream().anyMatch(ip -> ip.getNumber().toString().isEmpty())) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallPhone->Number is empty");
+        }
 
         if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
             return;
         }
+        // Validating InstallPhone STARTS
 
-        validateOrderAttributes(order.getOrderAttributes());
-        log.debug("validateOrder : ENDS");
-    }
-
-    private void validateOrderInformation(OrderInformation orderInformation) {
-        log.debug("validateOrderInformation : STARTS");
-        if (orderInformation.getSAN().toString().isEmpty()) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderInformation->SAN is empty");
-        }
-        log.debug("validateOrderInformation : ENDS");
-    }
-
-    private void validateInstallName(InstallName installName) {
-        log.debug("validateInstallName : STARTS");
-        if (installName.getFirstName().toString().isEmpty()) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallName->FirstName is empty");
+        // Validating Order Attributes STARTS
+        if (order.getOrderAttributes().stream().noneMatch(oa -> oa.getName().toString().equals("GlSegmentId"))) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderAttributes->name(GlSegmentId) is missing");
             return;
         }
 
-        if (installName.getLastName().toString().isEmpty()) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallName->LastName is empty");
+        if (order.getOrderAttributes().stream().noneMatch(oa -> oa.getName().toString().equals("VoipBillingDeal"))) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderAttributes->name(VoipBillingDeal) is missing");
+            return;
         }
-        log.debug("validateInstallName : ENDS");
+        // Validating Order Attributes ENDS
+        log.debug("validateOrder : ENDS");
     }
 
-    private void validateInstallAddress(InstallAddress installAddress) {
+    private void validateInstallAddress(Address installAddress) {
         log.debug("validateInstallAddress : STARTS");
         if (installAddress.getAddress1().toString().isEmpty()) {
             this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallAddress->Address1 is empty");
@@ -168,54 +156,38 @@ public class PubSubMessageValidator {
         log.debug("validateInstallAddress : ENDS");
     }
 
-    private void validateInstallPhones(List<InstallPhone> installPhone) {
-        log.debug("validateInstallPhones : STARTS");
-        if (installPhone.isEmpty()) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallPhone is empty");
-            return;
-        }
-
-        if (installPhone.stream().anyMatch(ip -> ip.getNumber().toString().isEmpty())) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->InstallPhone->Number is empty");
-        }
-        log.debug("validateInstallPhones : ENDS");
-    }
-
-    private void validateOrderAttributes(List<OrderAttributes> orderAttributes) {
-        log.debug("validateOrderAttributes : STARTS");
-        if (orderAttributes.stream().noneMatch(oa -> oa.getName().toString().equals("GlSegmentId"))) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderAttributes->name(GlSegmentId) is missing");
-            return;
-        }
-
-        if (orderAttributes.stream().noneMatch(oa -> oa.getName().toString().equals("VoipBillingDeal"))) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderAttributes->name(VoipBillingDeal) is missing");
-            return;
-        }
-
-        if (orderAttributes.stream().filter(oa -> oa.getName().toString().equals("GlSegmentId")).count() > 1) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderAttributes->name(GlSegmentId) is duplicated");
-            return;
-        }
-
-        if (orderAttributes.stream().filter(oa -> oa.getName().toString().equals("VoipBillingDeal")).count() > 1) {
-            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders->OrderAttributes->name(VoipBillingDeal) is duplicated");
-        }
-        log.debug("validateOrderAttributes : ENDS");
-    }
-
-    public void validate(VoIPWorkOrder message) {
+    public void validate(CommonMessage message) {
         log.debug("validate : STARTS");
         this.errorMap = new HashMap<>();
         validateMessageHeader(message);
         if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
             return;
         }
-        validateMessageData(message);
+        // Validating MessageData STARTS
+        if (message.getMessageData().getOrders().isEmpty()) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "MessageData->Orders is empty");
+            return;
+        }
+
+        validateOrder(message.getMessageData().getOrders().get(0));
+
         if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
             return;
         }
-        validateHeaders(message);
+
+        validateMessageParameters(message.getMessageData().getMessageParameters());
+
+        if (errorMap.containsKey(VoipWorkOrderConstants.ERROR_MESSAGE)) {
+            return;
+        }
+        // Validating MessageData ENDS
+
+        boolean headerKeyEmpty = message.getHeaders().entrySet().stream()
+                .anyMatch(e -> e.getKey().toString().equals("KEY") && !e.getValue().toString().isEmpty());
+
+        if (!headerKeyEmpty) {
+            this.errorMap.put(VoipWorkOrderConstants.ERROR_MESSAGE, "Headers->KEY is empty");
+        }
         log.debug("validate : ENDS");
     }
 

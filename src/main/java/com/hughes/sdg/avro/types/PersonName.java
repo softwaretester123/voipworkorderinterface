@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.hughes.billing.voipworkorder.dto.avro.req;
+package com.hughes.sdg.avro.types;
 
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -12,23 +12,23 @@ import org.apache.avro.message.SchemaStore;
 
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
-public class InstallName extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = -8670643146053884252L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallName\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"FirstName\",\"type\":\"string\"},{\"name\":\"MiddleName\",\"type\":\"string\"},{\"name\":\"LastName\",\"type\":\"string\"}]}");
+public class PersonName extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -2545210835590703355L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"PersonName\",\"namespace\":\"com.hughes.sdg.avro.types\",\"fields\":[{\"name\":\"FirstName\",\"type\":\"string\"},{\"name\":\"MiddleName\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"LastName\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
 
-  private static final BinaryMessageEncoder<InstallName> ENCODER =
-      new BinaryMessageEncoder<InstallName>(MODEL$, SCHEMA$);
+  private static final BinaryMessageEncoder<PersonName> ENCODER =
+      new BinaryMessageEncoder<PersonName>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<InstallName> DECODER =
-      new BinaryMessageDecoder<InstallName>(MODEL$, SCHEMA$);
+  private static final BinaryMessageDecoder<PersonName> DECODER =
+      new BinaryMessageDecoder<PersonName>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
    */
-  public static BinaryMessageDecoder<InstallName> getDecoder() {
+  public static BinaryMessageDecoder<PersonName> getDecoder() {
     return DECODER;
   }
 
@@ -36,17 +36,17 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    */
-  public static BinaryMessageDecoder<InstallName> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<InstallName>(MODEL$, SCHEMA$, resolver);
+  public static BinaryMessageDecoder<PersonName> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<PersonName>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this InstallName to a ByteBuffer. */
+  /** Serializes this PersonName to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a InstallName from a ByteBuffer. */
-  public static InstallName fromByteBuffer(
+  /** Deserializes a PersonName from a ByteBuffer. */
+  public static PersonName fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
@@ -60,7 +60,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public InstallName() {}
+  public PersonName() {}
 
   /**
    * All-args constructor.
@@ -68,7 +68,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
    * @param MiddleName The new value for MiddleName
    * @param LastName The new value for LastName
    */
-  public InstallName(java.lang.CharSequence FirstName, java.lang.CharSequence MiddleName, java.lang.CharSequence LastName) {
+  public PersonName(java.lang.CharSequence FirstName, java.lang.CharSequence MiddleName, java.lang.CharSequence LastName) {
     this.FirstName = FirstName;
     this.MiddleName = MiddleName;
     this.LastName = LastName;
@@ -145,36 +145,36 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
   /**
-   * Creates a new InstallName RecordBuilder.
-   * @return A new InstallName RecordBuilder
+   * Creates a new PersonName RecordBuilder.
+   * @return A new PersonName RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder newBuilder() {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder();
+  public static com.hughes.sdg.avro.types.PersonName.Builder newBuilder() {
+    return new com.hughes.sdg.avro.types.PersonName.Builder();
   }
 
   /**
-   * Creates a new InstallName RecordBuilder by copying an existing Builder.
+   * Creates a new PersonName RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new InstallName RecordBuilder
+   * @return A new PersonName RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder(other);
+  public static com.hughes.sdg.avro.types.PersonName.Builder newBuilder(com.hughes.sdg.avro.types.PersonName.Builder other) {
+    return new com.hughes.sdg.avro.types.PersonName.Builder(other);
   }
 
   /**
-   * Creates a new InstallName RecordBuilder by copying an existing InstallName instance.
+   * Creates a new PersonName RecordBuilder by copying an existing PersonName instance.
    * @param other The existing instance to copy.
-   * @return A new InstallName RecordBuilder
+   * @return A new PersonName RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder(other);
+  public static com.hughes.sdg.avro.types.PersonName.Builder newBuilder(com.hughes.sdg.avro.types.PersonName other) {
+    return new com.hughes.sdg.avro.types.PersonName.Builder(other);
   }
 
   /**
-   * RecordBuilder for InstallName instances.
+   * RecordBuilder for PersonName instances.
    */
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<InstallName>
-    implements org.apache.avro.data.RecordBuilder<InstallName> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<PersonName>
+    implements org.apache.avro.data.RecordBuilder<PersonName> {
 
     private java.lang.CharSequence FirstName;
     private java.lang.CharSequence MiddleName;
@@ -189,7 +189,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder other) {
+    private Builder(com.hughes.sdg.avro.types.PersonName.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.FirstName)) {
         this.FirstName = data().deepCopy(fields()[0].schema(), other.FirstName);
@@ -206,10 +206,10 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
     }
 
     /**
-     * Creates a Builder by copying an existing InstallName instance
+     * Creates a Builder by copying an existing PersonName instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.hughes.billing.voipworkorder.dto.avro.req.InstallName other) {
+    private Builder(com.hughes.sdg.avro.types.PersonName other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.FirstName)) {
         this.FirstName = data().deepCopy(fields()[0].schema(), other.FirstName);
@@ -238,7 +238,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'FirstName'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder setFirstName(java.lang.CharSequence value) {
+    public com.hughes.sdg.avro.types.PersonName.Builder setFirstName(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.FirstName = value;
       fieldSetFlags()[0] = true;
@@ -258,7 +258,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'FirstName' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder clearFirstName() {
+    public com.hughes.sdg.avro.types.PersonName.Builder clearFirstName() {
       FirstName = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -277,7 +277,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'MiddleName'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder setMiddleName(java.lang.CharSequence value) {
+    public com.hughes.sdg.avro.types.PersonName.Builder setMiddleName(java.lang.CharSequence value) {
       validate(fields()[1], value);
       this.MiddleName = value;
       fieldSetFlags()[1] = true;
@@ -297,7 +297,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'MiddleName' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder clearMiddleName() {
+    public com.hughes.sdg.avro.types.PersonName.Builder clearMiddleName() {
       MiddleName = null;
       fieldSetFlags()[1] = false;
       return this;
@@ -316,7 +316,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * @param value The value of 'LastName'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder setLastName(java.lang.CharSequence value) {
+    public com.hughes.sdg.avro.types.PersonName.Builder setLastName(java.lang.CharSequence value) {
       validate(fields()[2], value);
       this.LastName = value;
       fieldSetFlags()[2] = true;
@@ -336,7 +336,7 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
       * Clears the value of the 'LastName' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallName.Builder clearLastName() {
+    public com.hughes.sdg.avro.types.PersonName.Builder clearLastName() {
       LastName = null;
       fieldSetFlags()[2] = false;
       return this;
@@ -344,9 +344,9 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
 
     @Override
     @SuppressWarnings("unchecked")
-    public InstallName build() {
+    public PersonName build() {
       try {
-        InstallName record = new InstallName();
+        PersonName record = new PersonName();
         record.FirstName = fieldSetFlags()[0] ? this.FirstName : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.MiddleName = fieldSetFlags()[1] ? this.MiddleName : (java.lang.CharSequence) defaultValue(fields()[1]);
         record.LastName = fieldSetFlags()[2] ? this.LastName : (java.lang.CharSequence) defaultValue(fields()[2]);
@@ -358,8 +358,8 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<InstallName>
-    WRITER$ = (org.apache.avro.io.DatumWriter<InstallName>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<PersonName>
+    WRITER$ = (org.apache.avro.io.DatumWriter<PersonName>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -367,8 +367,8 @@ public class InstallName extends org.apache.avro.specific.SpecificRecordBase imp
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<InstallName>
-    READER$ = (org.apache.avro.io.DatumReader<InstallName>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<PersonName>
+    READER$ = (org.apache.avro.io.DatumReader<PersonName>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

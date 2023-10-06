@@ -1,8 +1,7 @@
 package com.hughes.billing.voipworkorder.exception;
 
-import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
-import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
+import com.hughes.sdg.avro.CommonMessage;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,16 +12,16 @@ public class BillingUserException extends RuntimeException {
     private String message;
     private String code;
     private VoipWorkOrderMsgDTO voipWorkOrderMsgDTO;
-    private VoIPWorkOrderAckMsg voipWorkOrderAckMsg;
+    private CommonMessage commonMessage;
 
     public BillingUserException(String message,
                                 VoipWorkOrderMsgDTO voipWorkOrderMsgDTO,
-                                VoIPWorkOrderAckMsg voipWorkOrderAckMsg) {
+                                CommonMessage commonMessage) {
         super(message);
         this.message = message;
         this.code = null;
         this.voipWorkOrderMsgDTO = voipWorkOrderMsgDTO;
-        this.voipWorkOrderAckMsg = voipWorkOrderAckMsg;
+        this.commonMessage = commonMessage;
     }
 
     @Override

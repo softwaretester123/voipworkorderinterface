@@ -3,7 +3,7 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package com.hughes.billing.voipworkorder.dto.avro.req;
+package com.hughes.sdg.avro.types;
 
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -12,23 +12,23 @@ import org.apache.avro.message.SchemaStore;
 
 @SuppressWarnings("all")
 @org.apache.avro.specific.AvroGenerated
-public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
-  private static final long serialVersionUID = 6536834355848556835L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"InstallPhone\",\"namespace\":\"com.hughes.billing.voipworkorder.dto.avro.req\",\"fields\":[{\"name\":\"Number\",\"type\":\"string\"},{\"name\":\"Type\",\"type\":\"string\"}]}");
+public class Phone extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
+  private static final long serialVersionUID = -984544775431200611L;
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Phone\",\"namespace\":\"com.hughes.sdg.avro.types\",\"fields\":[{\"name\":\"Number\",\"type\":\"string\"},{\"name\":\"Type\",\"type\":\"string\"},{\"name\":\"Use\",\"type\":[\"null\",\"string\"],\"default\":null}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();
 
-  private static final BinaryMessageEncoder<InstallPhone> ENCODER =
-      new BinaryMessageEncoder<InstallPhone>(MODEL$, SCHEMA$);
+  private static final BinaryMessageEncoder<Phone> ENCODER =
+      new BinaryMessageEncoder<Phone>(MODEL$, SCHEMA$);
 
-  private static final BinaryMessageDecoder<InstallPhone> DECODER =
-      new BinaryMessageDecoder<InstallPhone>(MODEL$, SCHEMA$);
+  private static final BinaryMessageDecoder<Phone> DECODER =
+      new BinaryMessageDecoder<Phone>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageDecoder instance used by this class.
    */
-  public static BinaryMessageDecoder<InstallPhone> getDecoder() {
+  public static BinaryMessageDecoder<Phone> getDecoder() {
     return DECODER;
   }
 
@@ -36,39 +36,42 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
    * Create a new BinaryMessageDecoder instance for this class that uses the specified {@link SchemaStore}.
    * @param resolver a {@link SchemaStore} used to find schemas by fingerprint
    */
-  public static BinaryMessageDecoder<InstallPhone> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<InstallPhone>(MODEL$, SCHEMA$, resolver);
+  public static BinaryMessageDecoder<Phone> createDecoder(SchemaStore resolver) {
+    return new BinaryMessageDecoder<Phone>(MODEL$, SCHEMA$, resolver);
   }
 
-  /** Serializes this InstallPhone to a ByteBuffer. */
+  /** Serializes this Phone to a ByteBuffer. */
   public java.nio.ByteBuffer toByteBuffer() throws java.io.IOException {
     return ENCODER.encode(this);
   }
 
-  /** Deserializes a InstallPhone from a ByteBuffer. */
-  public static InstallPhone fromByteBuffer(
+  /** Deserializes a Phone from a ByteBuffer. */
+  public static Phone fromByteBuffer(
       java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
   @Deprecated public java.lang.CharSequence Number;
   @Deprecated public java.lang.CharSequence Type;
+  @Deprecated public java.lang.CharSequence Use;
 
   /**
    * Default constructor.  Note that this does not initialize fields
    * to their default values from the schema.  If that is desired then
    * one should use <code>newBuilder()</code>.
    */
-  public InstallPhone() {}
+  public Phone() {}
 
   /**
    * All-args constructor.
    * @param Number The new value for Number
    * @param Type The new value for Type
+   * @param Use The new value for Use
    */
-  public InstallPhone(java.lang.CharSequence Number, java.lang.CharSequence Type) {
+  public Phone(java.lang.CharSequence Number, java.lang.CharSequence Type, java.lang.CharSequence Use) {
     this.Number = Number;
     this.Type = Type;
+    this.Use = Use;
   }
 
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
@@ -77,6 +80,7 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
     switch (field$) {
     case 0: return Number;
     case 1: return Type;
+    case 2: return Use;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -87,6 +91,7 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
     switch (field$) {
     case 0: Number = (java.lang.CharSequence)value$; break;
     case 1: Type = (java.lang.CharSequence)value$; break;
+    case 2: Use = (java.lang.CharSequence)value$; break;
     default: throw new org.apache.avro.AvroRuntimeException("Bad index");
     }
   }
@@ -124,39 +129,56 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   /**
-   * Creates a new InstallPhone RecordBuilder.
-   * @return A new InstallPhone RecordBuilder
+   * Gets the value of the 'Use' field.
+   * @return The value of the 'Use' field.
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder newBuilder() {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder();
+  public java.lang.CharSequence getUse() {
+    return Use;
   }
 
   /**
-   * Creates a new InstallPhone RecordBuilder by copying an existing Builder.
+   * Sets the value of the 'Use' field.
+   * @param value the value to set.
+   */
+  public void setUse(java.lang.CharSequence value) {
+    this.Use = value;
+  }
+
+  /**
+   * Creates a new Phone RecordBuilder.
+   * @return A new Phone RecordBuilder
+   */
+  public static com.hughes.sdg.avro.types.Phone.Builder newBuilder() {
+    return new com.hughes.sdg.avro.types.Phone.Builder();
+  }
+
+  /**
+   * Creates a new Phone RecordBuilder by copying an existing Builder.
    * @param other The existing builder to copy.
-   * @return A new InstallPhone RecordBuilder
+   * @return A new Phone RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder(other);
+  public static com.hughes.sdg.avro.types.Phone.Builder newBuilder(com.hughes.sdg.avro.types.Phone.Builder other) {
+    return new com.hughes.sdg.avro.types.Phone.Builder(other);
   }
 
   /**
-   * Creates a new InstallPhone RecordBuilder by copying an existing InstallPhone instance.
+   * Creates a new Phone RecordBuilder by copying an existing Phone instance.
    * @param other The existing instance to copy.
-   * @return A new InstallPhone RecordBuilder
+   * @return A new Phone RecordBuilder
    */
-  public static com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder newBuilder(com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone other) {
-    return new com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder(other);
+  public static com.hughes.sdg.avro.types.Phone.Builder newBuilder(com.hughes.sdg.avro.types.Phone other) {
+    return new com.hughes.sdg.avro.types.Phone.Builder(other);
   }
 
   /**
-   * RecordBuilder for InstallPhone instances.
+   * RecordBuilder for Phone instances.
    */
-  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<InstallPhone>
-    implements org.apache.avro.data.RecordBuilder<InstallPhone> {
+  public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Phone>
+    implements org.apache.avro.data.RecordBuilder<Phone> {
 
     private java.lang.CharSequence Number;
     private java.lang.CharSequence Type;
+    private java.lang.CharSequence Use;
 
     /** Creates a new Builder */
     private Builder() {
@@ -167,7 +189,7 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
      * Creates a Builder by copying an existing Builder.
      * @param other The existing Builder to copy.
      */
-    private Builder(com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder other) {
+    private Builder(com.hughes.sdg.avro.types.Phone.Builder other) {
       super(other);
       if (isValidValue(fields()[0], other.Number)) {
         this.Number = data().deepCopy(fields()[0].schema(), other.Number);
@@ -177,13 +199,17 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
         this.Type = data().deepCopy(fields()[1].schema(), other.Type);
         fieldSetFlags()[1] = true;
       }
+      if (isValidValue(fields()[2], other.Use)) {
+        this.Use = data().deepCopy(fields()[2].schema(), other.Use);
+        fieldSetFlags()[2] = true;
+      }
     }
 
     /**
-     * Creates a Builder by copying an existing InstallPhone instance
+     * Creates a Builder by copying an existing Phone instance
      * @param other The existing instance to copy.
      */
-    private Builder(com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone other) {
+    private Builder(com.hughes.sdg.avro.types.Phone other) {
             super(SCHEMA$);
       if (isValidValue(fields()[0], other.Number)) {
         this.Number = data().deepCopy(fields()[0].schema(), other.Number);
@@ -192,6 +218,10 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
       if (isValidValue(fields()[1], other.Type)) {
         this.Type = data().deepCopy(fields()[1].schema(), other.Type);
         fieldSetFlags()[1] = true;
+      }
+      if (isValidValue(fields()[2], other.Use)) {
+        this.Use = data().deepCopy(fields()[2].schema(), other.Use);
+        fieldSetFlags()[2] = true;
       }
     }
 
@@ -208,7 +238,7 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'Number'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder setNumber(java.lang.CharSequence value) {
+    public com.hughes.sdg.avro.types.Phone.Builder setNumber(java.lang.CharSequence value) {
       validate(fields()[0], value);
       this.Number = value;
       fieldSetFlags()[0] = true;
@@ -228,7 +258,7 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'Number' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder clearNumber() {
+    public com.hughes.sdg.avro.types.Phone.Builder clearNumber() {
       Number = null;
       fieldSetFlags()[0] = false;
       return this;
@@ -247,7 +277,7 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
       * @param value The value of 'Type'.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder setType(java.lang.CharSequence value) {
+    public com.hughes.sdg.avro.types.Phone.Builder setType(java.lang.CharSequence value) {
       validate(fields()[1], value);
       this.Type = value;
       fieldSetFlags()[1] = true;
@@ -267,19 +297,59 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
       * Clears the value of the 'Type' field.
       * @return This builder.
       */
-    public com.hughes.billing.voipworkorder.dto.avro.req.InstallPhone.Builder clearType() {
+    public com.hughes.sdg.avro.types.Phone.Builder clearType() {
       Type = null;
       fieldSetFlags()[1] = false;
       return this;
     }
 
+    /**
+      * Gets the value of the 'Use' field.
+      * @return The value.
+      */
+    public java.lang.CharSequence getUse() {
+      return Use;
+    }
+
+    /**
+      * Sets the value of the 'Use' field.
+      * @param value The value of 'Use'.
+      * @return This builder.
+      */
+    public com.hughes.sdg.avro.types.Phone.Builder setUse(java.lang.CharSequence value) {
+      validate(fields()[2], value);
+      this.Use = value;
+      fieldSetFlags()[2] = true;
+      return this;
+    }
+
+    /**
+      * Checks whether the 'Use' field has been set.
+      * @return True if the 'Use' field has been set, false otherwise.
+      */
+    public boolean hasUse() {
+      return fieldSetFlags()[2];
+    }
+
+
+    /**
+      * Clears the value of the 'Use' field.
+      * @return This builder.
+      */
+    public com.hughes.sdg.avro.types.Phone.Builder clearUse() {
+      Use = null;
+      fieldSetFlags()[2] = false;
+      return this;
+    }
+
     @Override
     @SuppressWarnings("unchecked")
-    public InstallPhone build() {
+    public Phone build() {
       try {
-        InstallPhone record = new InstallPhone();
+        Phone record = new Phone();
         record.Number = fieldSetFlags()[0] ? this.Number : (java.lang.CharSequence) defaultValue(fields()[0]);
         record.Type = fieldSetFlags()[1] ? this.Type : (java.lang.CharSequence) defaultValue(fields()[1]);
+        record.Use = fieldSetFlags()[2] ? this.Use : (java.lang.CharSequence) defaultValue(fields()[2]);
         return record;
       } catch (java.lang.Exception e) {
         throw new org.apache.avro.AvroRuntimeException(e);
@@ -288,8 +358,8 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumWriter<InstallPhone>
-    WRITER$ = (org.apache.avro.io.DatumWriter<InstallPhone>)MODEL$.createDatumWriter(SCHEMA$);
+  private static final org.apache.avro.io.DatumWriter<Phone>
+    WRITER$ = (org.apache.avro.io.DatumWriter<Phone>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
     throws java.io.IOException {
@@ -297,8 +367,8 @@ public class InstallPhone extends org.apache.avro.specific.SpecificRecordBase im
   }
 
   @SuppressWarnings("unchecked")
-  private static final org.apache.avro.io.DatumReader<InstallPhone>
-    READER$ = (org.apache.avro.io.DatumReader<InstallPhone>)MODEL$.createDatumReader(SCHEMA$);
+  private static final org.apache.avro.io.DatumReader<Phone>
+    READER$ = (org.apache.avro.io.DatumReader<Phone>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
     throws java.io.IOException {

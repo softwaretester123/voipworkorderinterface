@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: pin
+    url: ${BILLING_VOIP_DB_URL}
+    password: ENC(ZLWi8uV0190x2hcxyeIHSNx1CAjYrv8C)
+    hikari:
+      minimumIdle: ${BILLING_VOIP_DB_CON_POOL_INIT_SIZE}
+      maximumPoolSize: ${BILLING_VOIP_DB_CON_POOL_MAX_SIZE}
+  cloud:
+    gcp:
+      pubsub:
+        subscription:
+          id: ${BILLING_VOIP_PUBSUB_SUBSCRIPTION_ID}
+        topic:
+          id: ${BILLING_VOIP_PUBSUB_TOPIC_ID}
+        enable:
+          flowcontrol: ${BILLING_VOIP_PUBSUB_FLOW_CONTROL_FLAG}
+        project:
+          id: ${BILLING_VOIP_PUBSUB_PROJECT_ID}
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle12cDialect
+
+# Actuator Properties
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: info,health,threaddump,metrics
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  config: src/main/resources/config/logback-spring.xml

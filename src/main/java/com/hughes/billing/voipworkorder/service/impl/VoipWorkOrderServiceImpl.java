@@ -1,7 +1,5 @@
 package com.hughes.billing.voipworkorder.service.impl;
 
-import com.hughes.billing.voipworkorder.dto.avro.ack.VoIPWorkOrderAckMsg;
-import com.hughes.billing.voipworkorder.dto.avro.req.VoIPWorkOrder;
 import com.hughes.billing.voipworkorder.entities.VoipWorkOrderMsgDTO;
 import com.hughes.billing.voipworkorder.exception.BillingUserException;
 import com.hughes.billing.voipworkorder.repositroy.VoipWorkOrderMsgRepo;
@@ -11,6 +9,7 @@ import com.hughes.billing.voipworkorder.utils.RequestUtility;
 import com.hughes.billing.voipworkorder.producer.VoipAckResponseGenerator;
 import com.hughes.billing.voipworkorder.utils.VoipWorkOrderConstants;
 import com.hughes.bits.framework.pubsub.exceptions.PubSubFrwkException;
+import com.hughes.sdg.avro.CommonMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,14 +40,14 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * @return description of return value
      */
     @Override
-    public VoIPWorkOrderAckMsg processRequest(VoIPWorkOrder request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
+    public CommonMessage processRequest(CommonMessage request, VoipWorkOrderMsgDTO voipWorkOrderMsgDTO) {
         log.info("processRequest : STARTS");
         String workOrderType = voipWorkOrderMsgDTO.getWorkOrderType();
         log.info("processRequest : WorkOrderType = " + workOrderType);
 
         String result = null;
         String responseMessage = null;
-        VoIPWorkOrderAckMsg voIPWorkOrderAckMsg = null;
+        CommonMessage voIPWorkOrderAckMsg = null;
 
         try {
             // Determine the action based on the work order type
@@ -84,7 +83,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
         return voIPWorkOrderAckMsg;
     }
 
-    public VoipWorkOrderMsgDTO getVoipWOMsg(VoIPWorkOrder request) {
+    public VoipWorkOrderMsgDTO getVoipWOMsg(CommonMessage request) {
         log.info("getVoipWOMsg : STARTS");
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
 
@@ -127,7 +126,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * @return The generated VoipWorkOrderMsgDump object.
      */
     @Override
-    public VoipWorkOrderMsgDTO saveRequest(VoIPWorkOrder request) {
+    public VoipWorkOrderMsgDTO saveRequest(CommonMessage request) {
         log.info("saveRequest : STARTS");
 
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
@@ -151,7 +150,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * @param request the VoIP work order request
      * @return the result of the work order creation
      */
-    private String createVoipWorkOrder(VoIPWorkOrder request) {
+    private String createVoipWorkOrder(CommonMessage request) {
         log.info("createVoipWorkOrder : STARTS");
         String accountNumber = request.getMessageData().getOrders().get(0).getOrderInformation().getSAN().toString();
         String woType = RequestUtility.getWorkOrderType(request);
@@ -187,7 +186,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
      * @param request the VoIP work order request
      * @return the result of the cancellation
      */
-    private String cancelVoipWorkOrder(VoIPWorkOrder request) {
+    private String cancelVoipWorkOrder(CommonMessage request) {
         log.info("cancelVoipWorkOrder : STARTS");
         String accountNumber = RequestUtility.getSan(request);
 
@@ -216,7 +215,7 @@ public class VoipWorkOrderServiceImpl implements VoipWorkOrderService {
     }
 
     @Override
-    public boolean publishMessage(VoIPWorkOrderAckMsg response, String orderingKey) throws PubSubFrwkException {
+    public boolean publishMessage(CommonMessage response, String orderingKey) throws PubSubFrwkException {
         return publisherService.publish(response, orderingKey, topicId);
     }
 }

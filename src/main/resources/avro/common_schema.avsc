@@ -1,0 +1,1227 @@
+{
+  "name": "CommonMessage",
+  "namespace": "com.hughes.sdg.avro",
+  "type": "record",
+  "version": 1,
+  "fields": [
+    {
+      "name": "MessageHeader",
+      "type": {
+        "name": "MessageHeader",
+        "type": "record",
+        "fields": [
+          {
+            "name": "TransactionSequenceId",
+            "type": "string"
+          },
+          {
+            "name": "TransactionDateTime",
+            "type": "string"
+          },
+          {
+            "name": "MessageName",
+            "type": "string"
+          },
+          {
+            "name": "CorrelationId",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "Origin",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          },
+          {
+            "name": "ServiceName",
+            "type": [
+              "null",
+              "string"
+            ],
+            "default": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "MessageData",
+      "type": {
+        "name": "MessageData",
+        "type": "record",
+        "fields": [
+          {
+            "name": "MessageParameters",
+            "default": null,
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "name": "NameValueParameter",
+                  "type": "record",
+                  "namespace": "com.hughes.sdg.avro.types",
+                  "fields": [
+                    {
+                      "name": "name",
+                      "type": "string"
+                    },
+                    {
+                      "name": "value",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "CustomerInfo",
+            "default": null,
+            "type": [
+              "null",
+              {
+                "name": "CustomerInfo",
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "CustomerId",
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "default": null
+                  },
+                  {
+                    "name": "ClassA",
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "default": null
+                  },
+                  {
+                    "name": "CompanyName",
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "default": null
+                  },
+                  {
+                    "name": "CustomerCategory",
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "default": null
+                  },
+                  {
+                    "name": "CustomerType",
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "default": null
+                  },
+                  {
+                    "name": "ContactName",
+                    "default": null,
+                    "type": [
+                      "null",
+                      {
+                        "name": "PersonName",
+                        "type": "record",
+                        "namespace": "com.hughes.sdg.avro.types",
+                        "fields": [
+                          {
+                            "name": "FirstName",
+                            "type": "string"
+                          },
+                          {
+                            "name": "MiddleName",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          },
+                          {
+                            "name": "LastName",
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "ContactAddress",
+                    "default": null,
+                    "type": [
+                      "null",
+                      {
+                        "name": "Address",
+                        "type": "record",
+                        "namespace": "com.hughes.sdg.avro.types",
+                        "fields": [
+                          {
+                            "name": "Address1",
+                            "type": "string"
+                          },
+                          {
+                            "name": "Address2",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          },
+                          {
+                            "name": "City",
+                            "type": "string"
+                          },
+                          {
+                            "name": "State",
+                            "type": "string"
+                          },
+                          {
+                            "name": "Zip",
+                            "type": "string"
+                          },
+                          {
+                            "name": "Country",
+                            "type": "string"
+                          },
+                          {
+                            "name": "Latitude",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          },
+                          {
+                            "name": "Longitude",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          },
+                          {
+                            "name": "USPSBarCodeNumber",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          },
+                          {
+                            "name": "DPVCode",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "CustomerPhone",
+                    "default": null,
+                    "type": [
+                      "null",
+                      {
+                        "type": "array",
+                        "items": {
+                          "name": "Phone",
+                          "type": "record",
+                          "namespace": "com.hughes.sdg.avro.types",
+                          "fields": [
+                            {
+                              "name": "Number",
+                              "type": "string"
+                            },
+                            {
+                              "name": "Type",
+                              "type": "string"
+                            },
+                            {
+                              "name": "Use",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "name": "Email",
+                    "type": [
+                      "null",
+                      "string"
+                    ],
+                    "default": null
+                  },
+                  {
+                    "name": "BillingName",
+                    "default": null,
+                    "type": [
+                      "null",
+                      "com.hughes.sdg.avro.types.PersonName"
+                    ]
+                  },
+                  {
+                    "name": "BillingAddress",
+                    "default": null,
+                    "type": [
+                      "null",
+                      "com.hughes.sdg.avro.types.Address"
+                    ]
+                  },
+                  {
+                    "name": "PaymentInfo",
+                    "default": null,
+                    "type": [
+                      "null",
+                      {
+                        "name": "PaymentInfo",
+                        "type": "record",
+                        "namespace": "com.hughes.sdg.avro.types",
+                        "fields": [
+                          {
+                            "name": "BillingMethod",
+                            "type": [
+                              "null",
+                              "string"
+                            ],
+                            "default": null
+                          },
+                          {
+                            "name": "CreditCardInfo",
+                            "default": null,
+                            "type": [
+                              "null",
+                              {
+                                "name": "CreditCardInfo",
+                                "type": "record",
+                                "fields": [
+                                  {
+                                    "name": "Type",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "Number",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "ExpirationMonth",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "ExpirationYear",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "CVV",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "BankAccountInfo",
+                            "default": null,
+                            "type": [
+                              "null",
+                              {
+                                "name": "BankAccountInfo",
+                                "type": "record",
+                                "fields": [
+                                  {
+                                    "name": "AccountNumber",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "RoutingNumber",
+                                    "type": [
+                                      "null",
+                                      "string"
+                                    ],
+                                    "default": null
+                                  },
+                                  {
+                                    "name": "AgencyNumber",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "name": "BankCode",
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "name": "CustomerAttributes",
+                    "default": null,
+                    "type": [
+                      "null",
+                      {
+                        "type": "array",
+                        "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Orders",
+            "default": null,
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "name": "Order",
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "OrderInformation",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "name": "OrderInformation",
+                          "type": "record",
+                          "fields": [
+                            {
+                              "name": "OrderId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "OrderStatusCd",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "MAN",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "SAN",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ClassA",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "SourceId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CompanyName",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "BusinessModel",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "PIN",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "UpgradeOrderId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "FSOId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "FSOStatus",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CreateDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ModifyDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CancelDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CancelReasonCd",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "OrderNotes",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CustomerNotes",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "IsUpgrade",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ErrorFlag",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "AgentId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "OrderType",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ChargingRule",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "Email",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ServiceList",
+                              "default": null,
+                              "type": [
+                                "null",
+                                {
+                                  "type": "array",
+                                  "items": "string"
+                                }
+                              ]
+                            },
+                            {
+                              "name": "PaymentCd",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "PaymentOption",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "UpfrontChargeAmt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "SalesChannelCd",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ContractId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "InstallName",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.PersonName"
+                      ]
+                    },
+                    {
+                      "name": "InstallAddress",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.Address"
+                      ]
+                    },
+                    {
+                      "name": "InstallPhone",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.Phone"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "BillingName",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.PersonName"
+                      ]
+                    },
+                    {
+                      "name": "BillingAddress",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.Address"
+                      ]
+                    },
+                    {
+                      "name": "PaymentInfo",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.PaymentInfo"
+                      ]
+                    },
+                    {
+                      "name": "OrderedOfferDetails",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "name": "OrderedOfferDetails",
+                          "type": "record",
+                          "fields": [
+                            {
+                              "name": "OfferName",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ProgramId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "PackageId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ProgramCd",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ProgramNm",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "PackageNm",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "Subscriptions",
+                              "default": null,
+                              "type": [
+                                "null",
+                                {
+                                  "type": "array",
+                                  "items": {
+                                    "name": "Subscription",
+                                    "type": "record",
+                                    "fields": [
+                                      {
+                                        "name": "SubscriptionId",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "SubscriptionStatusCd",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "Description",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ProvisioningDt",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "PlanId",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "PlanNm",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ServiceOfferingId",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ServiceOfferingNm",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ServiceDealId",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ServiceDealNm",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ServiceDealAttributes",
+                                        "default": null,
+                                        "type": [
+                                          "null",
+                                          {
+                                            "type": "array",
+                                            "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "BillingDealId",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "BillingDealNm",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "BillingDealAttributes",
+                                        "default": null,
+                                        "type": [
+                                          "null",
+                                          {
+                                            "type": "array",
+                                            "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "name": "ServiceNm",
+                                        "type": [
+                                          "null",
+                                          "string"
+                                        ],
+                                        "default": null
+                                      },
+                                      {
+                                        "name": "ExtraParams",
+                                        "default": null,
+                                        "type": [
+                                          "null",
+                                          {
+                                            "type": "array",
+                                            "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "LocationParameters",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "CreditReport",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "BulkOrderParameters",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "TransportParameters",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "IPParameters",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "OrderAttributes",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "Sites",
+            "default": null,
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "name": "Site",
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "SiteInformation",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "name": "SiteInformation",
+                          "type": "record",
+                          "fields": [
+                            {
+                              "name": "SiteId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "SAN",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "SiteType",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ClassA",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ClassB",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ProductId",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "BusinessModel",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "Email",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "SiteStatusCd",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ProvisioningDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "InstallDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CreateDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ModifyDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "CancelDt",
+                              "type": [
+                                "null",
+                                "string"
+                              ],
+                              "default": null
+                            },
+                            {
+                              "name": "ServiceList",
+                              "default": null,
+                              "type": [
+                                "null",
+                                {
+                                  "type": "array",
+                                  "items": "string"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "SiteName",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.PersonName"
+                      ]
+                    },
+                    {
+                      "name": "SiteAddress",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.Address"
+                      ]
+                    },
+                    {
+                      "name": "SitePhone",
+                      "default": null,
+                      "type": [
+                        "null",
+                        "com.hughes.sdg.avro.types.Phone"
+                      ]
+                    },
+                    {
+                      "name": "LocationParameters",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "SiteAttributes",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "NetworkParameters",
+                      "default": null,
+                      "type": [
+                        "null",
+                        {
+                          "type": "array",
+                          "items": "com.hughes.sdg.avro.types.NameValueParameter"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "default": null,
+      "name": "headers",
+      "type": [
+        "null",
+        {
+          "type": "map",
+          "values": "string"
+        }
+      ]
+    }
+  ]
+}
