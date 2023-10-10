@@ -72,6 +72,7 @@ public class VoipPubSubConfig {
 
                 for (String subscriptionId : subscriptionIdList) {
                     SubscriberFactory.INSTANCE.pullAsyncMessages(subscriptionId);
+                    log.info("initializeSubscriber() : Initialized subscriber successfully for subscriptionId: " + subscriptionId);
                 }
             }
         } catch (PubSubFrwkException e) {
@@ -91,6 +92,7 @@ public class VoipPubSubConfig {
             log.info("initializePublisher() :projectId : " + projectId + " : topicId : " + topicId + " : filePath : " + filePath);
             config = (PublisherConfig) initializeConfig(VoipWorkOrderConstants.PUBLISHER, topicId);
             PublisherFactory.INSTANCE.initializePublishers(Collections.singletonList(config));
+            log.info("initializePublisher() : Initialized publisher successfully for topicId: " + topicId);
         } catch (PubSubFrwkException e) {
             log.error("initializePublisher() : Exception occurred while initializing the publisher: " + e.getMessage());
         }

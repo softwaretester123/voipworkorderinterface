@@ -51,6 +51,7 @@ public class PubSubConsumer implements SubscriberResponseAdapter {
         VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = null;
         CommonMessage request = null;
         CommonMessage response = null;
+        boolean publishStatus = true;
         try {
             request = PubSubUtils.deSerialize(message.getData().getBytes());
             log.info("processMessage : deSerialized request : " + request);
@@ -67,21 +68,21 @@ public class PubSubConsumer implements SubscriberResponseAdapter {
                             voipWorkOrderMsgDTO);
                 }
 
-                voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
-                voipWorkOrderMsgDTO.setStatus(VoipWorkOrderConstants.VOIP_MSG_STATUS_PENDING);
-                voipWorkOrderMsgDTO.setRemarks(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK_MSG);
-
                 response = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
 
                 log.info("processMessage : Response Received : " + response);
 
-                boolean publishStatus = publisherService.publish(response,
-                        voipWorkOrderMsgDTO.getSan(),
-                        "topicId");
+//                publishStatus = publisherService.publish(response,
+//                        voipWorkOrderMsgDTO.getSan(),
+//                        topicId);
 
-                if (response != null) {
+                if (publishStatus) {
+                    log.info("processMessage : Published Message Successfully");
                     voipWorkOrderMsgDTO.setPublishedPayload(response.toString());
+                } else {
+                    log.info("processMessage : Published Message Failed");
                 }
+
                 voipWorkOrderService.saveData(voipWorkOrderMsgDTO);
             }
 
@@ -117,6 +118,6 @@ public class PubSubConsumer implements SubscriberResponseAdapter {
 
     @Override
     public void sendShutDownFailureResponse(Map<String, Exception> map) {
-        //TODO Implement Shut Down on Failure
+        // Stub
     }
 }

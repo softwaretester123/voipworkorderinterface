@@ -28,14 +28,12 @@ public class VoipAckResponseGenerator {
         SimpleDateFormat sdf = new SimpleDateFormat(VoipWorkOrderConstants.TRANSACTION_DATE_TIME_FORMAT);
         String transactionDateTime = sdf.format(new Date());
 
-        //TODO
-
-        MessageHeader ackMessageHeader = new MessageHeader(voipWorkOrderMsgDTO.getTransactionSequenceId(),
-                transactionDateTime,
-                VoipWorkOrderConstants.VOIPWORKORDERACKMSG_MSG_NAME,
-                voipWorkOrderMsgDTO.getTransactionSequenceId(),
-                VoipWorkOrderConstants.BILLING,
-                "");
+        MessageHeader ackMessageHeader = new MessageHeader();
+        ackMessageHeader.setTransactionSequenceId("BILL" + transactionDateTime);
+        ackMessageHeader.setTransactionDateTime(transactionDateTime);
+        ackMessageHeader.setMessageName(VoipWorkOrderConstants.VOIPWORKORDERACKMSG_MSG_NAME);
+        ackMessageHeader.setTransactionSequenceId(voipWorkOrderMsgDTO.getTransactionSequenceId());
+        ackMessageHeader.setOrigin(VoipWorkOrderConstants.BILLING);
 
         List<NameValueParameter> ackMessageParameters = new ArrayList<>();
         ackMessageParameters.add(new NameValueParameter("WorkOrderType", voipWorkOrderMsgDTO.getWorkOrderType()));
@@ -48,7 +46,9 @@ public class VoipAckResponseGenerator {
 
         List<Order> orders = Collections.singletonList(ackOrder);
 
-        MessageData ackMessageData = new MessageData(ackMessageParameters, null, orders, null);
+        MessageData ackMessageData = new MessageData();
+        ackMessageData.setMessageParameters(ackMessageParameters);
+        ackMessageData.setOrders(orders);
 
         Map<CharSequence, CharSequence> header = new HashMap<>();
         header.put("KEY", voipWorkOrderMsgDTO.getSan());

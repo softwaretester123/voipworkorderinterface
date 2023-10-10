@@ -34,7 +34,6 @@ public class GenericExceptionHandler {
         CommonMessage response = null;
         String message = null;
         try {
-            //TODO move to a separate function
             VoipWorkOrderMsgDTO voipWorkOrderMsgDTO = e.getVoipWorkOrderMsgDTO();
             message = e.getMessage();
             response = VoipAckResponseGenerator.prepareResponse(voipWorkOrderMsgDTO, Boolean.FALSE.toString(), message);

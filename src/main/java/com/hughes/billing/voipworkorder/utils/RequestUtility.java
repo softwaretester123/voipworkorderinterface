@@ -87,7 +87,6 @@ public class RequestUtility {
         log.info("getSan : STARTS");
         CharSequence san = null;
         try {
-            //TODO order not empty check
             san = request.getMessageData().getOrders().get(0)
                     .getOrderInformation().getSAN();
         } catch (NullPointerException e) {

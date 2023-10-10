@@ -6,8 +6,6 @@ import com.hughes.sdg.avro.CommonMessage;
 
 import java.text.ParseException;
 
-;
-
 public interface VoipWorkOrderService {
 
     CommonMessage processRequest(CommonMessage request, VoipWorkOrderMsgDTO dumpedRequest);

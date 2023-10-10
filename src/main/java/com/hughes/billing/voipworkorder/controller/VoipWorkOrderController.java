@@ -60,8 +60,6 @@ public class VoipWorkOrderController {
                 throw new RequiredParameterMissingException(bindingResult.getAllErrors().get(0).getCode(), voipWorkOrderMsgDTO);
             }
 
-            voipWorkOrderMsgDTO.setState(VoipWorkOrderConstants.VOIP_REQ_STATE_VALIDATION_OK);
-
             result = voipWorkOrderService.processRequest(request, voipWorkOrderMsgDTO);
 
             log.info("voipWorkOrder : Response Received : " + result);
